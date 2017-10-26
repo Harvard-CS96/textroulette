@@ -75,17 +75,26 @@
                     // when socket emit a message to each user
                     socket.on("new message", function(data) {
                         // append the message into the “chat” div
-                        $chat.append(data + '<br />')
+                        var $newDiv = $("<div />");
+                        $newDiv.text(data);
+                        $chat.append($newDiv);
                     })
                     socket.on("waiting", () => {
                         $chat.append("<em>Waiting for a partner...</em><br />")
                     })
                     socket.on("pairing", function(data) {
-                        $chat.text("")
-                        $chat.append("<em>You are now talking to " + data + "</em><br />")
+                        var $newEm = $("<em />");
+                        $newEm.text("You are now talking to " + data);
+                        var $newDiv = $("<div />");
+                        $newDiv.append($newEm)
+                        $chat.append($newDiv)
                     })
                     socket.on("disconnected", function(data) {
-                        $chat.append("<em>" + data + " has disconnected.</em><br />")
+                        var $newEm = $("<em />");
+                        $newEm.text(data + " has disconnected");
+                        var $newDiv = $("<div />");
+                        $newDiv.append($newEm)
+                        $chat.append($newDiv)
                     })
                     socket.on("request username", () => {
                       let username = prompt("What is your name?")
