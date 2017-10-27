@@ -15,12 +15,20 @@ const db_uri = ""; // load URI from environment variables later
 var conn = mongoose.connection;
 conn.openUri(db_uri)
     .then(() => {
-        require('./models/chat');
-        require('./models/user');
+        console.log("Database: connected to " + db_uri);
     }, (err) => {
         console.log(err);
     });
 
+// instantiate data models
+// (mongoose waits until the connection is established to run these)
+const Chat = require('./models/chat');
+const User = require('./models/user');
+
 module.exports = {
-    connection: conn
+    connection: conn,
+    models: {
+        Chat,
+        User
+    }
 };
