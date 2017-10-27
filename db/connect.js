@@ -5,6 +5,9 @@
 
 const mongoose = require('mongoose');
 
+// use native promises
+mongoose.Promise = global.Promise;
+
 // standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
 const db_uri = ""; // load URI from environment variables later
 
