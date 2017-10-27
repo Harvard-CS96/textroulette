@@ -13,8 +13,10 @@ var conn = mongoose.connection;
 conn.openUri(db_uri)
     .then(() => {
         require('./models/chat');
-        const User = require('./models/user');
-    })
+        require('./models/user');
+    }, (err) => {
+        console.log(err);
+    });
 
 module.exports = {
     connection: conn
