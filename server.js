@@ -36,7 +36,7 @@ app.use(session);
 
 io.use(sharedsession(session, {
   autoSave:true
-})); 
+}));
 
 
 // to listen to port 3000
@@ -65,14 +65,59 @@ let matcher = new Matcher((id, status, partner = null) => {
       }
     case DISCONNECTED:
       {
-        io.to(id).emit("disconnected", matcher.getUsername(partner))  
-      }  
+        io.to(id).emit("disconnected", matcher.getUsername(partner))
+      }
     default:
       {
         break;
       }
   }
 })
+
+// DB INTERRUPTION
+var mongodb = require('mongodb');
+var seedData = [
+  {"id": 0,
+    "participant_ids": [
+        1,
+        10
+    ],
+    "length": 37.6,
+    "passion_voice": 10,
+    "ratings": {
+        "rating": 1,
+        "civility": 10,
+        "listening": 7,
+        "attention": 5,
+        "factual": 3
+    },
+    "ended_by": "timer"
+  }
+];
+
+// Standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
+
+var uri = 'mongodb://zucks:russiatoday1@ds229835.mlab.com:29835/cs-96';
+
+mongodb.MongoClient.connect(uri, function(err, db) {
+
+  if(err) throw err;
+
+  /*
+   * First we'll add a few songs. Nothing is required to create the
+   * songs collection; it is created automatically when we insert.
+   */
+
+  var conversations = db.collection('conversations');
+
+   // Note that the insert method can take either an array or a dict.
+
+  conversations.insert(seedData, function(err, result) {
+    if(err) throw err;
+
+  });
+});
+console.log('ran db');
 
 
 // when a user connects to the socket
@@ -86,7 +131,7 @@ io.sockets.on("connection", function (socket) {
   } else {
     socket.emit('recall username', username)
     matcher.connect(socket.id, username, user_id);
-    
+
   }
   if (!user_id) {
     socket.handshake.session.user_id = uuid();
@@ -106,7 +151,7 @@ io.sockets.on("connection", function (socket) {
     matcher.connect(socket.id, username, socket.handshake.session.user_id);
     socket.handshake.session.username = username;
     socket.handshake.session.save();
-    socket.emit('recall username', username)    
+    socket.emit('recall username', username)
   })
 
   socket.on("disconnect", () => {
