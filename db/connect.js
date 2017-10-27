@@ -16,7 +16,8 @@ var conn = mongoose.connection;
 conn.openUri(db_uri)
     .then(() => {
         console.log("Database: connected to " + db_uri);
-    }, (err) => {
+    })
+    .catch((err) => {
         console.log(err);
     });
 
