@@ -15,6 +15,9 @@ const {
 
 const uuid = require('uuid');
 
+// to connect to the database and instantiate the data models
+var db = require('./db/connect');
+
 // to use the express module
 var app = require("express")();
 
@@ -48,16 +51,6 @@ app.get("/", function (req, res) {
 })
 
 
-const mongoose = require('mongoose');
-const models = require('./models.js');
-
-// standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
-const db_uri = 'mongodb://zucks:russiatoday1@ds229835.mlab.com:29835/cs-96';
-
-// connect to the mlab instance
-var conn = mongoose.connection;
-conn.openUri(db_uri);
-
 const Matcher = require('./matcher');
 let matcher = new Matcher((id, status, partner = null) => {
   switch (status) {
@@ -71,9 +64,9 @@ let matcher = new Matcher((id, status, partner = null) => {
       {
         // io.sockets.emit("meta", `${id} is pairing to ${partner}`)
         io.to(id).emit("pairing", matcher.getUsername(partner));
-        // log the chat -- THIS PRODUCES SEMI-DUPLICATES
-        var chat = new models.Chat({uid1: id, uid2: partner});
-        chat.save();
+        // log the chat -- THIS PRODUCES TWO LOGS PER CONNECTION
+        var chat = new db.models.Chat({uid1: id, uid2: partner});
+        chat.save().catch(console.log);
         break;
       }
     case DISCONNECTED:
