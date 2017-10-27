@@ -48,6 +48,16 @@ app.get("/", function (req, res) {
 })
 
 
+const mongoose = require('mongoose');
+const models = require('./models.js');
+
+// standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
+const db_uri = 'mongodb://zucks:russiatoday1@ds229835.mlab.com:29835/cs-96';
+
+// connect to the mlab instance
+var conn = mongoose.connection;
+conn.openUri(db_uri);
+
 const Matcher = require('./matcher');
 let matcher = new Matcher((id, status, partner = null) => {
   switch (status) {
@@ -61,6 +71,9 @@ let matcher = new Matcher((id, status, partner = null) => {
       {
         // io.sockets.emit("meta", `${id} is pairing to ${partner}`)
         io.to(id).emit("pairing", matcher.getUsername(partner));
+        // log the chat -- THIS PRODUCES SEMI-DUPLICATES
+        var chat = new models.Chat({uid1: id, uid2: partner});
+        chat.save();
         break;
       }
     case DISCONNECTED:
@@ -73,46 +86,6 @@ let matcher = new Matcher((id, status, partner = null) => {
       }
   }
 })
-
-// DB INTERRUPTION
-var mongodb = require('mongodb');
-var seedData = [
-  {"id": 0,
-    "participant_ids": [
-        1,
-        10
-    ],
-    "length": 37.6,
-    "passion_voice": 10,
-    "ratings": {
-        "rating": 1,
-        "civility": 10,
-        "listening": 7,
-        "attention": 5,
-        "factual": 3
-    },
-    "ended_by": "timer"
-  }
-];
-
-// Standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
-
-var uri = 'mongodb://zucks:russiatoday1@ds229835.mlab.com:29835/cs-96';
-
-mongodb.MongoClient.connect(uri, function(err, db) {
-  if(err) throw err;
-
-  var conversations = db.collection('conversations');
-
-   // Note that the insert method can take either an array or a dict.
-
-  conversations.insert(seedData, function(err, result) {
-    if(err) throw err;
-
-  });
-});
-console.log('ran db');
-
 
 // when a user connects to the socket
 io.sockets.on("connection", function (socket) {

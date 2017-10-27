@@ -38,7 +38,7 @@ class Matcher {
 
     // Remove an id from the connection pool
     disconnect(id) {
-        
+
         // If a conenction with the given id doesn't exist, don't do anything
         if (this.connections[id] === undefined) {
             return;
@@ -49,7 +49,7 @@ class Matcher {
 
         // If the partner existed, set it to single
         if (partner !== null) {
-            this.connections[partner].partner = null; 
+            this.connections[partner].partner = null;
             console.log(`Matcher: ${id} partner ${partner} is now single`)
 
             this._setStatus(partner, DISCONNECTED, id)
@@ -59,10 +59,10 @@ class Matcher {
             this.checkForMatches(partner);
         }
 
-        // Delete connection from the pool        
+        // Delete connection from the pool
         delete this.connections[id];
         console.log(`Matcher: Disconnected ${id}`)
-        
+
         this._setStatus(id, DISCONNECTED, partner);
         this._setStatus(id, WAITING);
     }
@@ -169,7 +169,7 @@ class Matcher {
                 string += `${keyUsername} ----`
             }
             string += '\n'
-        } 
+        }
         return string;
     }
 }
