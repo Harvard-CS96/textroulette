@@ -74,6 +74,51 @@ let matcher = new Matcher((id, status, partner = null) => {
   }
 })
 
+// DB INTERRUPTION
+var mongodb = require('mongodb');
+var seedData = [
+  {"id": 0,
+    "participant_ids": [
+        1,
+        10
+    ],
+    "length": 37.6,
+    "passion_voice": 10,
+    "ratings": {
+        "rating": 1,
+        "civility": 10,
+        "listening": 7,
+        "attention": 5,
+        "factual": 3
+    },
+    "ended_by": "timer"
+  }
+];
+
+// Standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
+
+var uri = 'mongodb://zucks:russiatoday1@ds229835.mlab.com:29835/cs-96';
+
+mongodb.MongoClient.connect(uri, function(err, db) {
+  
+  if(err) throw err;
+  
+  /*
+   * First we'll add a few songs. Nothing is required to create the 
+   * songs collection; it is created automatically when we insert.
+   */
+
+  var conversations = db.collection('conversations');
+
+   // Note that the insert method can take either an array or a dict.
+
+  conversations.insert(seedData, function(err, result) {
+    if(err) throw err;
+
+  });
+});
+console.log('ran db');
+
 
 // when a user connects to the socket
 io.sockets.on("connection", function (socket) {
