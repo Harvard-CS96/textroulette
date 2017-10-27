@@ -100,13 +100,7 @@ var seedData = [
 var uri = 'mongodb://zucks:russiatoday1@ds229835.mlab.com:29835/cs-96';
 
 mongodb.MongoClient.connect(uri, function(err, db) {
-
   if(err) throw err;
-
-  /*
-   * First we'll add a few songs. Nothing is required to create the
-   * songs collection; it is created automatically when we insert.
-   */
 
   var conversations = db.collection('conversations');
 
