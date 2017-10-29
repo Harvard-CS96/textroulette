@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
-const db_uri = ""; // load URI from environment variables later
+const db_uri = process.env.DB_URI; // load URI from environment variables
 
 // connect to the mlab instance
 var conn = mongoose.connection;

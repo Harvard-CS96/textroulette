@@ -3,6 +3,8 @@
  * The main server dispatcher.
  *
  */
+ 
+require('dotenv').config();
 
 const {
   CONN_STATUS
