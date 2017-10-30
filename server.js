@@ -3,7 +3,7 @@
  * The main server dispatcher.
  *
  */
- 
+
 require('dotenv').config();
 
 const {
@@ -28,6 +28,11 @@ var server = require("http").createServer(app);
 
 // to use our socket.io module
 var io = require("socket.io").listen(server);
+
+// to use the handlebars templating engine
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 const session = require("express-session")({
   secret: "my-secret",
