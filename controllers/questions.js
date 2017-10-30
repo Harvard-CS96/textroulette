@@ -8,7 +8,7 @@ function findPermittedQuestions(userID){
 }
 
 // Finds specific questions given a request.
-exports.findForUser = function(req, res){
+function findForUser(req, res){
   Question.find({
   	question_number: { $in: findPermittedQuestions(req.query.id) }
   }, function(err, results) {
@@ -17,9 +17,15 @@ exports.findForUser = function(req, res){
 };
 
 // This should find all but it is not tested yet.
-exports.findAll = function(req, res){
+function findAll(req, res){
   var id = req.params.id;
   Question.find({},function(err, result) {
     return res.send(result);
   });
 };
+
+module.exports = {
+  findPermittedQuestions,
+  findForUser,
+  findAll
+}
