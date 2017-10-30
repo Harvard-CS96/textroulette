@@ -14,11 +14,5 @@ router.get('/questions/', questions.findForUser);
 
 router.get('/questions', questions.findAll);
 
-// router.get('/questions/', function(req, res) {
-//    console.log('made it');
-//    console.log(req.query);
-//    res.send('{"id": 1,"name":"Matt","band":"BBQ Brawlers"}');
-// });
-
 module.exports = router;
 
