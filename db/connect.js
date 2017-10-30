@@ -27,11 +27,13 @@ conn.openUri(db_uri)
 // (mongoose waits until the connection is established to run these)
 const Chat = require('./models/chat');
 const User = require('./models/user');
+const Question = require('./models/question');
 
 module.exports = {
     connection: conn,
     models: {
         Chat,
-        User
+        User,
+        Question
     }
 };
