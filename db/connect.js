@@ -1,6 +1,8 @@
 /**
  * connect.js
  * Establish a database connection and instantiate data models.
+ * Good resource: https://github.com/mongolab/mongodb-driver-examples/blob/master/nodejs/mongooseSimpleExample.js
+ * And: http://bigspaceship.github.io/blog/2014/05/14/how-to-create-a-rest-api-with-node-dot-js/
  */
 
 const mongoose = require('mongoose');
