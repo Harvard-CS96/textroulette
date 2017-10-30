@@ -11,7 +11,7 @@ var bodyParser = require('body-parser')
 router.use( bodyParser.json() );       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
-})); 
+}));
 router.use(express.json());       // to support JSON-encoded bodies
 router.use(express.urlencoded());
 
@@ -35,5 +35,11 @@ router.post('/updatePreferences', (req, res) => {
     res.send(req.body)
 })
 
-module.exports = router;
+router.get('/login', (req, res) => {
+    res.render("login", {
+        fb_id: process.env.FB_ID
+    })
+})
 
+
+module.exports = router;

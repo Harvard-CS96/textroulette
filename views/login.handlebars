@@ -1,0 +1,42 @@
+
+<div id="fb-root"></div>
+<script>
+    function updateFBText() {
+        FB.getLoginStatus(function(response) {
+            console.log(response);
+            $("#fb_status").text(JSON.stringify(response, null, 4));
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '{{fb_id}}',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v2.10'
+        });
+        FB.AppEvents.logPageView();
+        updateFBText();
+      };
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId={{fb_id}}';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-12" style="height:100%;">
+            <h1>Textroulette</h1>
+            <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false" onlogin="updateFBText();"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <pre><div id="fb_status"></div></pre>
+        </div>
+    </div>
+</div>
