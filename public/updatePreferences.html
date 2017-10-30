@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Textroulette</title>
+  <title>Textroulette Preferences</title>
 
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -24,32 +24,12 @@
       border-radius: 3px;
       }
 
-      h1 {
-        color: #fff;
-      }
-
-      group + group {
-        margin-top: 20px;
-      }
-
       .inline-radio {
 
         display: flex;
         border-radius: 3px;
         overflow: hidden;
         border: 1px solid #b6b6b6;
-
-
-        div {
-          position: relative;
-          flex: 1;
-        }
-
-        input {
-          width: 100%;
-          height: 60px;
-          opacity: 0;
-        }
 
         label {
           position: absolute;
@@ -65,17 +45,6 @@
           border-right: 1px solid #b6b6b6;
         }
 
-        div:last-child label {
-          border-right: 0;
-        }
-
-
-
-        input:checked + label {
-          background: #d81b60;
-          font-weight: 500;
-          color: #fff;
-        }
       }
     </style>
 
@@ -85,7 +54,7 @@
 	 <div class="container mt-5">
       <div class="row text-center">
           <div class="col-md-12" style="height:100%;">
-              <h1>Textroulette</h1>
+              <h1>Textroulette Preferences</h1>
               <p id="identity"></p>
               <!-- where the questions will append in -->
 
@@ -106,11 +75,8 @@
       // load when jquery and page has be loaded
       $(document).ready(function() {
           jQuery(function() {
-              var qData;
-              var questionTitles = ["NFL", "Healthcare", "Gun control", "Should Trump be banned from the world?"];
+
               var questionOptions = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
-              //var questions = [];
-              //var options = [];
 
               // get data from database through AJAX request
               $.ajax({
@@ -121,49 +87,35 @@
                   dataType: 'json',
                   success: function(data){
                     // On success, update questions.
-                    console.log(data);
-                    qData = data
+                    updateQuestions(data)
                   },
                   failure: function(result){
                     error();
                   }
               });
 
-              // builds the array of current questions to be presented to the user, and the options for each question
-              // the options now depend on the database, but it might be good to standardize the options array and not to allow it to vary -- to only allow 5 options, for example. On the other hand, we might want to allow questions like Are you a registered democrat, which demands only two options, not 5
-              function updateQuestions(data){
-                 for (var i = 0; i < data.length; i++) { 
-                    q = data[i];
-                    questionTitles.push(q.question_text);
-                    questionOptions.push(q.question_options);
-                 }
+              // builds the array of current questions to be presented to the user
+              function updateQuestions(qData){
+                 var $questions = $("#questions");
+                  var $messageForm = $("answer-questions");
+
+                  // build preferences form
+                  console.log(qData)
+                  for (var i = 0; i < qData.length; i++) { 
+                    var radioButtons = formRadioButtons(qData[i].question_number);
+                    $questions.append("<h3>" + qData[i].question_text + "</h3>" + '<group class="inline-radio">' + radioButtons + '</group>' + '<br><br><br>');
+                  }
               }
               
               // builds the html for the inline radiobutton options
               function formRadioButtons(name){ 
                   var radioButtons = ''
                   for (var j = 0; j < questionOptions.length; j++) { 
-                    radioButtons += '<div><input type="radio" name="' + name + '" value="' + j + '"><label>' + questionOptions[j] + '&ensp;</label></div>'
+                    radioButtons += '<div><input type="radio" name="' + name + '" value="' + j + '"><label>' + questionOptions[j] + '&ensp;&ensp;</label></div>'
                   }
                   return radioButtons
               }
-                
-
-              var $questions = $("#questions");
-              var $messageForm = $("answer-questions");
-
-              // build preferences form
-              /*
-              for (var i = 0; i < qData.length; i++) { 
-                var radioButtons = formRadioButtons(qData[i].question_number);
-                $questions.append("<h3>" + qData[i].question_text + "</h3>" + '<group class="inline-radio">' + radioButtons + '</group>' + '<br><br>');
-              }
-              */
-              for (var i = 0; i < questionTitles.length; i++) { 
-                var radioButtons = formRadioButtons("Q" + i);
-                $questions.append("<h3>" + questionTitles[i] + "</h3>" + '<group class="inline-radio">' + radioButtons + '</group>' + '<br><br>');
-              }
-
+  
 
               // when the submit button is clicked “e” is the event
               $messageForm.submit(function(e) {
