@@ -2,6 +2,9 @@ const path = require('path');
 const express = require('express');
 const DIR = require('../constants.js').DIR
 
+var passport = require('passport');
+require(path.join(DIR.ROOT, '/config/passport'))(passport);
+
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 
 const router = express.Router();
@@ -46,7 +49,7 @@ router.get('/login', (req, res) => {
 // route for facebook authentication and login
 router.get('/auth/facebook', passport.authenticate('facebook'));
 
-    // handle the callback after facebook has authenticated the user
+// handle the callback after facebook has authenticated the user
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
         successRedirect : '/updatePreferences',
