@@ -123,20 +123,12 @@
                   e.preventDefault();
 
                   // TODO update database
-
-
               }) 
-              
           })
 
-          
-
-          
-
-          
-
-
-        
+        FB.getLoginStatus(function(response) {
+            console.log(response);
+        });
       })
 
             
