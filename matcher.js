@@ -7,9 +7,29 @@ const { WAITING, PAIRING, DISCONNECTED } = CONN_STATUS;
 
 class Matcher {
     constructor(setStatus, maxBlacklist = 1) {
-        this.connections = {}
+        this.connections = {};
+        this.callbacks = {};
         this._setStatus = setStatus;
         this._maxBlacklist = maxBlacklist;
+    }
+
+    // Add a callback that fires when we switch to a certain status
+    addCallback(status, callback) {
+        if (this.callbacks[status] === undefined) {
+            this.callbacks[status] = [callback];
+        }
+        else {
+            this.callbacks[status].push(callback);
+        }
+    }
+
+    // Fire callbacks for a given status
+    fireCallbacks(status, payload) {
+        if (this.callbacks[status] !== undefined) {
+            this.callbacks[status].forEach( (callback) => {
+                callback(payload);
+            });
+        }
     }
 
     // Add a new id into the connection pool
@@ -142,6 +162,7 @@ class Matcher {
 
         this._setStatus(id1, PAIRING, id2);
         this._setStatus(id2, PAIRING, id1);
+        this.fireCallbacks(PAIRING, this.connections[id1].user_id, this.connections[id2].user_id);
     }
 
     // Get the partner of a given id

@@ -60,9 +60,6 @@ let matcher = new Matcher((id, status, partner = null) => {
       {
         // io.sockets.emit("meta", `${id} is pairing to ${partner}`)
         io.to(id).emit("pairing", matcher.getUsername(partner));
-        // log the chat -- THIS PRODUCES TWO LOGS PER CONNECTION
-        var chat = new db.models.Chat({uid1: id, uid2: partner});
-        chat.save().catch(console.log);
         break;
       }
     case DISCONNECTED:
@@ -75,6 +72,10 @@ let matcher = new Matcher((id, status, partner = null) => {
       }
   }
 })
+
+// add callbacks to matcher
+const logging = require('./controllers/logging');
+matcher.addCallback(PAIRING, logging.logConnection);
 
 // when a user connects to the socket
 io.sockets.on("connection", function (socket) {
