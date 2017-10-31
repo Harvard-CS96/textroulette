@@ -20,6 +20,9 @@ const uuid = require('uuid');
 // to connect to the database and instantiate the data models
 var db = require('./db/connect');
 
+// Authentication
+var passport = require('passport');
+
 // to use the express module
 var app = require("express")();
 
