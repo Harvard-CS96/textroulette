@@ -20,14 +20,14 @@ const uuid = require('uuid');
 // to connect to the database and instantiate the data models
 var db = require('./db/connect');
 
-// Authentication
-var passport = require('passport');
-
 // to use the express module
 var app = require("express")();
 
-// to make an http server object
+
 var server = require("http").createServer(app);
+
+// Authentication
+var passport = require('passport');
 
 // to use our socket.io module
 var io = require("socket.io").listen(server);
@@ -45,7 +45,17 @@ const session = require("express-session")({
 
 const sharedsession = require("express-socket.io-session");
 
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(session);
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 io.use(sharedsession(session, {
   autoSave:true
