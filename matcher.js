@@ -190,6 +190,10 @@ class Matcher {
         }
         return string;
     }
+
+    logAll() {
+        return JSON.stringify(this)
+    }
 }
 
 module.exports = Matcher

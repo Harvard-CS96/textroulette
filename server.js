@@ -106,10 +106,6 @@ io.sockets.on("connection", function (socket) {
     socket.emit('recall username', username)
     matcher.connect(socket.id, username, user_id);
   }
-  if (!user_id) {
-    socket.handshake.session.user_id = uuid();
-    socket.handshake.session.save();
-  }
 
   socket.on("send message", function (data) {
     socket.emit("new message", `You said: ${data}`)
@@ -117,8 +113,8 @@ io.sockets.on("connection", function (socket) {
 
   })
 
-  socket.on("set username", username => {
-    matcher.connect(socket.id, username, socket.handshake.session.user_id);
+  socket.on("set user", ({ username, user_id }) => {
+    matcher.connect(socket.id, username, user_id);
     socket.handshake.session.username = username;
     socket.handshake.session.save();
     socket.emit('recall username', username)
