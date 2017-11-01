@@ -5,12 +5,14 @@
 
 const db = require('../db/connect');
 
+const Chat = db.models.Chat;
+
 function logConnection(payload) {
 
     console.log("Logging: logConnection fired");    
 
     // Instantiate new chat document
-    const chat = new db.models.Chat({
+    const chat = new Chat({
         uid1: payload.uid1, 
         uid2: payload.uid2,
         disconnected: {
@@ -22,8 +24,10 @@ function logConnection(payload) {
     });
 
     // Save to the database
-    chat.save((err, _) => {
-        if (err) throw err;
+    chat.save((err) => {
+        if (err) {
+            throw err;
+        } 
     });
 }
 
@@ -54,7 +58,7 @@ function logDisconnection(payload) {
     };
 
     // Execute the update
-    db.models.Chat.findOneAndUpdate(query, update).exec();
+    Chat.findOneAndUpdate(query, update).exec();
 } 
 
 module.exports = {
