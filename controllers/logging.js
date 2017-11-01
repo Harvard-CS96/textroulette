@@ -36,14 +36,14 @@ function logDisconnection(payload) {
     // The disconnectee
     const partner = payload.partner;
 
-    // Find the ongoing conversation
+    // Instructions to locate the ongoing conversation in the database
     const query = {
         uid1: {$in: [who, partner]},
         uid2: {$in: [who, partner]},
         disconnected: {is_disconnected: false}
     };
 
-    // Update disconnect data
+    // Instructions to update that conversation's disconnection data
     const update = {
         disconnected: {
             who: who,
@@ -53,7 +53,7 @@ function logDisconnection(payload) {
         }
     };
 
-    // Update disconnection time and reason
+    // Execute the update
     db.models.Chat.findOneAndUpdate(query, update).exec();
 } 
 
