@@ -1,4 +1,5 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
+const uuid = require('uuid');
 
 var User = require('../db/models/user');
 
@@ -44,10 +45,13 @@ module.exports = function(passport) {
 
                 // if the user is found, then log them in
                 if (user) {
+                    console.log("User found")
                     return done(null, user); // user found, return that user
                 } else {
+                    console.log("User not found")
                     // if there is no user found with that facebook id, create them
-                    var newUser            = new User();
+                    var newUser = new User();
+                    newUser.uuid = uuid();
 
                     // set all of the facebook information in our user model
                     newUser.facebook.id    = profile.id; // set the users facebook id                   
