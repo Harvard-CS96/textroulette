@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
     uuid: String,
+    rating: Number,
     facebook: {
         id   : Number,
         name : String,
@@ -11,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     // {
     //   question: {
     //      id: String,
-    //      response: Int,
+    //      response: Number,
     //      date: Date
     //    }
     // }
