@@ -9,8 +9,18 @@ var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.sendFile(path.join(DIR.PUBLIC, "index.html"))
+router.get('/', isLoggedIn, (req, res) => {
+    // res.sendFile(path.join(DIR.PUBLIC, "index.html"))
+    const hbsData = req.isAuthenticated() === true ?
+        {
+            isAuthenticated: 'true',
+            user: JSON.stringify(req.user)
+        } :
+        {   
+            isAuthenticated: 'false',
+            user: JSON.stringify({})
+        }
+    res.render("index", hbsData)
 })
 
 router.get('/questions/', questions.findForUser);
@@ -39,9 +49,11 @@ router.get('/auth/facebook', passport.authenticate('facebook'));
 // handle the callback after facebook has authenticated the user
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-        successRedirect : '/updatePreferences',
-        failureRedirect : '/'
+        successRedirect : '/',
+        failureRedirect : '/auth/error'
     }))
+
+router.get('/auth/error', (req, res) => { res.end('Auth failure :(') })
 
     // route for logging out
 router.get('/logout', function(req, res) {
@@ -56,7 +68,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/auth/facebook');
 }
 
 
