@@ -38,9 +38,7 @@ router.post('/updatePreferences', (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-    res.render("login", {
-        fb_id: process.env.FB_ID
-    })
+    res.render("login")
 })
 
 // route for facebook authentication and login
@@ -68,7 +66,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     // if they aren't redirect them to the home page
-    res.redirect('/auth/facebook');
+    res.redirect('/login');
 }
 
 
