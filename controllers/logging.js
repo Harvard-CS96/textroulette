@@ -46,9 +46,10 @@ function logDisconnection(payload) {
     // Update disconnect data
     const update = {
         disconnected: {
-            is_disconnected: true,
             who: who,
-            reason: payload.reason
+            time: Date.now(),
+            reason: payload.reason,
+            is_disconnected: true
         }
     };
 
