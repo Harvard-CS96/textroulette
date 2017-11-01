@@ -1,3 +1,6 @@
+// use the facebook API
+const fb = require('fb');
+
 var FacebookStrategy = require('passport-facebook').Strategy;
 const uuid = require('uuid');
 
@@ -45,27 +48,35 @@ module.exports = function(passport) {
 
                 // if the user is found, then log them in
                 if (user) {
-                    console.log("User found")
+                    console.log("FBAuth: User found")
                     return done(null, user); // user found, return that user
-                } else {
-                    console.log("User not found")
+                } 
+                else {
+                    console.log("FBAuth: User not found")
                     // if there is no user found with that facebook id, create them
                     var newUser = new User();
                     newUser.uuid = uuid();
 
                     // set all of the facebook information in our user model
                     newUser.facebook.id    = profile.id; // set the users facebook id                   
-                    newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-                    newUser.facebook.name  = profile.displayName; // look at the passport user profile to see how names are returned
+                    newUser.facebook.token = token; // we will save the token that facebook provides to the user
+                    
+                    // promise to get user's first name from facebook, then save user to database
+                    fb.api('me', {fields: 'first_name', access_token: token})
+                      .then( 
+                        (res) => {
+                            newUser.facebook.name  = res.first_name; 
 
-                    // save our user to the database
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-
-                        // if successful, return the new user
-                        return done(null, newUser);
+                            // save our user to the database
+                            newUser.save(function(err) {
+                                if (err)
+                                    throw err;
+        
+                                // if successful, return the new user
+                                return done(null, newUser);
+                            });
                     });
+    
                 }
 
             });
