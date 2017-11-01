@@ -75,7 +75,8 @@ let matcher = new Matcher((id, status, partner = null) => {
 
 // add callbacks to matcher
 const logging = require('./controllers/logging');
-matcher.addCallback(PAIRING, logging.logConnection);
+matcher.addCallback(PAIRING,      logging.logConnection);
+matcher.addCallback(DISCONNECTED, logging.logDisconnection);
 
 // when a user connects to the socket
 io.sockets.on("connection", function (socket) {
