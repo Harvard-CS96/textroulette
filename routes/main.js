@@ -23,9 +23,13 @@ router.get('/', isLoggedIn, (req, res) => {
     res.render("index", hbsData)
 })
 
-router.get('/questions/', questions.findForUser);
+router.get('/questions/', (req, res) => {
+    questions.findForUser(req.query.id, res.send);
+});
 
-router.get('/questions', questions.findAll);
+router.get('/questions', (req, res) => {
+    questions.findAll(res.send)
+});
 
 router.get('/updatePreferences', isLoggedIn, (req, res) => {
 	console.log(req.user);
@@ -39,7 +43,6 @@ router.post('/updatePreferences', (req, res) => {
 
 // handlebars alternative to updatePreferences route
 router.get('/prefs', (req, res) => {
-    // currently, just return all available questions
     questions.findAll((qs) => {
         const hbsData = 
         {
