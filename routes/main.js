@@ -37,6 +37,14 @@ router.post('/updatePreferences', (req, res) => {
     res.send(req.body)
 })
 
+// handlebars alternative to /updatePreferences
+router.post('/prefs', (req, res) => {
+    const hbsData = 
+        {
+            questions
+        }
+})
+
 router.get('/login', (req, res) => {
     res.render("login")
 })

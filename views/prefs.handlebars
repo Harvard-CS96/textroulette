@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Textroulette Preferences</title>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<style>
+      form {
+      background: #fff;
+      width: 100%;
+      margin: auto;
+      padding: 30px;
+      min-width: 320px;
+      max-width: 640px;
+      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+      border-radius: 3px;
+      }
+
+      .inline-radio {
+
+        display: flex;
+        border-radius: 3px;
+        overflow: hidden;
+        border: 1px solid #b6b6b6;
+
+        label {
+          position: absolute;
+          top: 0; left: 0;
+          color: #b6b6b6;
+          width: 100%;
+          height: 100%;
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          pointer-events: none;
+          border-right: 1px solid #b6b6b6;
+        }
+
+      }
+    </style>
+
+</head>
+
+<body>
+	 <div class="container mt-5">
+      <div class="row text-center">
+          <div class="col-md-12" style="height:100%;">
+              <h1>Textroulette Preferences</h1>
+              <p id="identity"></p>
+              <!-- where the questions will append in -->
+
+              <form id="answer-questions" action="updatePreferences" method="post" class="mt-5">
+                  <div class="form-row">
+                      <div id="questions"></div>
+                  </div>
+
+                  <input type="submit" value="Update" class="btn btn-primary" style="width:100%;"></input>
+              </form>
+              
+          </div>
+      </div>
+    </div>
+    
+
+    <script type="text/javascript">
+      // load when jquery and page has be loaded
+      $(document).ready(function() {
+          jQuery(function() {
+
+              const answerHTML = `
+                    <div>
+                        <input type="radio"><label>Strongly Disagree</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Disagree</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Neutral</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Agree</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Strongly Agree</label>
+                    </div>
+                </group>
+                <br><br><br>
+              `
+
+              /*
+              // get data from database through AJAX request
+              $.ajax({
+                  type: 'GET',
+                  contentType: 'application/json; charset=utf-8',
+                  data: {"user": 1},
+                  url: '/questions',
+                  dataType: 'json',
+                  success: function(data) {
+                    // On success, update questions.
+                    updateQuestions(data)
+                  },
+                  failure: function(result){
+                    error();
+                  }
+              });*/
+
+              var questions = {{ questions }}
+
+              // builds the array of current questions to be presented to the user
+              function updateQuestions(questions){
+                  var $questions = $("#questions");
+                  var $messageForm = $("answer-questions");
+
+                  // build preferences form
+                  console.log(questions)
+                  questions.forEach( (q) => {
+                    $questions.append('<h3>' + q.text + '</h3>' + '<group class="inline-radio" id=' + q._id + '>' + answerHTML);
+                  });
+
+                  }
+              }
+
+              // when the submit button is clicked “e” is the event
+              $messageForm.submit(function(e) {
+                  // prevent the default setting of page refreshing
+                  e.preventDefault();
+
+                  // TODO update database
+              }) 
+          })
+
+        FB.getLoginStatus(function(response) {
+            console.log(response);
+        });
+      })
+
+            
+    </script>
+	
+</body>
+
+</html>
