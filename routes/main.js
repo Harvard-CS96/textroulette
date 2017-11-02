@@ -25,8 +25,13 @@ router.get('/', isLoggedIn, (req, res) => {
 })
 
 // Either find specific questions or all questions.
-router.get('/questions/', questions.findForUser);
-router.get('/questions', questions.findAll);
+router.get('/questions/', (req, res) => {
+    questions.findForUser(req.query.id, res.send);
+});
+
+router.get('/questions', (req, res) => {
+    questions.findAll(res.send)
+});
 
 // Update survey responses of a particular user.
 router.post('/users/updatePreferences/', users.updatePreferences);
@@ -38,6 +43,17 @@ router.get('/updatePreferences', isLoggedIn, (req, res) => {
 // router.post('/updatePreferences', (req, res) => {
 //     res.send(req.body)
 // })
+
+// handlebars alternative to updatePreferences route
+router.get('/prefs', (req, res) => {
+    questions.findAll((qs) => {
+        const hbsData = 
+        {
+            questions: JSON.stringify(qs)
+        }
+        res.render("prefs", hbsData);
+    });
+})
 
 router.get('/login', (req, res) => {
     res.render("login")
