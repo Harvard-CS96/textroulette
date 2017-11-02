@@ -15,7 +15,6 @@ users.findAll(function(d){ callMatcher(d); });
 
 function callMatcher(d){
     console.log('Elon');
-    console.log(d);
 }
 // End example
 

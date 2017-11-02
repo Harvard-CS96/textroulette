@@ -17,6 +17,7 @@ const VectorSchema = new mongoose.Schema([{
 
 const UserSchema = new mongoose.Schema({
     uuid: String,
+    rating: Number,
     facebook: {
         id   : Number,
         name : String,

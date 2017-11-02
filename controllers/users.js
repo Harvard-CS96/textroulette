@@ -12,9 +12,11 @@ function findAll(callback){
 }
 
 // Logs user responses to database.
-function logResponses(req, res){
+function updatePreferences(req, res){
 	var uuid = req.params.uuid;
-	console.log(req.params.responses);
+	console.log('Update preferences called');
+	console.log(req.body);
+	// console.log(res);
 	// User.update({ uuid: uuid }, { 
 	// 	$set: { 
 	// 		question_answers: 'Mariah Carey ft. Boyz II Men',
@@ -23,8 +25,10 @@ function logResponses(req, res){
 	// 		scores: 89 
 	// 	}
 	// }
+	res.send({'hello': 'we made it'});
 }
 
 module.exports = {
-  findAllMatcher
+  findAll,
+  updatePreferences
 }

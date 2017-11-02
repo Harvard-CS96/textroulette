@@ -2,15 +2,10 @@
 var mongoose = require('mongoose'),
 Question = mongoose.model('Question');
 
-// Gets questions perhaps based on user identity.
-function findPermittedQuestions(userID){
-	return [1,2,4,5];
-}
-
 // Finds specific questions given a request.
 function findForUser(req, res){
   Question.find({
-  	question_number: { $in: findPermittedQuestions(req.query.id) }
+  	is_active: true
   }, function(err, results) {
     return res.send(results);
   });

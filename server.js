@@ -23,11 +23,14 @@ var db = require('./db/connect');
 // to use the express module
 var app = require("express")();
 
-
 var server = require("http").createServer(app);
 
 // Authentication
 var passport = require('passport');
+
+// Parsing post requests
+var bodyParser = require('body-parser');
+var multer = require('multer'); 
 
 // to use our socket.io module
 var io = require("socket.io").listen(server);
@@ -46,7 +49,9 @@ const session = require("express-session")({
 const sharedsession = require("express-socket.io-session");
 
 app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 app.use(require('express-session')({
   secret: 'keyboard cat',
   resave: true,

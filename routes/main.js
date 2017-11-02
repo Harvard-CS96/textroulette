@@ -6,6 +6,7 @@ var passport = require('passport');
 require(path.join(DIR.ROOT, '/config/passport'))(passport);
 
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
+var users = require(path.join(DIR.ROOT, 'controllers/users'));
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.get('/questions/', questions.findForUser);
 router.get('/questions', questions.findAll);
 
 // Update survey responses of a particular user.
-router.post('/users/updatePrefereces/', users.updatePrefereces);
+router.post('/users/updatePreferences/', users.updatePreferences);
 
 router.get('/updatePreferences', isLoggedIn, (req, res) => {
     res.sendFile(path.join(DIR.PUBLIC, "updatePreferences.html"))

@@ -58,7 +58,7 @@
               <p id="identity"></p>
               <!-- where the questions will append in -->
 
-              <form id="answer-questions" action="updatePreferences" method="post" class="mt-5">
+              <form id="answer-questions" action="users/updatePreferences" method="post" class="mt-5">
                   <div class="form-row">
                       <div id="questions"></div>
                   </div>
@@ -79,6 +79,7 @@
               var questionOptions = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
 
               // get data from database through AJAX request
+              console.log('about to ask for questions');
               $.ajax({
                   type: 'GET',
                   contentType: 'application/json; charset=utf-8',
@@ -102,8 +103,8 @@
                   // build preferences form
                   console.log(qData)
                   for (var i = 0; i < qData.length; i++) { 
-                    var radioButtons = formRadioButtons(qData[i].question_number);
-                    $questions.append("<h3>" + qData[i].question_text + "</h3>" + '<group class="inline-radio">' + radioButtons + '</group>' + '<br><br><br>');
+                    var radioButtons = formRadioButtons(qData[i]['text']);
+                    $questions.append("<h3>" + qData[i].text + "</h3>" + '<group class="inline-radio">' + radioButtons + '</group>' + '<br><br><br>');
                   }
               }
               
@@ -122,29 +123,6 @@
                   // prevent the default setting of page refreshing
                   e.preventDefault();
 
-                var testData = {'q1': 'agree',
-                                'q2': 'disagree'},
-                // Send ajax request to get data
-                $.ajax({
-                    type: 'POST',
-                    contentType: 'application/json; charset=utf-8',
-                    data: {
-                      "uuid": 'happymeal',
-                      "responses": testData
-                    },
-                    url: '/users/updatePreferences',
-                    dataType: 'json',
-                    success: function(data){
-                      // On success, update questions.
-                      console.log('success is still a thing');
-                      console.log(data);
-                    },
-                    failure: function(result){
-                      console.log('faileure');
-                      error();
-                    }
-                });
-
               }) 
           })
 
@@ -153,7 +131,23 @@
         });
       })
 
-            
+      console.log('about to ajax');
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                      'Stewie': 'AskShiebs'
+                    }),
+                    url: '/users/updatePreferences/',
+                    success: function(data){
+                      // On success, update questions.
+                      console.log(data);
+                    },
+                    failure: function(result){
+                      console.log('faileure');
+                      error();
+                    }
+                });
     </script>
 	
 </body>
