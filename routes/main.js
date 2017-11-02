@@ -23,19 +23,20 @@ router.get('/', isLoggedIn, (req, res) => {
     res.render("index", hbsData)
 })
 
+// Either find specific questions or all questions.
 router.get('/questions/', questions.findForUser);
-
 router.get('/questions', questions.findAll);
 
+// Update survey responses of a particular user.
+router.post('/users/updatePrefereces/', users.updatePrefereces);
+
 router.get('/updatePreferences', isLoggedIn, (req, res) => {
-	console.log(req.user);
-	console.log('update Prefs called');
     res.sendFile(path.join(DIR.PUBLIC, "updatePreferences.html"))
 })
 
-router.post('/updatePreferences', (req, res) => {
-    res.send(req.body)
-})
+// router.post('/updatePreferences', (req, res) => {
+//     res.send(req.body)
+// })
 
 router.get('/login', (req, res) => {
     res.render("login")

@@ -122,8 +122,28 @@
                   // prevent the default setting of page refreshing
                   e.preventDefault();
 
-                  //DB
-                  
+                var testData = {'q1': 'agree',
+                                'q2': 'disagree'},
+                // Send ajax request to get data
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                      "uuid": 'happymeal',
+                      "responses": testData
+                    },
+                    url: '/users/updatePreferences',
+                    dataType: 'json',
+                    success: function(data){
+                      // On success, update questions.
+                      console.log('success is still a thing');
+                      console.log(data);
+                    },
+                    failure: function(result){
+                      console.log('faileure');
+                      error();
+                    }
+                });
 
               }) 
           })
