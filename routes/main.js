@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const DIR = require('../constants.js').DIR
 
+const fb = require('fb');
+
 var passport = require('passport');
 require(path.join(DIR.ROOT, '/config/passport'))(passport);
 
@@ -40,16 +42,14 @@ router.get('/updatePreferences', isLoggedIn, (req, res) => {
     res.sendFile(path.join(DIR.PUBLIC, "updatePreferences.html"))
 })
 
-// router.post('/updatePreferences', (req, res) => {
-//     res.send(req.body)
-// })
 
 // handlebars alternative to updatePreferences route
 router.get('/prefs', (req, res) => {
     questions.findAll((qs) => {
         const hbsData = 
         {
-            questions: JSON.stringify(qs)
+            object_questions: qs,
+            json_questions: JSON.stringify(qs)
         }
         res.render("prefs", hbsData);
     });
@@ -71,9 +71,9 @@ router.get('/auth/facebook/callback',
 
 router.get('/auth/error', (req, res) => { res.end('Auth failure :(') })
 
-    // route for logging out
+// route for logging out
 router.get('/logout', function(req, res) {
-        req.logout();
+        fb.logout();
         res.redirect('/');
     })
 

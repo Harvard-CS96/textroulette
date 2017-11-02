@@ -18,12 +18,12 @@
           <div class="col-md-12" style="height:100%;">
               <h1>Textroulette Preferences</h1>
               <p id="identity"></p>
-              <!-- where the questions will append in -->
 
-              <form id="answer-questions" action="updatePreferences" method="post" class="mt-5">
+              <form id="answer-questions" action="/" method="get" class="mt-5">
                   <div class="form-row">
                       <div id="questions"></div>
                   </div>
+
                   {{#each object_questions}}
                     <h3>{{ text }}</h3>
                     <group class="inline-radio" id={{ _id }}>
@@ -45,7 +45,7 @@
                     </group>
                   {{/each}}
 
-                  <input type="submit" value="Update" class="btn btn-primary" style="width:100%;"></input>
+                  <input type="submit" id="answer-questions" class="btn" value='Start chatting!'></input>
               </form>
               
           </div>
@@ -69,24 +69,9 @@
 
                 var questions = {{{ json_questions }}}
 
-                console.log(questions);
-
                 // when the submit button is clicked “e” is the event
                 $messageForm.submit( (e) => {
-                    // prevent the default setting of page refreshing
-                    e.preventDefault();
-
-                    // TODO update database
-
-                    // redirect to the chat
-                    $.ajax({
-                        type: 'GET',
-                        url: '/',
-                        data: 'text/html; charset=utf-8',
-                        failure: (e) => {
-                            console.log(e);
-                        }
-                    })
+                    // update database here
                 });
             });
         });
