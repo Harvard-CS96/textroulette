@@ -11,7 +11,7 @@ var users = require(path.join(DIR.ROOT, 'controllers/users'));
 
 // The data for the function is printed in a callback after it is retrieved.  
 // Hopefully my example is instructive.  
-users.findAllMatcher(function(d){ callMatcher(d); });
+users.findAll(function(d){ callMatcher(d); });
 
 function callMatcher(d){
     console.log('Elon');

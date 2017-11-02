@@ -3,8 +3,7 @@
 var mongoose = require('mongoose'),
 User = mongoose.model('User');
 
-function findAllMatcher(callback){
-	console.log("At findAllMatcher.")
+function findAll(callback){
 	User.find({}, function(err, results) {
     	callback(results);
   	});
