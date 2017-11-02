@@ -25,7 +25,6 @@ function findAll(req, res){
 };
 
 module.exports = {
-  findPermittedQuestions,
   findForUser,
   findAll
 }

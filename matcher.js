@@ -4,6 +4,20 @@
  */
 const { CONN_STATUS } = require('./constants')
 const { WAITING, PAIRING, DISCONNECTED } = CONN_STATUS;
+const path = require('path');
+const DIR = require('./constants.js').DIR
+
+var users = require(path.join(DIR.ROOT, 'controllers/users'));
+
+// The data for the function is printed in a callback after it is retrieved.  
+// Hopefully my example is instructive.  
+users.findAllMatcher(function(d){ callMatcher(d); });
+
+function callMatcher(d){
+    console.log('Elon');
+    console.log(d);
+}
+// End example
 
 class Matcher {
     constructor(setStatus, maxBlacklist = 1) {
