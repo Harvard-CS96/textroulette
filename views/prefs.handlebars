@@ -24,6 +24,26 @@
                   <div class="form-row">
                       <div id="questions"></div>
                   </div>
+                  {{#each object_questions}}
+                    <h3>{{ text }}</h3>
+                    <group class="inline-radio" id={{ _id }}>
+                        <div>
+                            <input type="radio"><label>Strongly Disagree</label>
+                        </div>
+                        <div>
+                            <input type="radio"><label>Disagree</label>
+                        </div>
+                        <div>
+                            <input type="radio"><label>Neutral</label>
+                        </div>
+                        <div>
+                            <input type="radio"><label>Agree</label>
+                        </div>
+                        <div>
+                            <input type="radio"><label>Strongly Agree</label>
+                        </div>
+                    </group>
+                  {{/each}}
 
                   <input type="submit" value="Update" class="btn btn-primary" style="width:100%;"></input>
               </form>
@@ -44,36 +64,12 @@
         $(document).ready(() => {
             jQuery(() => {
 
-                const answerHTML = `
-                    <div>
-                        <input type="radio"><label>Strongly Disagree</label>
-                    </div>
-                    <div>
-                        <input type="radio"><label>Disagree</label>
-                    </div>
-                    <div>
-                        <input type="radio"><label>Neutral</label>
-                    </div>
-                    <div>
-                        <input type="radio"><label>Agree</label>
-                    </div>
-                    <div>
-                        <input type="radio"><label>Strongly Agree</label>
-                    </div>
-                </group>
-                <br><br><br>
-                `
-
                 var $questions = $("#questions");
                 var $messageForm = $("#answer-questions");
 
-                var questions = {{{ questions }}}
+                var questions = {{{ json_questions }}}
 
-                // build preferences form
-                console.log(questions)
-                questions.forEach( (q) => {
-                    $questions.append('<h3>' + q.text + '</h3>' + '<group class="inline-radio" id=' + q._id + '>' + answerHTML);
-                })
+                console.log(questions);
 
                 // when the submit button is clicked “e” is the event
                 $messageForm.submit( (e) => {
@@ -81,6 +77,16 @@
                     e.preventDefault();
 
                     // TODO update database
+
+                    // redirect to the chat
+                    $.ajax({
+                        type: 'GET',
+                        url: '/',
+                        data: 'text/html; charset=utf-8',
+                        failure: (e) => {
+                            console.log(e);
+                        }
+                    })
                 });
             });
         });
