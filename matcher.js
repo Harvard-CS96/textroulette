@@ -150,25 +150,16 @@ class Matcher {
 
 
     findMatch(userData, questionData, id){
-        // get user data with current id TODO
-
+        // get user data from id 
         var user1ID = this.connections[id].user_id;
         var userData1 = getUserDataOfID(userData, user1ID);
         var Questions1 = getAvailableUserQuestions(userData1, questionData);
-        console.log("QUESTIONS");
-        console.log(Questions1);
 
 
         // randomly sort questions so that user does not always get matched on same question
-        Questions1 = shuffleArray(Questions1);
-        console.log("SHUFFLE QUESTIONS");
-        console.log(Questions1);
         var Questions1IDS = Questions1.map(function (obj) {
                                     return obj.id;
                                 });
-
-        console.log("QUESTION IDS");
-        console.log(Questions1IDS);
 
         // Iterate over all connections
         const ids = Object.keys(this.connections)
@@ -182,39 +173,39 @@ class Matcher {
                 this.connections[key].blacklist.indexOf(id) === -1 &&
                 this.connections[id].blacklist.indexOf(key) === -1
             ) {
-                this.setPartner(id, key);
-                break;
-            }
+                
 
-            // get second user data from key
-            var user2ID = this.connections[key].user_id;
-            var userData2 = getUserDataOfID(userData, user2ID);
-            var Questions2 = getAvailableUserQuestions(userData2, questionData);
-            var Questions2IDs = Questions2.map(function (obj) {
-                                    return obj.id;
-                                });
+                // get second user data from key
+                var user2ID = this.connections[key].user_id;
+                var userData2 = getUserDataOfID(userData, user2ID);
+                var Questions2 = getAvailableUserQuestions(userData2, questionData);
+                var Questions2IDs = Questions2.map(function (obj) {
+                                        return obj.id;
+                                    });
 
-
-            for (let i = 0; i < Questions1.length; i++) {
-                var question1 = Questions1[i];
-                var Question2Index = Questions2IDs.indexOf(question1.id)
-                if (Question2Index >= 0) {
-                    if (isDifferentOpinion(question1.response,Questions2[Question2Index].response)) {
-                        // set partner on conversation about question with this id
-                        this.setPartner(id, key);
-                        // eventually will want to send over question id as well
-                        //this.setPartner(id, key, question.id);
-                        break;
+                for (let i = 0; i < Questions1.length; i++) {
+                    var question1 = Questions1[i];
+                    var Question2Index = Questions2IDs.indexOf(question1.id)
+                    if (Question2Index >= 0) {
+                        if (isDifferentOpinion(question1.response,Questions2[Question2Index].response)) {
+                            // set partner on conversation about question with this id
+                            //this.setPartner(id, key);
+                            // eventually will want to send over question id as well
+                            var questionTitle = getQuestionByID(question1.id, questionData);
+                            console.log(questionTitle);
+                            this.setPartner(id, key, {text: questionTitle, id: question1.id});
+                            break;
+                        }
                     }
                 }
-            } 
+            }
         }
 
     }
         
 
     // Set two ids to be each others' partners
-    setPartner(id1, id2) {
+    setPartner(id1, id2, question) {
         // If either is nonsingle, do nothing
         if (
             this.connections[id1].partner !== null ||
@@ -228,6 +219,8 @@ class Matcher {
         // Set each id's partner to the other
         this.connections[id1].partner = id2;
         this.connections[id2].partner = id1;
+
+        console.log("Users will discuss the question: " + question.text);
 
         this._setStatus(id1, PAIRING, id2);
         this._setStatus(id2, PAIRING, id1);
@@ -310,6 +303,16 @@ function getAvailableUserQuestions(userData, questionData){
         }
     }
     return ChosenQuestions;
+}
+
+function getQuestionByID(id, questionData){
+    for (var i=0; i < questionData.length ; ++i){
+        if (questionData[i].id == id){
+            console.log(questionData[i]);
+            return questionData[i].text;
+        }
+    }
+    throw "Question id not found in questionData";
 }
 
 function isDifferentOpinion(a, b){
