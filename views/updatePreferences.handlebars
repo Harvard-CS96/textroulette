@@ -133,7 +133,7 @@
 
               // READING RESPONSES CODE BELOW
               function calcAttribute(parent, attr){
-                Array.prototype.slice.call(parent.childNodes).map(function(elt){ 
+                return Array.prototype.slice.call(parent.childNodes).map(function(elt){ 
                   return !!(elt.className.split(" ").indexOf("active") > -1) ? elt.firstChild.getAttribute(attr) : '';
                 }).reduce((s, v) => s + v, '');
               }
@@ -141,8 +141,8 @@
               function getAnswer(questionNumber){
                 var parent = $('#question' + questionNumber)[0];
                 return {
-                  question_id: calcAttribute('qid'),
-                  response: calcAttribute('response')
+                  question_id: calcAttribute(parent, 'qid'),
+                  response: calcAttribute(parent, 'response')
                 };
               }
 
