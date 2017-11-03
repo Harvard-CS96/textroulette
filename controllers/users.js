@@ -11,29 +11,22 @@ function findAll(callback){
   	});
 }
 
-// Logs user responses to database.
-
-// Ideas:
-// 1. Get current value of questions_answered, update it, then use $set
-// 2. Do several updates.  
-// Not possible to use $each in something other than the last.
-
+// Logs user responses to database.  Talk to Russell before changing.  This is 
+// A very careful function.
 function modifyResponse(submitted, stored){
-	console.log('modifyResponse called');
 	submitted.forEach(function(question){
 		var id = question.question_id;
 		var response = question.response;
-		console.log('stored');
-		console.log(stored);
 		var seenQuestion = stored.findIndex(function(d){ 
-			return d.question_id == id 
+			return d.question_id == id;
 		});
-		console.log('seen question');
-		console.log(seenQuestion);
+		// Never answered this question before
 		if(seenQuestion === -1){
 			stored.push({
 				question_id: id,
-				response_data: [response]
+				response_data: [{
+					response: response
+				}]
 			});
 		}
 		else {
@@ -42,21 +35,17 @@ function modifyResponse(submitted, stored){
 			})
 		}
 	})
-	console.log('stored');
-	console.log(stored);
 	return stored;
 }
 
 function updatePreferences(req, res){
 	console.log('Update preferences called');
-
 	User.findOne({"uuid": req.body.uuid}, 
 		function(err, result){
 			console.log('find');
 			console.log(result);
 			User.updateOne({ "uuid": req.body.uuid }, { 
 				$set: {
-					rating: 17,
 					questions_answered: modifyResponse(req.body.questions_answered, 
 						                               result.questions_answered)
 				},
@@ -67,7 +56,7 @@ function updatePreferences(req, res){
 			})
 
 		}) // End of findOne
-	res.send({'hello': 'we made it'});
+	res.send('success'); // TODO get this to work.
 }
 
 module.exports = {

@@ -3,6 +3,7 @@ Question = mongoose.model('Question');
 
 // Finds specific questions given a request.
 function findForUser(req, res){
+  console.log('questions find for user called');
   Question.find({
   	is_active: true
   }, function(err, results) {
