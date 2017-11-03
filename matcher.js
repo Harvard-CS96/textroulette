@@ -15,9 +15,29 @@ var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 
 class Matcher {
     constructor(setStatus, maxBlacklist = 1) {
-        this.connections = {}
+        this.connections = {};
+        this.callbacks = {};
         this._setStatus = setStatus;
         this._maxBlacklist = maxBlacklist;
+    }
+
+    // Add a callback that fires when we switch to a certain status
+    addCallback(status, callback) {
+        if (this.callbacks[status] === undefined) {
+            this.callbacks[status] = [callback];
+        }
+        else {
+            this.callbacks[status].push(callback);
+        }
+    }
+
+    // Fire callbacks for a given status
+    fireCallbacks(status, payload) {
+        if (this.callbacks[status] !== undefined) {
+            this.callbacks[status].forEach( (callback) => {
+                callback(payload);
+            });
+        }
     }
 
     // Add a new id into the connection pool
@@ -155,10 +175,15 @@ class Matcher {
         const { length } = ids;
         for (let i = 0; i < length; i++) {
             const key = ids[i]
-
-            // If we find an entry that's single and also not the given, connect
-            if (key == id || this.connections[key].partner != null) { 
-                continue;
+            // If we find an entry that's single and also not the same user, connect
+            if (
+                this.connections[key].user_id !== this.connections[id].user_id &&
+                this.connections[key].partner === null &&
+                this.connections[key].blacklist.indexOf(id) === -1 &&
+                this.connections[id].blacklist.indexOf(key) === -1
+            ) {
+                this.setPartner(id, key);
+                break;
             }
 
             // get second user data from key
@@ -206,6 +231,7 @@ class Matcher {
 
         this._setStatus(id1, PAIRING, id2);
         this._setStatus(id2, PAIRING, id1);
+        this.fireCallbacks(PAIRING, this.connections[id1].user_id, this.connections[id2].user_id);
     }
 
     // Get the partner of a given id
