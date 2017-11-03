@@ -165,14 +165,14 @@ class Matcher {
             var user2ID = this.connections[key].user_id;
             var userData2 = getUserDataOfID(userData, user2ID);
             var Questions2 = getAvailableUserQuestions(userData2, questionData);
-            var Questions2IDS = Questions2.map(function (obj) {
+            var Questions2IDs = Questions2.map(function (obj) {
                                     return obj.id;
                                 });
 
 
             for (let i = 0; i < Questions1.length; i++) {
                 var question1 = Questions1[i];
-                var Question2Index = Questions2IDs.indexOf(question.id)
+                var Question2Index = Questions2IDs.indexOf(question1.id)
                 if (Question2Index >= 0) {
                     if (isDifferentOpinion(question1.response,Questions2[Question2Index].response)) {
                         // set partner on conversation about question with this id
