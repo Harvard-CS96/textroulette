@@ -5,26 +5,38 @@ const mongoose = require('mongoose');
 
 // Single response to a specific question
 const ResponseSchema = new mongoose.Schema({
-	date: Date,
+	date: {
+        type: Date,
+        default: Date.now
+    },
 	response: String
 }, { noId: true })
 
 // Vector is list of question responses.
-const VectorSchema = new mongoose.Schema([{
+const VectorSchema = new mongoose.Schema({
     question_id: String,
     response_data: [ResponseSchema]
-}], { noId: true })
+}, { noId: true })
 
 const UserSchema = new mongoose.Schema({
     uuid: String,
-    rating: Number,
+    rating: {
+        type: Number,
+        default: 100
+    },
     facebook: {
         id   : Number,
         name : String,
         token: String
     },
     date_registered: {type: Date, default: Date.now},
-    questions_answered: VectorSchema
-}, { collection: 'users' })
+    questions_answered: {
+        type: [VectorSchema],
+        // Upon signup (creation of user document) no questions answered.
+        default: []
+    },
+}, { 
+    collection: 'users'
+ }) 
 
 module.exports = mongoose.model('User', UserSchema);

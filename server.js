@@ -114,7 +114,9 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("send message", function (data) {
     socket.emit("new message", `You said: ${data}`)
-    socket.broadcast.to(matcher.getPartner(socket.id)).emit("new message", `${matcher.getUsername(socket.id)} says: ${data}`)
+    socket.broadcast.to(matcher.getPartner(socket.id)).emit("new message", 
+      `${matcher.getUsername(socket.id)} says: ${data}`
+      )
 
   })
 

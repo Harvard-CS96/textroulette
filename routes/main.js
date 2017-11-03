@@ -13,7 +13,6 @@ var users = require(path.join(DIR.ROOT, 'controllers/users'));
 const router = express.Router();
 
 router.get('/', isLoggedIn, (req, res) => {
-    // res.sendFile(path.join(DIR.PUBLIC, "index.html"))
     const hbsData = req.isAuthenticated() === true ?
         {
             isAuthenticated: 'true',
@@ -27,19 +26,25 @@ router.get('/', isLoggedIn, (req, res) => {
 })
 
 // Either find specific questions or all questions.
-router.get('/questions/', (req, res) => {
-    questions.findForUser(req.query.id, res.send);
-});
+router.get('/questions/', questions.findForUser);
 
-router.get('/questions', (req, res) => {
-    questions.findAll(res.send)
-});
+router.get('/questions', questions.findAll);
 
 // Update survey responses of a particular user.
 router.post('/users/updatePreferences/', users.updatePreferences);
 
 router.get('/updatePreferences', isLoggedIn, (req, res) => {
-    res.sendFile(path.join(DIR.PUBLIC, "updatePreferences.html"))
+    // res.sendFile(path.join(DIR.PUBLIC, "updatePreferences.html"));
+    const hbsData = req.isAuthenticated() === true ?
+        {
+            isAuthenticated: 'true',
+            user: JSON.stringify(req.user)
+        } :
+        {   
+            isAuthenticated: 'false',
+            user: JSON.stringify({})
+        }
+    res.render("updatePreferences", hbsData);
 })
 
 
