@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const QuestionSchema = new mongoose.Schema({
     text: String,
-    answer_type: String, // e.g., 'binary', 'continuous', 'discrete-multiple'
+    answer_type: {
+        type: String,
+        enum: ['binary', 'continuous', 'five']
+    },
     answer_options: [String],
     topic: String,
     is_active: Boolean,

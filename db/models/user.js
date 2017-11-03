@@ -29,6 +29,11 @@ const UserSchema = new mongoose.Schema({
         name : String,
         token: String
     },
+    status: {
+        type: String,
+        enum: ['offline', 'online', 'paired', 'pairing'],
+        default: 'online'
+    },
     date_registered: {type: Date, default: Date.now},
     questions_answered: {
         type: [VectorSchema],
