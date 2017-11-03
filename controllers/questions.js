@@ -18,7 +18,17 @@ function findAll(callback) {
   });
 }
 
+// Find all active questions
+function findActive(callback) {
+  Question.find({
+    is_active : true
+  }, function(err, result) {
+    callback(result);
+  });
+}
+
 module.exports = {
   findForUser,
-  findAll
+  findAll,
+  findActive
 }

@@ -8,14 +8,9 @@ const path = require('path');
 const DIR = require('./constants.js').DIR
 
 var users = require(path.join(DIR.ROOT, 'controllers/users'));
+var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 
-// The data for the function is printed in a callback after it is retrieved.  
-// Hopefully my example is instructive.  
-users.findAll(function(d){ callMatcher(d); });
 
-function callMatcher(d){
-    console.log('Elon');
-}
 // End example
 
 class Matcher {
@@ -105,8 +100,12 @@ class Matcher {
 
     // Attempt to find new single match for given id
     checkForMatches(id) {
+
         // Make sure the id is a string
         id = id + "";
+
+        // so that callbacks can access the this variable
+        var referenceToThis = this;
 
         // If the connection doesn't exist, don't do anything
         if (this.connections[id] === undefined) {
@@ -121,21 +120,73 @@ class Matcher {
         }
         console.log(`Matcher: Checking for matches for ${id}...`)
 
+
+        users.findAll(function(userData){ 
+            questions.findActive(function(questionData){ 
+                referenceToThis.findMatch(userData, questionData, id); 
+            });
+        });
+    }
+
+
+    findMatch(userData, questionData, id){
+        // get user data with current id TODO
+
+        var user1ID = this.connections[id].user_id;
+        var userData1 = getUserDataOfID(userData, user1ID);
+        var Questions1 = getAvailableUserQuestions(userData1, questionData);
+        console.log("QUESTIONS");
+        console.log(Questions1);
+
+
+        // randomly sort questions so that user does not always get matched on same question
+        Questions1 = shuffleArray(Questions1);
+        console.log("SHUFFLE QUESTIONS");
+        console.log(Questions1);
+        var Questions1IDS = Questions1.map(function (obj) {
+                                    return obj.id;
+                                });
+
+        console.log("QUESTION IDS");
+        console.log(Questions1IDS);
+
         // Iterate over all connections
         const ids = Object.keys(this.connections)
         const { length } = ids;
         for (let i = 0; i < length; i++) {
             const key = ids[i]
-            // If we find an entry that's single and also not the same user, connect
-            if (
-                this.connections[key].user_id !== this.connections[id].user_id &&
-                this.connections[key].partner === null
-            ) {
-                this.setPartner(id, key);
-                break;
+
+            // If we find an entry that's single and also not the given, connect
+            if (key == id || this.connections[key].partner != null) { 
+                continue;
             }
+
+            // get second user data from key
+            var user2ID = this.connections[key].user_id;
+            var userData2 = getUserDataOfID(userData, user2ID);
+            var Questions2 = getAvailableUserQuestions(userData2, questionData);
+            var Questions2IDS = Questions2.map(function (obj) {
+                                    return obj.id;
+                                });
+
+
+            for (let i = 0; i < Questions1.length; i++) {
+                var question1 = Questions1[i];
+                var Question2Index = Questions2IDs.indexOf(question.id)
+                if (Question2Index >= 0) {
+                    if (isDifferentOpinion(question1.response,Questions2[Question2Index].response)) {
+                        // set partner on conversation about question with this id
+                        this.setPartner(id, key);
+                        // eventually will want to send over question id as well
+                        //this.setPartner(id, key, question.id);
+                        break;
+                    }
+                }
+            } 
         }
+
     }
+        
 
     // Set two ids to be each others' partners
     setPartner(id1, id2) {
@@ -207,6 +258,48 @@ class Matcher {
     logAll() {
         return JSON.stringify(this)
     }
+}
+
+// HELPER FUNCTIONS
+
+function getUserDataOfID(userData, id){
+    for (var i=0, iLen=userData.length; i < iLen; i++) {
+        if (userData[i].uuid == id) return userData[i];
+    }
+}
+
+// return a list of questions the user wants to talk about
+function getAvailableUserQuestions(userData, questionData){
+    var ChosenQuestions = [];
+    var questionsAnswered = userData.questions_answered;
+    console.log("QUESTIONS ANSWERED");
+    console.log(questionsAnswered);
+    for (let i = 0; i < questionsAnswered.length; i++) {
+        var responseData = questionsAnswered[i].response_data;
+        console.log("RESPONSE DATA");
+        console.log(responseData);
+        if (responseData[responseData.length - 1] != null) {
+            var el = {response: responseData[responseData.length - 1].response, id: questionsAnswered[i].question_id}
+            ChosenQuestions.push(el)
+        }
+    }
+    return ChosenQuestions;
+}
+
+function isDifferentOpinion(a, b){
+    return (a != b)
+}
+
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffleArray(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
 }
 
 module.exports = Matcher
