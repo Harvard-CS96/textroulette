@@ -2,13 +2,11 @@ var mongoose = require('mongoose'),
 Question = mongoose.model('Question');
 
 // Finds specific questions given a request.
-function findForUser(req, res){
+function findForUser(callback){
   console.log('questions find for user called');
   Question.find({
   	is_active: true
-  }, function(err, results) {
-    res.send(results);
-  });
+  }, callback);
 };
 
 // Find all questions then fire a callback

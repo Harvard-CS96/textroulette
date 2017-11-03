@@ -38,28 +38,27 @@ function modifyResponse(submitted, stored){
 	return stored;
 }
 
-function updatePreferences(req, res){
+function updatePreferences(uuid, questions_answered, callback=console.log){
 	console.log('Update preferences called');
-	User.findOne({"uuid": req.body.uuid}, 
+	User.findOne({ "uuid": uuid }, 
 		function(err, result){
 			console.log('find');
 			console.log(result);
-			User.updateOne({ "uuid": req.body.uuid }, { 
+			User.updateOne({ "uuid": uuid }, { 
 				$set: {
-					questions_answered: modifyResponse(req.body.questions_answered, 
+					questions_answered: modifyResponse(questions_answered, 
 						                               result.questions_answered)
 				},
-			}, function (err, n, raw){ // Specifying callback somehow necessary
-				console.log(err);
-				console.log(n);
-				console.log(raw); 
+			}, function (err, result){ // Specifying callback somehow necessary
+				callback(result);
 			})
 
 		}) // End of findOne
-	res.send('success'); // TODO get this to work.
+	//res.send('success'); // TODO get this to work.
 }
 
 module.exports = {
   findAll,
-  updatePreferences
+  updatePreferences,
+  modifyResponse
 }
