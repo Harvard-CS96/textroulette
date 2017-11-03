@@ -47,19 +47,6 @@ router.get('/updatePreferences', isLoggedIn, (req, res) => {
     res.render("updatePreferences", hbsData);
 })
 
-
-// handlebars alternative to updatePreferences route
-router.get('/prefs', (req, res) => {
-    questions.findAll((qs) => {
-        const hbsData = 
-        {
-            object_questions: qs,
-            json_questions: JSON.stringify(qs)
-        }
-        res.render("prefs", hbsData);
-    });
-})
-
 router.get('/login', (req, res) => {
     res.render("login")
 })
