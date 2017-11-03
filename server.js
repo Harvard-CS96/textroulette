@@ -3,7 +3,7 @@
  * The main server dispatcher.
  *
  */
- 
+
 require('dotenv').config();
 
 const {
@@ -23,11 +23,19 @@ var db = require('./db/connect');
 // to use the express module
 var app = require("express")();
 
-// to make an http server object
+
 var server = require("http").createServer(app);
+
+// Authentication
+var passport = require('passport');
 
 // to use our socket.io module
 var io = require("socket.io").listen(server);
+
+// to use the handlebars templating engine
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 const session = require("express-session")({
   secret: "my-secret",
@@ -37,7 +45,17 @@ const session = require("express-session")({
 
 const sharedsession = require("express-socket.io-session");
 
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(session);
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 io.use(sharedsession(session, {
   autoSave:true
@@ -90,10 +108,6 @@ io.sockets.on("connection", function (socket) {
     socket.emit('recall username', username)
     matcher.connect(socket.id, username, user_id);
   }
-  if (!user_id) {
-    socket.handshake.session.user_id = uuid();
-    socket.handshake.session.save();
-  }
 
   socket.on("send message", function (data) {
     socket.emit("new message", `You said: ${data}`)
@@ -101,8 +115,8 @@ io.sockets.on("connection", function (socket) {
 
   })
 
-  socket.on("set username", username => {
-    matcher.connect(socket.id, username, socket.handshake.session.user_id);
+  socket.on("set user", ({ username, user_id }) => {
+    matcher.connect(socket.id, username, user_id);
     socket.handshake.session.username = username;
     socket.handshake.session.save();
     socket.emit('recall username', username)

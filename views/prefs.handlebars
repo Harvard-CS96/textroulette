@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Textroulette Preferences</title>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+
+<body>
+	 <div class="container mt-5">
+      <div class="row">
+          <div class="col-md-12" style="height:100%;">
+              <h1>Textroulette Preferences</h1>
+              <p id="identity"></p>
+              <!-- where the questions will append in -->
+
+              <form id="answer-questions" action="updatePreferences" method="post" class="mt-5">
+                  <div class="form-row">
+                      <div id="questions"></div>
+                  </div>
+
+                  <input type="submit" value="Update" class="btn btn-primary" style="width:100%;"></input>
+              </form>
+              
+          </div>
+      </div>
+    </div>
+    
+    <!-- import socketio for the front end -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.1/socket.io.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+	<script type="text/javascript">
+        // load when jquery and page has be loaded
+        $(document).ready(() => {
+            jQuery(() => {
+
+                const answerHTML = `
+                    <div>
+                        <input type="radio"><label>Strongly Disagree</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Disagree</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Neutral</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Agree</label>
+                    </div>
+                    <div>
+                        <input type="radio"><label>Strongly Agree</label>
+                    </div>
+                </group>
+                <br><br><br>
+                `
+
+                var $questions = $("#questions");
+                var $messageForm = $("#answer-questions");
+
+                var questions = {{{ questions }}}
+
+                // build preferences form
+                console.log(questions)
+                questions.forEach( (q) => {
+                    $questions.append('<h3>' + q.text + '</h3>' + '<group class="inline-radio" id=' + q._id + '>' + answerHTML);
+                })
+
+                // when the submit button is clicked “e” is the event
+                $messageForm.submit( (e) => {
+                    // prevent the default setting of page refreshing
+                    e.preventDefault();
+
+                    // TODO update database
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

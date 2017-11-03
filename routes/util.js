@@ -7,6 +7,10 @@ const createUtilRoute = function (matcher) {
         res.end(matcher.prettyPrint())
     })
 
+    router.get('/matcher-log', (req, res) => {
+        res.end(matcher.logAll())
+    })
+
     return router;
 }
 

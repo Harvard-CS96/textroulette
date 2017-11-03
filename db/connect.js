@@ -1,6 +1,8 @@
 /**
  * connect.js
  * Establish a database connection and instantiate data models.
+ * Good resource: https://github.com/mongolab/mongodb-driver-examples/blob/master/nodejs/mongooseSimpleExample.js
+ * And: http://bigspaceship.github.io/blog/2014/05/14/how-to-create-a-rest-api-with-node-dot-js/
  */
 
 const mongoose = require('mongoose');
@@ -25,11 +27,13 @@ conn.openUri(db_uri)
 // (mongoose waits until the connection is established to run these)
 const Chat = require('./models/chat');
 const User = require('./models/user');
+const Question = require('./models/question');
 
 module.exports = {
     connection: conn,
     models: {
         Chat,
-        User
+        User,
+        Question
     }
 };

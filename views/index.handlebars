@@ -59,6 +59,12 @@
     <!-- front end javasctipt and using jQuery -->
     <script type="text/javascript">
         // load when jquery and page has be loaded
+
+        const isAuthenticated = {{ isAuthenticated }}
+        const user = {{{ user }}}
+
+        console.log(user)
+        
         $(document).ready(function () {
             jQuery(function () {
                 // connect to socket on server
@@ -127,19 +133,19 @@
                     $chat.text("");
                     $chat.append($newDiv)
                 })
-                socket.on("request username", () => {
-                    let username = prompt("What is your name?")
-                    while (username.trim() === '') {
-                        username = prompt("Please enter your name.")
-                    }
-                    socket.emit("set username", username);
+                socket.emit("set user", {
+                    username: user.facebook.name,
+                    user_id: user.uuid
                 })
                 socket.on("recall username", username => {
                     $identity.text("Hello, " + username);
                 })
+                socket.emit("set user id", user.uuid)
 
             })
         })
+
+        
     </script>
 </body>
 
