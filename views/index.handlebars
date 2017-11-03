@@ -99,7 +99,7 @@
 
                 $logout.click(() => {
                     socket.emit("logout");
-                    window.location = window.location;
+                    window.location.href = '/logout';
                 })
 
                 // when socket emit a message to each user

@@ -78,9 +78,9 @@ router.get('/auth/error', (req, res) => { res.end('Auth failure :(') })
 
 // route for logging out
 router.get('/logout', function(req, res) {
-        fb.logout();
-        res.redirect('/');
-    })
+    req.logout()
+    res.redirect('/');
+})
 
 
 // route middleware to make sure a user is logged in
