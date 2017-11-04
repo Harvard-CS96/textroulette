@@ -1,11 +1,14 @@
-
+/**
+ * users.js
+ * Controllers for interacting with user documents in the database.
+ */
 
 var mongoose = require('mongoose'),
 User = mongoose.model('User');
 
 // Note the way this works: Takes the function that it will call upon completion. 
 // No return statement.
-function findAll(callback){
+function findAll(callback) {
 	User.find({}, function(err, results) {
     	callback(results);
   	});
@@ -13,15 +16,15 @@ function findAll(callback){
 
 // Logs user responses to database.  Talk to Russell before changing.  This is 
 // A very careful function.
-function modifyResponse(submitted, stored){
-	submitted.forEach(function(question){
+function modifyResponse(submitted, stored) {
+	submitted.forEach(function(question) {
 		var id = question.question_id;
 		var response = question.response;
-		var seenQuestion = stored.findIndex(function(d){ 
+		var seenQuestion = stored.findIndex(function(d) { 
 			return d.question_id == id;
 		});
 		// Never answered this question before
-		if(seenQuestion === -1){
+		if (seenQuestion === -1) {
 			stored.push({
 				question_id: id,
 				response_data: [{
@@ -38,27 +41,25 @@ function modifyResponse(submitted, stored){
 	return stored;
 }
 
-function updatePreferences(uuid, questions_answered, callback=console.log){
+function updatePreferences(uuid, questions_answered, callback=console.log) {
 	console.log('Update preferences called');
-	User.findOne({ "uuid": uuid }, 
-		function(err, result){
-			console.log('find');
-			console.log(result);
-			User.updateOne({ "uuid": uuid }, { 
-				$set: {
-					questions_answered: modifyResponse(questions_answered, 
-						                               result.questions_answered)
-				},
-			}, function (err, result){ // Specifying callback somehow necessary
-				callback(result);
-			})
-
-		}) // End of findOne
-	//res.send('success'); // TODO get this to work.
+	User.findOne({ 
+		"uuid": uuid 
+		}, (err, result) => {
+				console.log('find');
+				console.log(result);
+				User.updateOne({ "uuid": uuid }, { 
+					$set: {
+						questions_answered: modifyResponse(questions_answered, 
+														   result.questions_answered)
+					},
+				}, function (err, result) {
+					callback(result);
+				})
+		})
 }
 
 module.exports = {
   findAll,
-  updatePreferences,
-  modifyResponse
+  updatePreferences
 }

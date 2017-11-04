@@ -1,18 +1,15 @@
+/**
+ * questions.js
+ * Controllers for interacting with question documents in the database.
+ */
+
 var mongoose = require('mongoose'),
 Question = mongoose.model('Question');
 
-// Finds specific questions given a request.
-function findForUser(callback){
-  console.log('questions find for user called');
-  Question.find({
-  	is_active: true
-  }, callback);
-};
-
 // Find all questions then fire a callback
 function findAll(callback) {
-  Question.find({}, function(err, result) {
-    res.send(results);
+  Question.find({}, (err, result) => {
+    callback
   });
 }
 
@@ -20,13 +17,12 @@ function findAll(callback) {
 function findActive(callback) {
   Question.find({
     is_active : true
-  }, function(err, result) {
-    callback(result);
+  }, (err, result) => {
+    callback(result)
   });
 }
 
 module.exports = {
-  findForUser,
   findAll,
   findActive
 }

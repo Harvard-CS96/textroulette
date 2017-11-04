@@ -1,6 +1,6 @@
 /**
  * logging.js
- * Callbacks for logging events to the database
+ * Controllers for logging events to the database
  */
 
 const db = require('../db/connect');
