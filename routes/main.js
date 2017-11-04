@@ -16,31 +16,28 @@ router.get('/', isLoggedIn, (req, res) => {
     const hbsData = req.isAuthenticated() === true ?
         {
             isAuthenticated: 'true',
-            user: JSON.stringify(req.user)
+            user: JSON.stringify(req.user),
         } :
         {   
             isAuthenticated: 'false',
-            user: JSON.stringify({})
+            user: JSON.stringify({}),
         }
     res.render("index", hbsData)
 })
 
 // Either find specific questions or all questions.
-router.get('/questions/', (req, res) => {
-    questions.findForUser((error, results) => {
+router.get('/questions', (req, res) => {
+    questions.findActive((results) => {
         res.send(results);
     });
 });
 
 // Update survey responses of a particular user.
-router.post('/users/updatePreferences/', (req, res) => {
-    console.log(req.body);
+router.post('/users/updatePreferences', (req, res) => {
     users.updatePreferences(req.body.uuid, req.body.questions_answered);
-    res.send("success!");
 });
 
 router.get('/updatePreferences', isLoggedIn, (req, res) => {
-    // res.sendFile(path.join(DIR.PUBLIC, "updatePreferences.html"));
     const hbsData = req.isAuthenticated() === true ?
         {
             isAuthenticated: 'true',

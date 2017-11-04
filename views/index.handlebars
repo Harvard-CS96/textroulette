@@ -63,8 +63,6 @@
 
         const isAuthenticated = {{ isAuthenticated }}
         const user = {{{ user }}}
-
-        console.log(user);
         
         $(document).ready(function () {
             jQuery(function () {
@@ -136,7 +134,7 @@
                 })
                 socket.emit("set user", {
                     username: user.facebook.name,
-                    user_id: user.uuid
+                    fb_id: user.uuid
                 })
                 socket.on("recall username", username => {
                     $identity.text("Hello, " + username);

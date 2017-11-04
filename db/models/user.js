@@ -39,4 +39,7 @@ const UserSchema = new mongoose.Schema({
     questions_answered: { type: [VectorSchema], default: [] },
 }, { collection: 'users' }) 
 
+UserSchema.set('toObject', {getters: true});
+UserSchema.set('toJSON', {getters: true});
+
 module.exports = mongoose.model('User', UserSchema);
