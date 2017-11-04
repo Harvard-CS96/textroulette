@@ -9,13 +9,6 @@ function findForUser(callback){
   }, callback);
 };
 
-// Find all questions then fire a callback
-function findAll(callback) {
-  Question.find({}, function(err, result) {
-    res.send(results);
-  });
-}
-
 // Find all active questions
 function findActive(callback) {
   Question.find({
