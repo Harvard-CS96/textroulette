@@ -6,13 +6,6 @@
 var mongoose = require('mongoose'),
 Question = mongoose.model('Question');
 
-// Find all questions then fire a callback
-function findAll(callback) {
-  Question.find({}, (err, result) => {
-    callback
-  });
-}
-
 // Find all active questions
 function findActive(callback) {
   Question.find({
@@ -23,6 +16,5 @@ function findActive(callback) {
 }
 
 module.exports = {
-  findAll,
   findActive
 }

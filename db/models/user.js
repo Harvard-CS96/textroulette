@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+const uuid = require('uuid');
+require('mongoose-uuid2')(mongoose);
+var UUID = mongoose.Types.UUID;
+
 // Note: I am aware not everyone will be a fan of how I abstracted this schema stuff.
 // I think it will be good in terms of increasing understanding and usability.
 
@@ -19,11 +23,8 @@ const VectorSchema = new mongoose.Schema({
 }, { noId: true })
 
 const UserSchema = new mongoose.Schema({
-    uuid: String,
-    rating: {
-        type: Number,
-        default: 100
-    },
+    uuid: { type: UUID, default: uuid.v4 },
+    rating: { type: Number, default: 100 },
     facebook: {
         id   : Number,
         name : String,
@@ -34,14 +35,8 @@ const UserSchema = new mongoose.Schema({
         enum: ['offline', 'online', 'paired', 'pairing'],
         default: 'online'
     },
-    date_registered: {type: Date, default: Date.now},
-    questions_answered: {
-        type: [VectorSchema],
-        // Upon signup (creation of user document) no questions answered.
-        default: []
-    },
-}, { 
-    collection: 'users'
- }) 
+    date_registered: { type: Date, default: Date.now },
+    questions_answered: { type: [VectorSchema], default: [] },
+}, { collection: 'users' }) 
 
 module.exports = mongoose.model('User', UserSchema);
