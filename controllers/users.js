@@ -39,7 +39,7 @@ function modifyResponse(submitted, stored) {
   return stored;
 }
 
-function updatePreferences(uuid, questions_answered, callback=console.log) {
+function updatePreferences(uuid, questions_answered, callback=(res)=>{}) {
   User.findOne({ "uuid": uuid }, 
     function(err, result) {
       User.updateOne({ "uuid": uuid }, { 
