@@ -140,8 +140,10 @@ class Matcher {
         }
         console.log(`Matcher: Checking for matches for ${id}...`)
 
-
         users.findAll(function(userData){ 
+            console.log(userData[0].questions_answered)
+            console.log(userData[0].uuid)
+            console.log(referenceToThis.connections)
             questions.findActive(function(questionData){ 
                 referenceToThis.findMatch(userData, questionData, id); 
             });
