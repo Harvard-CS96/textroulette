@@ -10,7 +10,7 @@ const FeedbackSchema = new mongoose.Schema({
     giver: UUID,
     receiver: UUID,
     chat: mongoose.Schema.Types.ObjectId,
-    stars: Number,
+    stars: { type: Number, min: 1, max: 5 },
     badges: { type: [BadgeSchema], default: [] },
     text: String
 }, { collection: 'feedback' });
