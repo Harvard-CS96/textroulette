@@ -27,6 +27,7 @@ const VectorSchema = new mongoose.Schema({
     response_data: [ResponseSchema]
 }, { noId: true })
 
+
 const UserSchema = new mongoose.Schema({
     uuid: { type: UUID, default: uuid.v4 },
     rating: { type: Number, default: 5 },
