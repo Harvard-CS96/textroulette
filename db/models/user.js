@@ -4,8 +4,13 @@ const uuid = require('uuid');
 require('mongoose-uuid2')(mongoose);
 var UUID = mongoose.Types.UUID;
 
-// Note: I am aware not everyone will be a fan of how I abstracted this schema stuff.
-// I think it will be good in terms of increasing understanding and usability.
+const BadgeSchema = require('./badge');
+
+// How many badges of a certain type does this user have?
+const BadgeCountSchema = new mongoose.Schema({
+    badge: BadgeSchema,
+    count: Number
+}, { noId: true })
 
 // Single response to a specific question
 const ResponseSchema = new mongoose.Schema({
@@ -18,13 +23,13 @@ const ResponseSchema = new mongoose.Schema({
 
 // Vector is list of question responses.
 const VectorSchema = new mongoose.Schema({
-    question_id: String,
+    question_id: mongoose.Schema.Types.ObjectId,
     response_data: [ResponseSchema]
 }, { noId: true })
 
 const UserSchema = new mongoose.Schema({
     uuid: { type: UUID, default: uuid.v4 },
-    rating: { type: Number, default: 100 },
+    rating: { type: Number, default: 5 },
     facebook: {
         id   : Number,
         name : String,
@@ -37,6 +42,7 @@ const UserSchema = new mongoose.Schema({
     },
     date_registered: { type: Date, default: Date.now },
     questions_answered: { type: [VectorSchema], default: [] },
+    badges: { type: [BadgeCountSchema], default: [] },
 }, { collection: 'users' }) 
 
 UserSchema.set('toObject', {getters: true});
