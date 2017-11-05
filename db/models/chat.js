@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 
+const uuid = require('uuid');
+require('mongoose-uuid2')(mongoose);
+var UUID = mongoose.Types.UUID;
+
 const ChatSchema = new mongoose.Schema({
-    uid1: String,
-    uid2: String,
+    uid1: UUID,
+    uid2: UUID,
     connected: {
         time: {type: Date, default: Date.now}
     },
