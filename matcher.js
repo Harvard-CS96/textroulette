@@ -41,7 +41,7 @@ class Matcher {
     }
 
     // Add a new id into the connection pool
-    connect(id, username = +new Date(), user_id) {
+    connect(id, username, user_id) {
         // If id is empty, don't try to add it
         if (id === undefined || id === "" || user_id === undefined) {
             return;
@@ -106,7 +106,7 @@ class Matcher {
     // Hangup a still-connected user.
     hangup(id) {
         this.unpair(id)
-        this.addBlacklist(id, this.connections[id].partner)
+        this.addBlacklist(id, this.connections[id].partner);
         this.connections[id].partner = null;
         this._setStatus(id, WAITING);
         this.checkForMatches(id);

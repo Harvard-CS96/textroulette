@@ -134,7 +134,7 @@
                 })
                 socket.emit("set user", {
                     username: user.facebook.name,
-                    fb_id: user.uuid
+                    user_id: user.uuid
                 })
                 socket.on("recall username", username => {
                     $identity.text("Hello, " + username);
