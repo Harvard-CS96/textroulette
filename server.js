@@ -97,9 +97,9 @@ let matcher = new Matcher((id, status, partner = null) => {
 })
 
 // add callbacks to matcher
-const logging = require('./controllers/logging');
-matcher.addCallback(PAIRING,      logging.logConnection);
-matcher.addCallback(DISCONNECTED, logging.logDisconnection);
+const chat = require('./controllers/chat');
+matcher.addCallback(PAIRING,      chat.logConnection);
+matcher.addCallback(DISCONNECTED, chat.logDisconnection);
 
 // when a user connects to the socket
 io.sockets.on("connection", function (socket) {
