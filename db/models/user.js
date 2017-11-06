@@ -27,7 +27,6 @@ const VectorSchema = new mongoose.Schema({
     response_data: [ResponseSchema]
 }, { noId: true })
 
-
 const UserSchema = new mongoose.Schema({
     uuid: { type: UUID, default: uuid.v4 },
     rating: { type: Number, default: 5 },
@@ -36,11 +35,8 @@ const UserSchema = new mongoose.Schema({
         name : String,
         token: String
     },
-    status: {
-        type: String,
-        enum: ['offline', 'online', 'paired', 'pairing'],
-        default: 'online'
-    },
+    is_first_time: { type: Boolean, default: true },
+    needs_to_rate: { type: Boolean, default: false },
     date_registered: { type: Date, default: Date.now },
     questions_answered: { type: [VectorSchema], default: [] },
     badges: { type: [BadgeCountSchema], default: [] },
