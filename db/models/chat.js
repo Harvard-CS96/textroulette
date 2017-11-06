@@ -23,10 +23,13 @@ const ChatSchema = new mongoose.Schema({
     disconnected: { 
         is_disconnected: {type: Boolean, default: false},
         time: Date,
-        reason: String,
+        reason: {type: String, enum: ['hangup', 'disconnect']},
         who: String,
     },
-    feedback: [FeedbackSchema]
+    feedback: {
+        type: [FeedbackSchema],
+        default: []
+    }
 }, { collection: 'chats', preserveNull: true });
 
 module.exports = mongoose.model('Chat', ChatSchema);
