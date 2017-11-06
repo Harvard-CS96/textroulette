@@ -13,14 +13,7 @@ function logConnection(payload) {
 
     // Instantiate new chat document
     const chat = new Chat({
-        uid1: payload.uid1, 
-        uid2: payload.uid2,
-        disconnected: {
-            is_disconnected: false,
-            time: undefined,
-            who: undefined,
-            reason: undefined
-        }
+        users: [payload.uid1, payload.uid2],
     });
 
     // Save to the database
@@ -42,8 +35,10 @@ function logDisconnection(payload) {
 
     // Instructions to locate the ongoing conversation in the database
     const query = {
-        uid1: {$in: [who, partner]},
-        uid2: {$in: [who, partner]},
+        $or: [
+            {users: [who, partner]},
+            {users: [partner, who]}
+        ],
         disconnected: {is_disconnected: false}
     };
 

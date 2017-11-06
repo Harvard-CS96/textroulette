@@ -67,7 +67,7 @@ class Matcher {
     }
 
     // Unpair two still-connected users.
-    unpair(id) {
+    unpair(id, reason) {
 
         // If a conenction with the given id doesn't exist, don't do anything
         if (this.connections[id] === undefined) {
@@ -85,6 +85,12 @@ class Matcher {
             this._setStatus(partner, DISCONNECTED, id)
             this._setStatus(partner, WAITING)
 
+            this.fireCallbacks(DISCONNECTED, {
+                who: this.connections[id].user_id,
+                partner: this.connections[partner].user_id,
+                reason: reason
+            })
+
             // Check for a partner for the newly single ex-partner
             this.checkForMatches(partner);
         }
@@ -96,7 +102,7 @@ class Matcher {
     // Remove an id from the connection pool
     disconnect(id) {
         // Same procedure as hanging up a call between still-connected users.
-        this.unpair(id);
+        this.unpair(id, 'disconnect');
 
         // Delete connection from the pool
         delete this.connections[id];
@@ -105,7 +111,7 @@ class Matcher {
 
     // Hangup a still-connected user.
     hangup(id) {
-        this.unpair(id)
+        this.unpair(id, 'hangup')
         this.addBlacklist(id, this.connections[id].partner)
         this.connections[id].partner = null;
         this._setStatus(id, WAITING);
@@ -220,7 +226,10 @@ class Matcher {
 
         this._setStatus(id1, PAIRING, id2);
         this._setStatus(id2, PAIRING, id1);
-        this.fireCallbacks(PAIRING, this.connections[id1].user_id, this.connections[id2].user_id);
+        this.fireCallbacks(PAIRING, {
+            uid1: this.connections[id1].user_id, 
+            uid2: this.connections[id2].user_id
+        });
     }
 
     // Get the partner of a given id
