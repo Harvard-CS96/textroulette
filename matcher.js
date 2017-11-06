@@ -141,9 +141,6 @@ class Matcher {
         console.log(`Matcher: Checking for matches for ${id}...`)
 
         users.findAll(function(userData){ 
-            console.log(userData[0].questions_answered)
-            console.log(userData[0].uuid)
-            console.log(referenceToThis.connections)
             questions.findActive(function(questionData){ 
                 referenceToThis.findMatch(userData, questionData, id); 
             });
@@ -175,21 +172,18 @@ class Matcher {
                 this.connections[key].blacklist.indexOf(id) === -1 &&
                 this.connections[id].blacklist.indexOf(key) === -1
             ) {
-                
-
                 // get second user data from key
                 var user2ID = this.connections[key].user_id;
                 var userData2 = getUserDataOfID(userData, user2ID);
                 var Questions2 = getAvailableUserQuestions(userData2, questionData);
                 var Questions2IDs = Questions2.map(function (obj) {
-                                        return obj.id;
+                                        return String(obj.id);
                                     });
-
                 for (let i = 0; i < Questions1.length; i++) {
                     var question1 = Questions1[i];
-                    var Question2Index = Questions2IDs.indexOf(question1.id)
+                    var Question2Index = Questions2IDs.indexOf(String(question1.id))
                     if (Question2Index >= 0) {
-                        if (isDifferentOpinion(question1.response,Questions2[Question2Index].response)) {
+                        if (isDifferentOpinion(question1.response, Questions2[Question2Index].response)) {
                             // set partner on conversation about question with this id
                             //this.setPartner(id, key);
                             // eventually will want to send over question id as well
@@ -293,12 +287,8 @@ function getUserDataOfID(userData, id){
 function getAvailableUserQuestions(userData, questionData){
     var ChosenQuestions = [];
     var questionsAnswered = userData.questions_answered;
-    console.log("QUESTIONS ANSWERED");
-    console.log(questionsAnswered);
     for (let i = 0; i < questionsAnswered.length; i++) {
         var responseData = questionsAnswered[i].response_data;
-        console.log("RESPONSE DATA");
-        console.log(responseData);
         if (responseData[responseData.length - 1] != null) {
             var el = {response: responseData[responseData.length - 1].response, id: questionsAnswered[i].question_id}
             ChosenQuestions.push(el)
@@ -318,7 +308,7 @@ function getQuestionByID(id, questionData){
 }
 
 function isDifferentOpinion(a, b){
-    return (a != b)
+    return (a !== b)
 }
 
 /**
