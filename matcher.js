@@ -41,7 +41,7 @@ class Matcher {
     }
 
     // Add a new id into the connection pool
-    connect(id, username, user_id) {
+    connect(id, username = +new Date(), user_id) {
         // If id is empty, don't try to add it
         if (id === undefined || id === "" || user_id === undefined) {
             return;

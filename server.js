@@ -126,7 +126,7 @@ io.sockets.on("connection", function (socket) {
     matcher.connect(socket.id, username, user_id);
     socket.handshake.session.username = username;
     socket.handshake.session.save();
-    socket.emit('recall username', username, user_id)
+    socket.emit('recall username', username)
   })
 
   socket.on("disconnect", () => {
