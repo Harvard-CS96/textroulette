@@ -7,9 +7,9 @@ const { WAITING, PAIRING, DISCONNECTED } = CONN_STATUS;
 const path = require('path');
 const DIR = require('./constants.js').DIR
 
-var users = require(path.join(DIR.ROOT, 'controllers/users'));
-var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
-
+const users = require(path.join(DIR.ROOT, 'controllers/users'));
+const questions = require(path.join(DIR.ROOT, 'controllers/questions'));
+const chat = require(path.join(DIR.ROOT, 'controllers/chat'));
 
 // End example
 

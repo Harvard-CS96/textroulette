@@ -56,7 +56,18 @@ function logDisconnection(payload) {
     Chat.findOneAndUpdate(query, update).exec();
 } 
 
+function getMostRecent(user_id, callback) {
+    // Get most recent chat for a user
+    Chat.find({ users: user_id })
+        .sort('-connected.time')
+        .limit(1)
+        .exec((err, result) => {
+            callback(result[0]);
+        });
+}
+
 module.exports = {
     logConnection,
-    logDisconnection
+    logDisconnection,
+    getMostRecent
 }
