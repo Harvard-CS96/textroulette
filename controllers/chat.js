@@ -18,6 +18,7 @@ const Chat = db.models.Chat;
 * takes a chat object, feedback object
 */
 
+/*
 function addChatFeedback(chat, feedback) {
   console.log("Adding feedback");
   if (chat.feedback.length < 2) {
@@ -37,7 +38,7 @@ function addChatFeedback(chat, feedback) {
     users.applyFeedback(otherID, feedback);
   }
 }
-
+*/
 function logConnection(payload) {
 
     console.log("Logging: logConnection fired");
