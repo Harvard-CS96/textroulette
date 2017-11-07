@@ -33,11 +33,11 @@ router.get('/questions', (req, res) => {
 });
 
 // Update survey responses of a particular user.
-router.post('/users/updatePreferences', (req, res) => {
-    users.updatePreferences(req.body.uuid, req.body.questions_answered);
+router.post('/users/updateStance', (req, res) => {
+    users.updateStance(req.body.uuid, req.body.questions_answered);
 });
 
-router.get('/updatePreferences', isLoggedIn, (req, res) => {
+router.get('/updateStance', isLoggedIn, (req, res) => {
     const hbsData = req.isAuthenticated() === true ?
         {
             isAuthenticated: 'true',
@@ -47,7 +47,7 @@ router.get('/updatePreferences', isLoggedIn, (req, res) => {
             isAuthenticated: 'false',
             user: JSON.stringify({})
         }
-    res.render("updatePreferences", hbsData);
+    res.render("updateStance", hbsData);
 })
 
 router.get('/login', (req, res) => {
