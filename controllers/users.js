@@ -65,11 +65,26 @@ function updateStance(uuid, questions_answered, callback=(res)=>{}) {
  });
 }
 
-function updateRating(uuid, feedback) {
-  console.log("Updating user rating for " + uuid + " based on feedback " + feedback);
-  // update the relevant user's rating
-  findById(uuid, (res) => {
-    console.log("DOESN'T ACTUALLY UPDATE YET");
+function applyFeedback(uuid, feedback) {
+  console.log("Updating profile for " + uuid + " based on feedback " + feedback);
+  // find and update the relevant user's profile based on feedback
+  findById(uuid, (user) => {
+    // average new rating with all past ratings
+    const new_count = user.rating.count + 1;
+    const new_stars = (user.rating.stars * (new_count - 1) + feedback.stars) / new_count;
+
+    user.set({
+      'rating.stars': new_stars,
+      'rating.count': new_count 
+    })
+
+    // TODO: update user's badge count
+
+    user.save((err) => {
+      if (err) {
+        throw err;
+      }
+    })
   })
 }
 

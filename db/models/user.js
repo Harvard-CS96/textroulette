@@ -29,7 +29,10 @@ const VectorSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
     uuid: { type: UUID, default: uuid.v4 },
-    rating: { type: Number, default: 5 },
+    rating: {
+        stars: { type: Number, default: 5 },
+        count: { type: Number, default: 0, min: 0 }
+    },
     facebook: {
         id   : Number,
         name : String,
