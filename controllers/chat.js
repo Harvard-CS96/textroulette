@@ -4,8 +4,8 @@
  */
 
 const db = require('../db/connect');
-const users = require('./users');
 
+const users = require('./users');
 
 const Chat = db.models.Chat;
 
@@ -18,30 +18,45 @@ const Chat = db.models.Chat;
 * takes a chat object, feedback object
 */
 
-/*
-function addChatFeedback(chat, feedback) {
-  console.log("Adding feedback");
-  if (chat.feedback.length < 2) {
-    chat.feedback.push(feedback);
+function addChatFeedback(feedback) {
 
-    // Save to the database
-    chat.save((err) => {
-      if (err) {
-        throw err;
-      }
-    });
+    console.log("Chat: adding feedback");
+    getMostRecent(feedback.from, (chat) => {
+        if (chat.feedback.length >= 2) {
+            return;
+        }
 
-    var otherID = (chat.users.filter((u) => {
-      u !== feedback.from;
-    })[0];
-
-    users.applyFeedback(otherID, feedback);
-  }
+        chat.feedback.push(feedback);
+    
+        // Save to the database
+        chat.save((err) => {
+            if (err) {
+                throw err;
+            }
+        });
+    
+        var otherID = (chat.users.filter( (u) => {u !== feedback.from} ))[0];
+    
+        users.updateRating(otherID, feedback);
+    })
 }
-*/
+
+function getMostRecent(uuid, callback) {
+    // Get most recent chat involving a user with id uuid
+    Chat.find({user_id: uuid})
+        .sort('-connected.time')
+        .limit(1)
+        .exect((err, result) => {
+            if (err) {
+                throw err
+            }
+            callback(result)
+        })
+}
+
 function logConnection(payload) {
 
-    console.log("Logging: logConnection fired");
+    console.log("Chat: logConnection fired");
 
     // Instantiate new chat document
     const chat = new Chat({
@@ -58,7 +73,7 @@ function logConnection(payload) {
 
 function logDisconnection(payload) {
 
-    console.log("Logging: logDisconnection fired on reason " + payload.reason);
+    console.log("Chat: logDisconnection fired on reason " + payload.reason);
 
     // The disconnecter
     const who = payload.who;

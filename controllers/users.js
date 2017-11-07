@@ -42,7 +42,7 @@ function modifyResponse(submitted, stored) {
   return stored;
 }
 
-function updatePreferences(uuid, questions_answered, callback=(res)=>{}) {
+function updateStance(uuid, questions_answered, callback=(res)=>{}) {
   User.findOne({ "uuid": uuid }, 
     function(err, result) {
       User.updateOne({ "uuid": uuid }, { 
@@ -63,6 +63,6 @@ function updateRating(uuid, feedback) {
 
 module.exports = {
   findAllInList,
-  updatePreferences,
+  updateStance,
   updateRating
 }
