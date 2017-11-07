@@ -6,11 +6,21 @@
 var mongoose = require('mongoose'),
 User = mongoose.model('User');
 
-function findAllInList(userIds, callback){
-  const query = {
-    user_id: { $in: userIds }
-  }
-  User.find(query, function(err, results) {
+function findById(uuid, callback) {
+  User.findOne({user_id: uuid}, (err, results) => {
+      if (err) {
+        throw err
+      }
+      callback(results);
+    })
+}
+
+function findAllInList(uuids, callback) {
+  const query = {user_id: { $in: uuids }}
+  User.find(query, (err, results) => {
+      if (err) {
+        throw err
+      }
       callback(results);
     });
 }
@@ -21,7 +31,7 @@ function modifyResponse(submitted, stored) {
   submitted.forEach(function(question) {
     var id = question.question_id;
     var response = question.response;
-    var questionIndex = stored.findIndex(function(d){ 
+    var questionIndex = stored.findIndex((d) => { 
       return d.question_id == id;
     });
     // Never answered this question before
@@ -43,14 +53,13 @@ function modifyResponse(submitted, stored) {
 }
 
 function updateStance(uuid, questions_answered, callback=(res)=>{}) {
-  User.findOne({ "uuid": uuid }, 
-    function(err, result) {
+  findById(uuid, (err, result) => {
       User.updateOne({ "uuid": uuid }, { 
         $set: {
           questions_answered: modifyResponse(questions_answered, 
                                              result.questions_answered)
         },
-      }, function(err, result) {
+      }, (err, result) => {
         callback(result);
       })
  });
@@ -58,7 +67,10 @@ function updateStance(uuid, questions_answered, callback=(res)=>{}) {
 
 function updateRating(uuid, feedback) {
   console.log("Updating user rating for " + uuid + " based on feedback " + feedback);
-  console.log("DOESN'T ACTUALLY UPDATE YET");
+  // update the relevant user's rating
+  findById(uuid, (res) => {
+    console.log("DOESN'T ACTUALLY UPDATE YET");
+  })
 }
 
 module.exports = {
