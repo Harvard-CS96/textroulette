@@ -146,7 +146,9 @@ class Matcher {
         }
         console.log(`Matcher: Checking for matches for ${id}...`)
 
-        users.findAll(function(userData){ 
+        const userIds = Object.values(this.connections)
+                              .map((o) => {o.user_id});
+        users.findAllInList(userIds, function(userData){ 
             questions.findActive(function(questionData){ 
                 referenceToThis.findMatch(userData, questionData, id); 
             });

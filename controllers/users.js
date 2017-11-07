@@ -6,8 +6,11 @@
 var mongoose = require('mongoose'),
 User = mongoose.model('User');
 
-function findAll(callback){
-  User.find({}, function(err, results) {
+function findAllInList(userIds, callback){
+  const query = {
+    user_id: { $in: userIds }
+  }
+  User.find(query, function(err, results) {
       callback(results);
     });
 }
@@ -53,7 +56,13 @@ function updatePreferences(uuid, questions_answered, callback=(res)=>{}) {
  });
 }
 
+function updateRating(uuid, feedback) {
+  console.log("Updating user rating for " + uuid + " based on feedback " + feedback);
+  console.log("DOESN'T ACTUALLY UPDATE YET");
+}
+
 module.exports = {
-  findAll,
-  updatePreferences
+  findAllInList,
+  updatePreferences,
+  updateRating
 }
