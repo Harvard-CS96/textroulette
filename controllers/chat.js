@@ -4,12 +4,43 @@
  */
 
 const db = require('../db/connect');
+const users = require('./users');
+
 
 const Chat = db.models.Chat;
 
+/**
+* addChatFeedback
+* Take a chat object containing all the data listed in the chat schema
+* also includes a feedback object
+* append that that feedback object to the chat feedback attribute which is a list
+* verify that ChatSchema.feedback is of length >= 2
+* takes a chat object, feedback object
+*/
+
+function addChatFeedback(chat, feedback) {
+  console.log("Adding feedback");
+  if (chat.feedback.length < 2) {
+    chat.feedback.push(feedback);
+
+    // Save to the database
+    chat.save((err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
+    var otherID = (chat.users.filter((u) => {
+      u !== feedback.from;
+    })[0];
+
+    users.applyFeedback(otherID, feedback);
+  }
+}
+
 function logConnection(payload) {
 
-    console.log("Logging: logConnection fired");    
+    console.log("Logging: logConnection fired");
 
     // Instantiate new chat document
     const chat = new Chat({
@@ -20,7 +51,7 @@ function logConnection(payload) {
     chat.save((err) => {
         if (err) {
             throw err;
-        } 
+        }
     });
 }
 
@@ -54,20 +85,9 @@ function logDisconnection(payload) {
 
     // Execute the update
     Chat.findOneAndUpdate(query, update).exec();
-} 
-
-function getMostRecent(user_id, callback) {
-    // Get most recent chat for a user
-    Chat.find({ users: user_id })
-        .sort('-connected.time')
-        .limit(1)
-        .exec((err, result) => {
-            callback(result[0]);
-        });
 }
 
 module.exports = {
     logConnection,
-    logDisconnection,
-    getMostRecent
+    logDisconnection
 }

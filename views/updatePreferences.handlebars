@@ -56,6 +56,7 @@
 
               <div id="answer-questions"></div>
               <button id="submit" type="button" class="btn btn-outline-primary">
+                <br>
                 <a href='/'>Submit</a>
               </button>
           </div>
@@ -95,7 +96,7 @@
               function constructLabel(name, qID, idx){
                 var start = ('<label class="btn btn-primary"' +
                              '><input type="radio" name="options"' +
-                             'qid= "' + qID + '" ' + 
+                             'qid= "' + qID + '" ' +
                              'response= "' + name + '" ' +
                              'autocomplete="off">');
                 var end = '</label>'
@@ -105,7 +106,7 @@
               function constructDiv(names, qID, idx){
                 var s = '';
                 var start = ('<div class="btn-group" id="question' + (idx + 1) + '" ' +
-                             ' data-toggle="buttons"' + 
+                             ' data-toggle="buttons"' +
                              '>');
                 var end = '</div>';
                 s += start;
@@ -134,7 +135,7 @@
 
               // READING RESPONSES CODE BELOW
               function calcAttribute(parent, attr){
-                return Array.prototype.slice.call(parent.childNodes).map(function(elt){ 
+                return Array.prototype.slice.call(parent.childNodes).map(function(elt){
                   return !!(elt.className.split(" ").indexOf("active") > -1) ? elt.firstChild.getAttribute(attr) : '';
                 }).reduce((s, v) => s + v, '');
               }
