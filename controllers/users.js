@@ -91,5 +91,5 @@ function applyFeedback(uuid, feedback) {
 module.exports = {
   findAllInList,
   updateStance,
-  updateRating
+  applyFeedback
 }
