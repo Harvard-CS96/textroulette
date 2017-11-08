@@ -25,6 +25,19 @@ router.get('/', isLoggedIn, (req, res) => {
     res.render("index", hbsData)
 })
 
+function getAuthInfo(req){
+    const hbsData = req.isAuthenticated() === true ?
+        {
+            isAuthenticated: 'true',
+            user: JSON.stringify(req.user)
+        } :
+        {   
+            isAuthenticated: 'false',
+            user: JSON.stringify({})
+        }
+    return hbsData;
+}
+
 // Either find specific questions or all questions.
 router.get('/questions', (req, res) => {
     questions.findActive((results) => {
@@ -38,16 +51,11 @@ router.post('/users/updateStance', (req, res) => {
 });
 
 router.get('/updateStance', isLoggedIn, (req, res) => {
-    const hbsData = req.isAuthenticated() === true ?
-        {
-            isAuthenticated: 'true',
-            user: JSON.stringify(req.user)
-        } :
-        {   
-            isAuthenticated: 'false',
-            user: JSON.stringify({})
-        }
-    res.render("updateStance", hbsData);
+    res.render("updateStance", getAuthInfo(req));
+})
+
+router.get('/feedback', isLoggedIn, (req, res) => {
+    res.render("feedback", getAuthInfo(req));
 })
 
 router.get('/login', (req, res) => {
