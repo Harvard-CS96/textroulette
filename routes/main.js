@@ -25,6 +25,13 @@ router.get('/', isLoggedIn, (req, res) => {
     res.render("index", hbsData)
 })
 
+// Get a user document from the db by uuid
+router.get('/profile', (req, res) => {
+    users.findById(req.body.uuid, (results) => {
+        res.send(results);
+    });
+});
+
 // Either find specific questions or all questions.
 router.get('/questions', (req, res) => {
     questions.findActive((results) => {
