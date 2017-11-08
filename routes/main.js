@@ -18,7 +18,7 @@ router.get('/', isLoggedIn, (req, res) => {
             isAuthenticated: 'true',
             user: JSON.stringify(req.user),
         } :
-        {   
+        {
             isAuthenticated: 'false',
             user: JSON.stringify({}),
         }
@@ -33,7 +33,7 @@ router.get('/questions', (req, res) => {
 });
 
 // Update survey responses of a particular user.
-router.post('/users/updateStance', (req, res) => {
+router.post('/updateStance', (req, res) => {
     users.updateStance(req.body.uuid, req.body.questions_answered);
 });
 
@@ -43,7 +43,7 @@ router.get('/updateStance', isLoggedIn, (req, res) => {
             isAuthenticated: 'true',
             user: JSON.stringify(req.user)
         } :
-        {   
+        {
             isAuthenticated: 'false',
             user: JSON.stringify({})
         }

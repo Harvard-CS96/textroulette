@@ -15,7 +15,7 @@ const Chat = db.models.Chat;
 * also includes a feedback object
 * append that that feedback object to the chat feedback attribute which is a list
 * verify that ChatSchema.feedback is of length >= 2
-* takes a chat object, feedback object
+* takes a feedback object
 */
 
 function addChatFeedback(feedback) {
@@ -27,7 +27,7 @@ function addChatFeedback(feedback) {
         }
 
         chat.feedback.push(feedback);
-    
+
         // Save to the database
         chat.save((err) => {
             if (err) {
@@ -36,7 +36,7 @@ function addChatFeedback(feedback) {
         });
     
         var otherID = (chat.users.filter( (u) => {u !== feedback.from} ))[0];
-    
+
         users.applyFeedback(otherID, feedback);
     })
 }
