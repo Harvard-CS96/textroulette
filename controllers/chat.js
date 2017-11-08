@@ -37,7 +37,7 @@ function addChatFeedback(feedback) {
     
         var otherID = (chat.users.filter( (u) => {u !== feedback.from} ))[0];
     
-        users.updateRating(otherID, feedback);
+        users.applyFeedback(otherID, feedback);
     })
 }
 
