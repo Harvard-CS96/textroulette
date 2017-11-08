@@ -54,7 +54,7 @@ function modifyResponse(submitted, stored) {
 }
 
 function updateStance(uuid, questions_answered, callback=(res)=>{}) {
-  findById(uuid, (err, result) => {
+  findById(uuid, (result) => {
       User.updateOne({ "uuid": uuid }, { 
         $set: {
           questions_answered: modifyResponse(questions_answered, 
