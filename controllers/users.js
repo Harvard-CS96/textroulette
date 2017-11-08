@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 User = mongoose.model('User');
 
 function findById(uuid, callback) {
-  User.findOne({user_id: uuid}, (err, results) => {
+  User.findOne({uuid: uuid}, (err, results) => {
       if (err) {
         throw err
       }
@@ -16,7 +16,7 @@ function findById(uuid, callback) {
 }
 
 function findAllInList(uuids, callback) {
-  const query = {user_id: { $in: uuids }}
+  const query = {uuid: { $in: uuids }}
   User.find(query, (err, results) => {
       if (err) {
         throw err
