@@ -39,8 +39,10 @@ router.get('/profile', (req, res) => {
 
 // Either find specific questions or all questions.
 router.get('/questions', (req, res) => {
-    questions.findActive((results) => {
-        res.send(results);
+    questions.findActive((questions) => {
+        users.findById(req.user.uuid, (userData) => {
+            res.send({questions: questions, userData: userData});
+        });
     });
 });
 

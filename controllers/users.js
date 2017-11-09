@@ -18,7 +18,6 @@ function findById(uuid, callback) {
 function findAllInList(uuids, callback) {
   const query = {"uuid": { $in: uuids }}
   User.find(query, (err, results) => {
-    console.log(results);
       if (err) {
         throw err
       }
@@ -93,5 +92,6 @@ function applyFeedback(uuid, feedback) {
 module.exports = {
   findAllInList,
   updateStance,
-  applyFeedback
+  applyFeedback,
+  findById
 }

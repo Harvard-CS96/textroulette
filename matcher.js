@@ -192,10 +192,7 @@ class Matcher {
                     if (Question2Index >= 0) {
                         if (isDifferentOpinion(question1.response, Questions2[Question2Index].response)) {
                             // set partner on conversation about question with this id
-                            //this.setPartner(id, key);
-                            // eventually will want to send over question id as well
                             var questionTitle = getQuestionByID(question1.id, questionData);
-                            console.log(questionTitle);
                             this.setPartner(id, key, {text: questionTitle, id: question1.id});
                             break;
                         }
@@ -310,7 +307,6 @@ function getAvailableUserQuestions(userData, questionData){
 function getQuestionByID(id, questionData){
     for (var i=0; i < questionData.length ; ++i){
         if (questionData[i].id == id){
-            console.log(questionData[i]);
             return questionData[i].text;
         }
     }
