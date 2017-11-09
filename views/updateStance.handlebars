@@ -152,7 +152,7 @@
               function getAnswersJSON(){
                 var numQuestions = document.getElementsByTagName('h3').length;
                 var answers = [];
-                for (var i = 1; i <= 5; i++){
+                for (var i = 1; i <= numQuestions; i++){
                   answers.push(getAnswer(i));
                 }
                 return answers;
