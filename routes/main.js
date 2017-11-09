@@ -18,25 +18,19 @@ router.get('/', isLoggedIn, (req, res) => {
             isAuthenticated: 'true',
             user: JSON.stringify(req.user),
         } :
-        {   
+        {
             isAuthenticated: 'false',
             user: JSON.stringify({}),
         }
     res.render("index", hbsData)
 })
 
-function getAuthInfo(req){
-    const hbsData = req.isAuthenticated() === true ?
-        {
-            isAuthenticated: 'true',
-            user: JSON.stringify(req.user)
-        } :
-        {   
-            isAuthenticated: 'false',
-            user: JSON.stringify({})
-        }
-    return hbsData;
-}
+// Get a user document from the db by uuid
+router.get('/profile', (req, res) => {
+    users.findById(req.body.uuid, (results) => {
+        res.send(results);
+    });
+});
 
 // Either find specific questions or all questions.
 router.get('/questions', (req, res) => {
@@ -46,16 +40,21 @@ router.get('/questions', (req, res) => {
 });
 
 // Update survey responses of a particular user.
-router.post('/users/updateStance', (req, res) => {
+router.post('/updateStance', (req, res) => {
     users.updateStance(req.body.uuid, req.body.questions_answered);
 });
 
 router.get('/updateStance', isLoggedIn, (req, res) => {
-    res.render("updateStance", getAuthInfo(req));
-})
-
-router.get('/feedback', isLoggedIn, (req, res) => {
-    res.render("feedback", getAuthInfo(req));
+    const hbsData = req.isAuthenticated() === true ?
+        {
+            isAuthenticated: 'true',
+            user: JSON.stringify(req.user)
+        } :
+        {
+            isAuthenticated: 'false',
+            user: JSON.stringify({})
+        }
+    res.render("updateStance", hbsData);
 })
 
 router.get('/login', (req, res) => {
