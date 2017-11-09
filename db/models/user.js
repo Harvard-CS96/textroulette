@@ -45,7 +45,7 @@ const UserSchema = new mongoose.Schema({
     badges: { type: [BadgeCountSchema], default: [] },
 }, { collection: 'users' }) 
 
-UserSchema.set('toObject', {getters: true});
+UserSchema.set('toObject', {getters: true}); // Return uuids as string in a nice way.
 UserSchema.set('toJSON', {getters: true});
 
 module.exports = mongoose.model('User', UserSchema);

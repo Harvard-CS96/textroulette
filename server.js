@@ -15,8 +15,6 @@ const {
   DISCONNECTED
 } = CONN_STATUS;
 
-const uuid = require('uuid');
-
 // to connect to the database and instantiate the data models
 var db = require('./db/connect');
 
@@ -97,7 +95,7 @@ let matcher = new Matcher((id, status, partner = null) => {
 })
 
 // add callbacks to matcher
-const chat = require('./controllers/chat');
+const chat = require('./controllers/chats');
 matcher.addCallback(PAIRING,      chat.logConnection);
 matcher.addCallback(DISCONNECTED, chat.logDisconnection);
 

@@ -16,7 +16,8 @@ const FeedbackSchema = new mongoose.Schema({
 }, { noId: true });
 
 const ChatSchema = new mongoose.Schema({
-    users: [UUID],
+    user1: UUID,
+    user2: UUID,
     connected: {
         time: {type: Date, default: Date.now}
     },
@@ -31,5 +32,8 @@ const ChatSchema = new mongoose.Schema({
         default: []
     }
 }, { collection: 'chats', preserveNull: true });
+
+ChatSchema.set('toObject', {getters: true}); // Returns uuid as string when accessed.
+ChatSchema.set('toJSON', {getters: true});
 
 module.exports = mongoose.model('Chat', ChatSchema);

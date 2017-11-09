@@ -9,6 +9,9 @@ const users = require('./users');
 
 const Chat = db.models.Chat;
 
+// const UUID = require('uuid-1345');
+// require('mongoose-uuid2')(mongoose);
+
 /**
 * addChatFeedback
 * Take a chat object containing all the data listed in the chat schema
@@ -18,9 +21,18 @@ const Chat = db.models.Chat;
 * takes a feedback object
 */
 
-function addChatFeedback(feedback) {
-
+function logFeedback(feedback) {
     console.log("Chat: adding feedback");
+    console.log(feedback);
+    console.log(feedback.from);
+    console.log('above is feedback');
+
+    Chat.findOne({}, (err, result) => {
+        console.log('example user1');
+        console.log(result.user1);
+        console.log(result.user2);
+        console.log('end example user1');
+    })
     getMostRecent(feedback.from, (chat) => {
         if (chat.feedback.length >= 2) {
             return;
@@ -35,22 +47,36 @@ function addChatFeedback(feedback) {
             }
         });
     
-        var otherID = (chat.users.filter( (u) => {u !== feedback.from} ))[0];
-
+        if (feedback.from == chat.user1){
+            var otherID = chat.user2;
+        }
+        else if (feedback.from == chat.user2){
+            var otherID = chat.user1;
+        }
+        console.log(otherID);
+        console.log('other id above');
         users.applyFeedback(otherID, feedback);
     })
 }
 
 function getMostRecent(uuid, callback) {
     // Get most recent chat involving a user with id uuid
-    Chat.find({user_id: uuid})
-        .sort('-connected.time')
+    console.log('get most recent called');
+    console.log(uuid);
+    var query = {
+        $or: [ 
+            { user1: uuid }, 
+            { user2: uuid }
+        ]
+    }
+    Chat.find(query)
+        .sort({'connected.time': -1})
         .limit(1)
-        .exect((err, result) => {
+        .exec((err, result) => {
             if (err) {
                 throw err
             }
-            callback(result)
+            callback(result[0]) // A list was returned, must get element.
         })
 }
 
@@ -59,8 +85,11 @@ function logConnection(payload) {
     console.log("Chat: logConnection fired");
 
     // Instantiate new chat document
+    console.log(payload);
+    console.log(payload.uid1);
     const chat = new Chat({
-        users: [payload.uid1, payload.uid2],
+        user1: payload.uid1, 
+        user2: payload.uid2,
     });
 
     // Save to the database
@@ -83,8 +112,16 @@ function logDisconnection(payload) {
     // Instructions to locate the ongoing conversation in the database
     const query = {
         $or: [
-            {users: [who, partner]},
-            {users: [partner, who]}
+            { $and: [
+                { user1: who }, 
+                { user2: partner }
+                ]
+            },
+            { $and: [
+                { user1: partner }, 
+                { user2: who }
+                ]
+            }
         ],
         disconnected: {is_disconnected: false}
     };
@@ -103,7 +140,9 @@ function logDisconnection(payload) {
     Chat.findOneAndUpdate(query, update).exec();
 }
 
+
 module.exports = {
     logConnection,
-    logDisconnection
+    logDisconnection,
+    logFeedback
 }

@@ -67,7 +67,8 @@ function updateStance(uuid, questions_answered, callback=(res)=>{}) {
 }
 
 function applyFeedback(uuid, feedback) {
-  console.log("Updating profile for " + uuid + " based on feedback " + feedback);
+  console.log("Updating profile for " + uuid + " based on feedback below");
+  console.log(feedback);
   // find and update the relevant user's profile based on feedback
   findById(uuid, (user) => {
     // average new rating with all past ratings
@@ -80,7 +81,7 @@ function applyFeedback(uuid, feedback) {
     })
 
     // TODO: update user's badge count
-
+    
     user.save((err) => {
       if (err) {
         throw err;

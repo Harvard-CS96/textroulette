@@ -9,7 +9,7 @@ const DIR = require('./constants.js').DIR
 
 const users = require(path.join(DIR.ROOT, 'controllers/users'));
 const questions = require(path.join(DIR.ROOT, 'controllers/questions'));
-const chat = require(path.join(DIR.ROOT, 'controllers/chat'));
+const chat = require(path.join(DIR.ROOT, 'controllers/chats'));
 
 // End example
 

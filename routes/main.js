@@ -9,10 +9,11 @@ require(path.join(DIR.ROOT, '/config/passport'))(passport);
 
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 var users = require(path.join(DIR.ROOT, 'controllers/users'));
+var chats = require(path.join(DIR.ROOT, 'controllers/chats'));
 
 const router = express.Router();
 
-router.get('/', isLoggedIn, (req, res) => {
+function getAuthInfo(req){
     const hbsData = req.isAuthenticated() === true ?
         {
             isAuthenticated: 'true',
@@ -22,7 +23,11 @@ router.get('/', isLoggedIn, (req, res) => {
             isAuthenticated: 'false',
             user: JSON.stringify({}),
         }
-    res.render("index", hbsData)
+    return hbsData;
+}
+
+router.get('/', isLoggedIn, (req, res) => {
+    res.render("index", getAuthInfo(req));
 })
 
 // Get a user document from the db by uuid
@@ -39,22 +44,24 @@ router.get('/questions', (req, res) => {
     });
 });
 
+// Either find specific questions or all questions.
+router.post('/chats', (req, res) => {
+    chats.logFeedback(req.body, (results) => {
+        res.send(results);
+    });
+});
+
 // Update survey responses of a particular user.
 router.post('/updateStance', (req, res) => {
     users.updateStance(req.body.uuid, req.body.questions_answered);
 });
 
 router.get('/updateStance', isLoggedIn, (req, res) => {
-    const hbsData = req.isAuthenticated() === true ?
-        {
-            isAuthenticated: 'true',
-            user: JSON.stringify(req.user)
-        } :
-        {
-            isAuthenticated: 'false',
-            user: JSON.stringify({})
-        }
-    res.render("updateStance", hbsData);
+    res.render("updateStance", getAuthInfo(req));
+})
+
+router.get('/feedback', isLoggedIn, (req, res) => {
+    res.render("feedback", getAuthInfo(req));
 })
 
 router.get('/login', (req, res) => {

@@ -184,7 +184,7 @@
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',
-                    data: json,
+                    data: JSON.stringify(json),
                     url: '/chats/',
                     success: function(data){
                       // On success, update questions.
