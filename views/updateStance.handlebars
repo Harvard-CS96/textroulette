@@ -83,9 +83,7 @@
                   success: function(data){
                     // On success, update questions.
                     console.log('pulled questions and userdata');
-                    //console.log(data)
                     var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
-                    console.log(questionsWithUserAnswers);
                     populateQuestions(questionsWithUserAnswers);
                     document.getElementById("submit").onclick = function (){ formSubmit(); };
                   },
@@ -95,8 +93,13 @@
               });
 
               // CONSTRUCTING HTML SECTION (TODO: REACT)
-              function constructLabel(name, qID, idx){
-                var start = ('<label class="btn btn-primary"' +
+              function constructLabel(name, qID, userAnswer, idx){
+                if (name == userAnswer)
+                    var active = 'active';
+                else
+                    var active = '';
+                
+                var start = ('<label class="btn btn-primary ' + active + '"' + 
                              '><input type="radio" name="options"' +
                              'qid= "' + qID + '" ' +
                              'response= "' + name + '" ' +
@@ -113,7 +116,7 @@
                 var end = '</div>';
                 s += start;
                 names.forEach(function(name, qid, idx){
-                  s += constructLabel(name, qID, idx);
+                  s += constructLabel(name, qID, userAnswer, idx);
                 })
                 //console.log(s + end);
                 return s + end;
