@@ -4,11 +4,9 @@ const uuid = require('uuid');
 require('mongoose-uuid2')(mongoose);
 var UUID = mongoose.Types.UUID;
 
-const BadgeSchema = require('./badge');
-
 // How many badges of a certain type does this user have?
 const BadgeCountSchema = new mongoose.Schema({
-    badge: BadgeSchema,
+    badge: String,
     count: Number
 }, { noId: true })
 

@@ -65,21 +65,52 @@ function updateStance(uuid, questions_answered, callback=(res)=>{}) {
  });
 }
 
+function incrementBadgeCount(currentBadges, badgeName){
+  console.log('increment Badge Count Called');
+  console.log(currentBadges);
+  console.log(badgeName);
+  console.log('arguments above');
+  var idx = currentBadges.map(function(d){ return d.badge; }).indexOf(badgeName);
+  // If this user hasn't recieved this badge before
+  if(idx==-1){
+    var newBadge = {
+      "badge": badgeName,
+      "count": 1
+    };
+    currentBadges.push(newBadge);
+    return currentBadges;
+  }
+  // Otherwise find and update existing record
+  else{
+    var specificBadge = currentBadges[idx];
+    specificBadge.count = specificBadge.count + 1;
+    currentBadges[idx] = specificBadge;
+    return currentBadges;
+  }
+}
+
 function applyFeedback(uuid, feedback) {
   console.log("Updating profile for " + uuid + " based on feedback below");
   console.log(feedback);
   // find and update the relevant user's profile based on feedback
   findById(uuid, (user) => {
-    // average new rating with all past ratings
-    const new_count = user.rating.count + 1;
-    const new_stars = (user.rating.stars * (new_count - 1) + feedback.stars) / new_count;
+    // average new rating with all past ratings 
+    const new_count = (+user.rating.count) + 1; // casting to int.
+    const new_stars = ((+user.rating.stars) * (new_count - 1) + (+feedback.stars)) / new_count;
+
+    console.log(user.badges);
+    console.log('badges');
+
+    var badges = user.badges;
+    feedback.badges.forEach(function(badge){
+      badges = incrementBadgeCount(badges, badge);
+    })
 
     user.set({
       'rating.stars': new_stars,
-      'rating.count': new_count 
+      'rating.count': new_count,
+      'badges': badges
     })
-
-    // TODO: update user's badge count
     
     user.save((err) => {
       if (err) {
