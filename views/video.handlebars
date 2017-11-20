@@ -78,6 +78,9 @@
                 $("#join-room").submit(function(e) {
                     e.preventDefault();
                     webrtc.joinRoom($("#room").val());
+                    $("#logout").click(function() {
+                        window.location.href = '/logout';
+                    });
                 });
             });
         </script>
