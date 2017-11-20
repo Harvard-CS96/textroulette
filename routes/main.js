@@ -10,6 +10,7 @@ require(path.join(DIR.ROOT, '/config/passport'))(passport);
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 var users = require(path.join(DIR.ROOT, 'controllers/users'));
 var chats = require(path.join(DIR.ROOT, 'controllers/chats'));
+var reports = require(path.join(DIR_ROOT, 'controllers/reports'));
 
 const router = express.Router();
 
@@ -64,6 +65,11 @@ router.get('/updateStance', isLoggedIn, (req, res) => {
 
 router.get('/feedback', isLoggedIn, (req, res) => {
     res.render("feedback", getAuthInfo(req));
+})
+
+// Save new report
+router.post('/feedback/report', isLoggedIn, (req, res) => {
+    reports.createReport(req.body.report);
 })
 
 router.get('/login', (req, res) => {
