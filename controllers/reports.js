@@ -9,7 +9,7 @@ Report = mongoose.model('Report');
 function createReport(report) {
   const report = new Report({
     from: report.from,
-    to: report. to,
+    to: report.to,
     kind: report.kind
   });
 
