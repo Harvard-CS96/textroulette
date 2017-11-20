@@ -22,6 +22,11 @@ const Chat = db.models.Chat;
 */
 
 function logFeedback(feedback) {
+<<<<<<< HEAD
+=======
+    console.log("Chat: adding feedback.  Feedback below:");
+    console.log(feedback);
+>>>>>>> 6b74314862fb53c0fa8cc35dbc64fe2598fc2bdf
 
     getMostRecent(feedback.from, (chat) => {
         if (chat.feedback.length >= 2) {
@@ -52,8 +57,6 @@ function logFeedback(feedback) {
 
 function getMostRecent(uuid, callback) {
     // Get most recent chat involving a user with id uuid
-    console.log('get most recent called');
-    console.log(uuid);
     var query = {
         $or: [ 
             { user1: uuid }, 
@@ -74,12 +77,8 @@ function getMostRecent(uuid, callback) {
 }
 
 function logConnection(payload) {
-
     console.log("Chat: logConnection fired");
-
     // Instantiate new chat document
-    console.log(payload);
-    console.log(payload.uid1);
     const chat = new Chat({
         user1: payload.uid1, 
         user2: payload.uid2,
@@ -94,11 +93,17 @@ function logConnection(payload) {
 }
 
 function logDisconnection(payload) {
-
     console.log("Chat: logDisconnection fired on reason " + payload.reason);
+<<<<<<< HEAD
 
     // disconnecter, disconectee
     const { who, partner }  = payload;
+=======
+    // The disconnecter
+    const who = payload.who;
+    // The disconnectee
+    const partner = payload.partner;
+>>>>>>> 6b74314862fb53c0fa8cc35dbc64fe2598fc2bdf
 
     // Instructions to locate the ongoing conversation in the database
     const query = {
