@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Textroulette</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+        <style>
+            video {
+                width: 49.5%;
+            }
+        </style>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+            <a class="navbar-brand" href="#">Discourse</a>
+            <input class="btn btn-outline-danger my-2 my-sm-0" type="button" id="logout" value="Logout" />
+        </nav>
+        <div class="container mt-5">
+            <div class="row text-center">
+                <div class="col-md-12" style="height:100%;">
+                    <h1>Discourse</h1>
+                    <p id="identity"></p>
+                    <!-- where the messages will apend in -->
+                    <div id="chat" class="border bg-light text-left p-3" style="height:20em;overflow:scroll;">
+                        <video id="localVideo"></video>
+                        <span id="remoteVideos"></span>
+                    </div>
+
+                    <!-- form and input box to submit messages -->
+                    <form id="join-room" class="mt-5">
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input type="text" class="form-control" id="room" aria-describedby="roomHelp" placeholder="Room Name">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input id="join-room-button" type="submit" value="Join Room" class="btn btn-primary disabled" style="width:100%;"></input>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input id="end-conversation" type="button" value="End Conversation" class="btn btn-danger disabled" style="width:100%;"></input>
+                            </div>
+                        </div>
+                    </form>
+                    <a href="updatePreferences">Update Your Stances</a>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://simplewebrtc.com/latest-v2.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+        <script>
+            var webrtc = new SimpleWebRTC({
+                // the id/element dom element that will hold "our" video
+                localVideoEl: 'localVideo',
+                // the id/element dom element that will hold remote videos
+                remoteVideosEl: 'remoteVideos',
+                // immediately ask for camera access
+                autoRequestMedia: true,
+                // set signaling server
+                url: 'https://signaling.tk/',
+                debug: true
+            });
+            // we have to wait until it's ready
+            webrtc.on('readyToCall', function() {
+                $("#join-room-button").removeClass("disabled");
+                $("#join-room").submit(function(e) {
+                    e.preventDefault();
+                    webrtc.joinRoom($("#room").val(), function() {
+                        $("#end-conversation").removeClass("disabled").click(function() {
+                            webrtc.leaveRoom();
+                            $(this).addClass("disabled");
+                        });
+                    });
+                });
+            });
+            $("#logout").click(function() {
+                window.location.href = '/logout';
+            });
+        </script>
+
+
+    </body>
+
+
+</html>

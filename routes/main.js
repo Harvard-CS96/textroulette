@@ -18,11 +18,24 @@ router.get('/', isLoggedIn, (req, res) => {
             isAuthenticated: 'true',
             user: JSON.stringify(req.user),
         } :
-        {   
+        {
             isAuthenticated: 'false',
             user: JSON.stringify({}),
         }
-    res.render("index", hbsData)
+    res.render("video", hbsData)
+})
+
+router.get('/text', isLoggedIn, (req, res) => {
+    const hbsData = req.isAuthenticated() === true ?
+        {
+            isAuthenticated: 'true',
+            user: JSON.stringify(req.user),
+        } :
+        {
+            isAuthenticated: 'false',
+            user: JSON.stringify({}),
+        }
+    res.render("text", hbsData)
 })
 
 // Either find specific questions or all questions.
@@ -43,7 +56,7 @@ router.get('/updatePreferences', isLoggedIn, (req, res) => {
             isAuthenticated: 'true',
             user: JSON.stringify(req.user)
         } :
-        {   
+        {
             isAuthenticated: 'false',
             user: JSON.stringify({})
         }
@@ -71,7 +84,6 @@ router.get('/logout', function(req, res) {
     req.logout()
     res.redirect('/');
 })
-
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
