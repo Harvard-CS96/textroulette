@@ -9,7 +9,7 @@ User = mongoose.model('User');
 function findById(uuid, callback) {
   User.findOne({"uuid": uuid}, (err, results) => {
       if (err) {
-        throw err
+        console.log(err)
       }
       callback(results);
     })
@@ -19,7 +19,7 @@ function findAllInList(uuids, callback) {
   const query = {"uuid": { $in: uuids }}
   User.find(query, (err, results) => {
       if (err) {
-        throw err
+        console.log(err)
       }
       callback(results);
     });
@@ -70,9 +70,9 @@ function incrementBadgeCount(currentBadges, badgeName){
   console.log(currentBadges);
   console.log(badgeName);
   console.log('arguments above');
-  var idx = currentBadges.map(function(d){ return d.badge; }).indexOf(badgeName);
+  var badgeIdx = currentBadges.map(d => d.badge).indexOf(badgeName);
   // If this user hasn't recieved this badge before
-  if(idx==-1){
+  if(badgeIdx === -1){
     var newBadge = {
       "badge": badgeName,
       "count": 1
@@ -82,9 +82,9 @@ function incrementBadgeCount(currentBadges, badgeName){
   }
   // Otherwise find and update existing record
   else{
-    var specificBadge = currentBadges[idx];
-    specificBadge.count = specificBadge.count + 1;
-    currentBadges[idx] = specificBadge;
+    var specificBadge = currentBadges[badgeIdx];
+    specificBadge.count++;
+    currentBadges[badgeIdx] = specificBadge;
     return currentBadges;
   }
 }
@@ -114,7 +114,7 @@ function applyFeedback(uuid, feedback) {
     
     user.save((err) => {
       if (err) {
-        throw err;
+        console.log(err);
       }
     })
   })

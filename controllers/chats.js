@@ -22,9 +22,6 @@ const Chat = db.models.Chat;
 */
 
 function logFeedback(feedback) {
-    console.log("Chat: adding feedback");
-    console.log(feedback);
-    console.log('above is feedback');
 
     getMostRecent(feedback.from, (chat) => {
         if (chat.feedback.length >= 2) {
@@ -36,18 +33,19 @@ function logFeedback(feedback) {
         // Save to the database
         chat.save((err) => {
             if (err) {
-                throw err;
+                console.log(err);
             }
         });
     
-        if (feedback.from == chat.user1){
+        if (feedback.from === chat.user1){
             var otherID = chat.user2;
         }
-        else if (feedback.from == chat.user2){
+        else if (feedback.from === chat.user2){
             var otherID = chat.user1;
         }
-        console.log(otherID);
-        console.log('other id above');
+
+        console.log("Chat: adding feedback from " + feedback.from + " to " + otherID);
+
         users.applyFeedback(otherID, feedback);
     })
 }
@@ -67,9 +65,11 @@ function getMostRecent(uuid, callback) {
         .limit(1)
         .exec((err, result) => {
             if (err) {
-                throw err
+                console.log(err)
             }
-            callback(result[0]) // A list was returned, must get element.
+            if (result) {
+                callback(result[0]) // A list was returned, must get element.
+            }
         })
 }
 
@@ -88,7 +88,7 @@ function logConnection(payload) {
     // Save to the database
     chat.save((err) => {
         if (err) {
-            throw err;
+            console.log(err);
         }
     });
 }
@@ -97,10 +97,8 @@ function logDisconnection(payload) {
 
     console.log("Chat: logDisconnection fired on reason " + payload.reason);
 
-    // The disconnecter
-    const who = payload.who;
-    // The disconnectee
-    const partner = payload.partner;
+    // disconnecter, disconectee
+    const { who, partner }  = payload;
 
     // Instructions to locate the ongoing conversation in the database
     const query = {
