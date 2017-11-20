@@ -28,12 +28,14 @@ conn.openUri(db_uri)
 const Chat = require('./models/chat');
 const User = require('./models/user');
 const Question = require('./models/question');
+const Report = require('./models/report');
 
 module.exports = {
     connection: conn,
     models: {
         Chat,
         User,
-        Question
+        Question,
+        Report
     }
 };
