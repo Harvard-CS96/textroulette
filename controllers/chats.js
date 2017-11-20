@@ -24,15 +24,8 @@ const Chat = db.models.Chat;
 function logFeedback(feedback) {
     console.log("Chat: adding feedback");
     console.log(feedback);
-    console.log(feedback.from);
     console.log('above is feedback');
 
-    Chat.findOne({}, (err, result) => {
-        console.log('example user1');
-        console.log(result.user1);
-        console.log(result.user2);
-        console.log('end example user1');
-    })
     getMostRecent(feedback.from, (chat) => {
         if (chat.feedback.length >= 2) {
             return;
