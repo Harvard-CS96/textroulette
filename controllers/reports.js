@@ -19,3 +19,7 @@ function createReport(report) {
     }
   });
 }
+
+module.exports = {
+  createReport
+}
