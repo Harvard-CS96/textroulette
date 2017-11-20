@@ -10,7 +10,7 @@ require(path.join(DIR.ROOT, '/config/passport'))(passport);
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 var users = require(path.join(DIR.ROOT, 'controllers/users'));
 var chats = require(path.join(DIR.ROOT, 'controllers/chats'));
-var reports = require(path.join(DIR_ROOT, 'controllers/reports'));
+var reports = require(path.join(DIR.ROOT, 'controllers/reports'));
 
 const router = express.Router();
 
