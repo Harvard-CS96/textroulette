@@ -96,6 +96,7 @@
 
                 $endConversation.click(() => {
                     socket.emit("hangup");
+                    window.location.href='/feedback';
                 })
 
                 $logout.click(() => {
@@ -139,6 +140,8 @@
                     $newDiv.append($newEm)
                     $chat.text("");
                     $chat.append($newDiv)
+                    // go to feedback page
+                    window.location.href = '/feedback';
                 })
                 socket.emit("set user", {
                     username: user.facebook.name,
