@@ -19,7 +19,6 @@ class Matcher {
         this.callbacks = {};
         this._setStatus = setStatus;
         this._maxBlacklist = maxBlacklist;
-        this.connectionsQueue = []
     }
 
     // Add a callback that fires when we switch to a certain status
@@ -169,7 +168,7 @@ class Matcher {
                                 });
 
         // Iterate over all connections
-        const ids = this.connectionsQueue;
+        const ids = Object.keys(this.connections);
         const { length } = ids;
         for (let i = 0; i < length; i++) {
             const key = ids[i]
@@ -194,17 +193,14 @@ class Matcher {
                         if (isDifferentOpinion(question1.response, Questions2[Question2Index].response)) {
                             // set partner on conversation about question with this id
                             var questionTitle = getQuestionByID(question1.id, questionData);
+                            this.setPartner(id, key, {text: questionTitle, id: question1.id});
+                            break;
 
-                            // if you can find a partner stop searching
-                            if (this.setPartner(id, key, {text: questionTitle, id: question1.id}))
-                                break;
                         }
                     }
                 }
             }
         }
-        // if the loop hasn't broken then put id on the queue
-        this.connectionsQueue.push(id);
     }
         
 
@@ -216,21 +212,13 @@ class Matcher {
             this.connections[id2].partner !== null
         ) {
             // TODO: handle if you can't pair
-            return false;
+            return;
         }
         console.log(`Matcher: Pairing ${id1} and ${id2}`)
 
         // Set each id's partner to the other
         this.connections[id1].partner = id2;
         this.connections[id2].partner = id1;
-
-        // delete from queue
-        if (this.connectionsQueue.indexOf(id1) > -1) {
-            this.connectionsQueue.splice(id1);
-        }
-        if (this.connectionsQueue.indexOf(id2) > -1) {
-            this.connectionsQueue.splice(id2);
-        }
         
         console.log("Users will discuss the question: " + question.text);
 
@@ -240,7 +228,6 @@ class Matcher {
             uid1: this.connections[id1].user_id, 
             uid2: this.connections[id2].user_id
         });
-        return true;
     }
 
     // Get the partner of a given id
