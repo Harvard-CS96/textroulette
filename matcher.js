@@ -156,6 +156,13 @@ class Matcher {
 
 
     findMatch(userData, questionData, id){
+        
+        // this is hacky - we encounter this case when submitting feedback but haven't figured out why :(
+        if (!this.connections[id]) {
+            console.log("Missing connection for id: " + id)
+            return;
+        }
+
         // get user data from id 
         var user1ID = this.connections[id].user_id;
         var userData1 = getUserDataOfID(userData, user1ID);
@@ -170,6 +177,7 @@ class Matcher {
         // Iterate over all connections
         const ids = Object.keys(this.connections);
         const { length } = ids;
+        console.log(this.connections)
         for (let i = 0; i < length; i++) {
             const key = ids[i]
             // If we find an entry that's single and also not the same user, connect
