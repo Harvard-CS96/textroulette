@@ -1,13 +1,4 @@
 {
-  "isDev": false,
-  "server": {
-    "port": 443,
-    "/* secure */": "/* whether this connects via https */",
-    "secure": true,
-    "key": "/etc/letsencrypt/live/signaling.tk/privkey.pem",
-    "cert": "/etc/letsencrypt/live/signaling.tk/fullchain.pem",
-    "password": null
-  },
   "rooms": {
     "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
     "maxClients": 0
