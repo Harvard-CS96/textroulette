@@ -81,6 +81,9 @@ io.use(sharedsession(session, {
   autoSave:true
 }));
 
+// to listen to port 3000
+server.listen(process.env.PORT || 3000)
+
 const Matcher = require('./matcher');
 let matcher = new Matcher((id, status, partner = null) => {
   switch (status) {
