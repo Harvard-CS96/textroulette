@@ -77,7 +77,12 @@
                 $("#join-room-button").removeClass("disabled");
                 $("#join-room").submit(function(e) {
                     e.preventDefault();
-                    webrtc.joinRoom($("#room").val());
+                    webrtc.joinRoom($("#room").val(), function() {
+                        $("#end-conversation").removeClass("disabled").click(function() {
+                            webrtc.leaveRoom();
+                            $(this).addClass("disabled");
+                        });
+                    });
                 });
             });
             $("#logout").click(function() {
