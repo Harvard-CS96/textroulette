@@ -61,6 +61,12 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
         <script>
+            var host;
+            if (window.location.port) {
+                host = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+            } else {
+                host = "/";
+            }
             var webrtc = new SimpleWebRTC({
                 // the id/element dom element that will hold "our" video
                 localVideoEl: 'localVideo',
@@ -69,7 +75,7 @@
                 // immediately ask for camera access
                 autoRequestMedia: true,
                 // set signaling server
-                url: 'https://signaling.tk/',
+                url: host,
                 debug: true
             });
             // we have to wait until it's ready
