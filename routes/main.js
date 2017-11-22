@@ -28,7 +28,20 @@ function getAuthInfo(req){
 }
 
 router.get('/', isLoggedIn, (req, res) => {
-    res.render("index", getAuthInfo(req));
+    res.render("video", getAuthInfo(req));
+})
+
+router.get('/text', isLoggedIn, (req, res) => {
+    const hbsData = req.isAuthenticated() === true ?
+        {
+            isAuthenticated: 'true',
+            user: JSON.stringify(req.user),
+        } :
+        {
+            isAuthenticated: 'false',
+            user: JSON.stringify({}),
+        }
+    res.render("text", hbsData)
 })
 
 // Get a user document from the db by uuid
@@ -93,7 +106,6 @@ router.get('/logout', function(req, res) {
     req.logout()
     res.redirect('/');
 })
-
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

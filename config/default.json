@@ -1,0 +1,23 @@
+{
+  "rooms": {
+    "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
+    "maxClients": 0
+  },
+  "stunservers": [
+    {
+      "urls": "stun:stun.l.google.com:19302"
+    },
+    {
+       "urls": [
+          "turn:u1.xirsys.com:80?transport=udp",
+          "turn:u1.xirsys.com:3478?transport=udp",
+          "turn:u1.xirsys.com:80?transport=tcp"
+       ],
+       "credential": "e7c20620-c337-11e7-8a22-138b28b2b7c7",
+       "username": "e7c20558-c337-11e7-a9e4-47e033b177d8"
+    }
+  ],
+   "turnservers": [
+
+   ]
+}
