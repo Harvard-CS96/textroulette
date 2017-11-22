@@ -6,6 +6,7 @@ const { CONN_STATUS } = require('./constants')
 const { WAITING, PAIRING, DISCONNECTED } = CONN_STATUS;
 const path = require('path');
 const DIR = require('./constants.js').DIR
+const uuid = require('uuid');
 
 var users = require(path.join(DIR.ROOT, 'controllers/users'));
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
@@ -90,7 +91,7 @@ class Matcher {
         }
 
         this._setStatus(id, DISCONNECTED, partner);
-        
+
     }
 
     // Remove an id from the connection pool
@@ -116,7 +117,7 @@ class Matcher {
         this.connections[id].blacklist.push(blacklisted)
         this.connections[id].blacklist = this.connections[id].blacklist.slice(-1 * this._maxBlacklist);
     }
-    
+
 
     // Attempt to find new single match for given id
     checkForMatches(id) {
@@ -140,19 +141,19 @@ class Matcher {
         }
         console.log(`Matcher: Checking for matches for ${id}...`)
 
-        users.findAll(function(userData){ 
+        users.findAll(function(userData){
             console.log(userData[0].questions_answered)
             console.log(userData[0].uuid)
             console.log(referenceToThis.connections)
-            questions.findActive(function(questionData){ 
-                referenceToThis.findMatch(userData, questionData, id); 
+            questions.findActive(function(questionData){
+                referenceToThis.findMatch(userData, questionData, id);
             });
         });
     }
 
 
     findMatch(userData, questionData, id){
-        // get user data from id 
+        // get user data from id
         var user1ID = this.connections[id].user_id;
         var userData1 = getUserDataOfID(userData, user1ID);
         var Questions1 = getAvailableUserQuestions(userData1, questionData);
@@ -175,7 +176,7 @@ class Matcher {
                 this.connections[key].blacklist.indexOf(id) === -1 &&
                 this.connections[id].blacklist.indexOf(key) === -1
             ) {
-                
+
 
                 // get second user data from key
                 var user2ID = this.connections[key].user_id;
@@ -204,7 +205,7 @@ class Matcher {
         }
 
     }
-        
+
 
     // Set two ids to be each others' partners
     setPartner(id1, id2, question) {
@@ -216,7 +217,6 @@ class Matcher {
             // TODO: handle if you can't pair
             return;
         }
-        console.log(`Matcher: Pairing ${id1} and ${id2}`)
 
         // Set each id's partner to the other
         this.connections[id1].partner = id2;
@@ -224,9 +224,18 @@ class Matcher {
 
         console.log("Users will discuss the question: " + question.text);
 
-        this._setStatus(id1, PAIRING, id2);
-        this._setStatus(id2, PAIRING, id1);
-        this.fireCallbacks(PAIRING, this.connections[id1].user_id, this.connections[id2].user_id);
+        // Create a new room name for this Conversation
+        var room = uuid();
+
+        console.log(`Matcher: Pairing ${id1} and ${id2} in room ${room}`);
+
+        this._setStatus(id1, PAIRING, id2, room);
+        this._setStatus(id2, PAIRING, id1, room);
+        this.fireCallbacks(PAIRING, {
+            uid1: this.connections[id1].user_id,
+            uid2: this.connections[id2].user_id,
+            room: room
+        });
     }
 
     // Get the partner of a given id

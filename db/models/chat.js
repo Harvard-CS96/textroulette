@@ -6,7 +6,7 @@ const ChatSchema = new mongoose.Schema({
     connected: {
         time: {type: Date, default: Date.now}
     },
-    disconnected: { 
+    disconnected: {
         is_disconnected: Boolean,
         time: Date,
         reason: String,

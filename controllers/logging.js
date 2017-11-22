@@ -9,12 +9,13 @@ const Chat = db.models.Chat;
 
 function logConnection(payload) {
 
-    console.log("Logging: logConnection fired");    
+    console.log("Logging: logConnection fired");
 
     // Instantiate new chat document
     const chat = new Chat({
-        uid1: payload.uid1, 
+        uid1: payload.uid1,
         uid2: payload.uid2,
+        room: payload.room,
         disconnected: {
             is_disconnected: false,
             time: undefined,
@@ -27,7 +28,7 @@ function logConnection(payload) {
     chat.save((err) => {
         if (err) {
             throw err;
-        } 
+        }
     });
 }
 
@@ -44,6 +45,7 @@ function logDisconnection(payload) {
     const query = {
         uid1: {$in: [who, partner]},
         uid2: {$in: [who, partner]},
+        room: payload.room,
         disconnected: {is_disconnected: false}
     };
 
@@ -59,7 +61,7 @@ function logDisconnection(payload) {
 
     // Execute the update
     Chat.findOneAndUpdate(query, update).exec();
-} 
+}
 
 module.exports = {
     logConnection,

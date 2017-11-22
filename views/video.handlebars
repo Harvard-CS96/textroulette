@@ -84,20 +84,25 @@
                 $("#end-conversation").prop('disabled', 'true');
                 // tell the server to match user to new partner
                 webrtc.connection.emit("request match")
+            }
+            webrtc.connection.on("waiting", function() {
                 // Tell user matching is happening
                 $("#notice").text("Matching you to another user...");
-            }
-            webrtc.on("match", function(room) {
+                // Disable End Conversation Button
+                $("#end-conversation").prop('disabled', 'true');
+            })
+            webrtc.connection.on("recall username", function(username) {
+                $("#identity").text("Hello, " + username);
+            });
+            webrtc.connection.on("pairing", function(partner, room) {
                 // leave current room, if any
                 webrtc.leaveRoom();
                 // join new room
                 webrtc.joinRoom(room);
+                // Update Notice Text
+                $("#notice").text("You are talking with " + partner);
                 // Enable the end conversation Button
                 $("#end-conversation").prop('disabled', null);
-            });
-            webrtc.connection.on("recall username", function(username) {
-                console.log(username);
-                $("#identity").text("Hello, " + username);
             });
             // When the webSocket connection is ready, identify the users
             webrtc.on('connectionReady', function() {
@@ -110,7 +115,10 @@
             // Wait until video capabilities are ready to perform first match
             webrtc.on('readyToCall', matchPartner);
             // When user ends conversation, start a new match
-            $("#end-conversation").click(matchPartner);
+            $("#end-conversation").click(function() {
+                webrtc.connection.emit("hangup");
+                matchPartner();
+            });
             // Logout upon clicking logout button
             $("#logout").click(function() {
                 window.location.href = '/logout';
