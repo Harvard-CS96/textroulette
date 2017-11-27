@@ -104,7 +104,6 @@ module.exports = function(server, io, matcher, config) {
             // leave any existing rooms
             removeFeed();
             safeCb(cb)(null, describeRoom(name));
-            console.log("name: " + name);
             client.join(name);
             client.room = name;
         }

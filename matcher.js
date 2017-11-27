@@ -203,7 +203,6 @@ class Matcher {
                             // set partner on conversation about question with this id
                             var questionTitle = getQuestionByID(question1.id, questionData);
                             this.setPartner(id, key, {text: questionTitle, id: question1.id});
-                            console.log("partner set");
                             break;
 
                         }
