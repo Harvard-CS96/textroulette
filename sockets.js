@@ -178,9 +178,8 @@ module.exports = function(server, io, matcher, config) {
     }
 
     function clientsInRoom(name) {
-        console.log("This:");
-        console.log(io.nsps['/'].adapter.rooms[name])
-        return Object.keys(io.nsps['/'].adapter.rooms[name]).length;
+        var clients = io.nsps['/'].adapter.rooms[name];
+        return clients ? Object.keys(io.nsps['/'].adapter.rooms[name]).length : 0;
     }
 
 };
