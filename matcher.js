@@ -8,9 +8,9 @@ const path = require('path');
 const DIR = require('./constants.js').DIR
 const uuid = require('uuid');
 
-var users = require(path.join(DIR.ROOT, 'controllers/users'));
-var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
-
+const users = require(path.join(DIR.ROOT, 'controllers/users'));
+const questions = require(path.join(DIR.ROOT, 'controllers/questions'));
+const chat = require(path.join(DIR.ROOT, 'controllers/chats'));
 
 // End example
 
@@ -68,7 +68,7 @@ class Matcher {
     }
 
     // Unpair two still-connected users.
-    unpair(id) {
+    unpair(id, reason) {
 
         // If a conenction with the given id doesn't exist, don't do anything
         if (this.connections[id] === undefined) {
@@ -86,6 +86,12 @@ class Matcher {
             this._setStatus(partner, DISCONNECTED, id)
             this._setStatus(partner, WAITING)
 
+            this.fireCallbacks(DISCONNECTED, {
+                who: this.connections[id].user_id,
+                partner: this.connections[partner].user_id,
+                reason: reason
+            })
+
             // Check for a partner for the newly single ex-partner
             this.checkForMatches(partner);
         }
@@ -97,7 +103,7 @@ class Matcher {
     // Remove an id from the connection pool
     disconnect(id) {
         // Same procedure as hanging up a call between still-connected users.
-        this.unpair(id);
+        this.unpair(id, 'disconnect');
 
         // Delete connection from the pool
         delete this.connections[id];
@@ -106,8 +112,8 @@ class Matcher {
 
     // Hangup a still-connected user.
     hangup(id) {
-        this.unpair(id)
-        this.addBlacklist(id, this.connections[id].partner);
+        this.unpair(id, 'hangup')
+        this.addBlacklist(id, this.connections[id].partner)
         this.connections[id].partner = null;
         this._setStatus(id, WAITING);
         this.checkForMatches(id);
@@ -141,10 +147,8 @@ class Matcher {
         }
         console.log(`Matcher: Checking for matches for ${id}...`)
 
-        users.findAll(function(userData){
-            console.log(userData[0].questions_answered)
-            console.log(userData[0].uuid)
-            console.log(referenceToThis.connections)
+        const userIds = Object.keys(this.connections).map((k) => { return this.connections[k].user_id });
+        users.findAllInList(userIds, function(userData){
             questions.findActive(function(questionData){
                 referenceToThis.findMatch(userData, questionData, id);
             });
@@ -153,6 +157,13 @@ class Matcher {
 
 
     findMatch(userData, questionData, id){
+
+        // this is hacky - we encounter this case when submitting feedback but haven't figured out why :(
+        if (!this.connections[id]) {
+            console.log("Missing connection for id: " + id)
+            return;
+        }
+
         // get user data from id
         var user1ID = this.connections[id].user_id;
         var userData1 = getUserDataOfID(userData, user1ID);
@@ -165,8 +176,9 @@ class Matcher {
                                 });
 
         // Iterate over all connections
-        const ids = Object.keys(this.connections)
+        const ids = Object.keys(this.connections);
         const { length } = ids;
+        console.log(this.connections)
         for (let i = 0; i < length; i++) {
             const key = ids[i]
             // If we find an entry that's single and also not the same user, connect
@@ -176,34 +188,28 @@ class Matcher {
                 this.connections[key].blacklist.indexOf(id) === -1 &&
                 this.connections[id].blacklist.indexOf(key) === -1
             ) {
-
-
                 // get second user data from key
                 var user2ID = this.connections[key].user_id;
                 var userData2 = getUserDataOfID(userData, user2ID);
                 var Questions2 = getAvailableUserQuestions(userData2, questionData);
                 var Questions2IDs = Questions2.map(function (obj) {
-                                        return obj.id;
+                                        return String(obj.id);
                                     });
-
                 for (let i = 0; i < Questions1.length; i++) {
                     var question1 = Questions1[i];
-                    var Question2Index = Questions2IDs.indexOf(question1.id)
+                    var Question2Index = Questions2IDs.indexOf(String(question1.id))
                     if (Question2Index >= 0) {
-                        if (isDifferentOpinion(question1.response,Questions2[Question2Index].response)) {
+                        if (isDifferentOpinion(question1.response, Questions2[Question2Index].response)) {
                             // set partner on conversation about question with this id
-                            //this.setPartner(id, key);
-                            // eventually will want to send over question id as well
                             var questionTitle = getQuestionByID(question1.id, questionData);
-                            console.log(questionTitle);
                             this.setPartner(id, key, {text: questionTitle, id: question1.id});
                             break;
+
                         }
                     }
                 }
             }
         }
-
     }
 
 
@@ -302,12 +308,8 @@ function getUserDataOfID(userData, id){
 function getAvailableUserQuestions(userData, questionData){
     var ChosenQuestions = [];
     var questionsAnswered = userData.questions_answered;
-    console.log("QUESTIONS ANSWERED");
-    console.log(questionsAnswered);
     for (let i = 0; i < questionsAnswered.length; i++) {
         var responseData = questionsAnswered[i].response_data;
-        console.log("RESPONSE DATA");
-        console.log(responseData);
         if (responseData[responseData.length - 1] != null) {
             var el = {response: responseData[responseData.length - 1].response, id: questionsAnswered[i].question_id}
             ChosenQuestions.push(el)
@@ -319,7 +321,6 @@ function getAvailableUserQuestions(userData, questionData){
 function getQuestionByID(id, questionData){
     for (var i=0; i < questionData.length ; ++i){
         if (questionData[i].id == id){
-            console.log(questionData[i]);
             return questionData[i].text;
         }
     }
@@ -327,7 +328,7 @@ function getQuestionByID(id, questionData){
 }
 
 function isDifferentOpinion(a, b){
-    return (a != b)
+    return (a !== b)
 }
 
 /**

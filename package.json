@@ -23,6 +23,8 @@
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "uuid": "^3.1.0",
+    "uuid-1345": "^0.99.6",
+    "uuid-js": "^0.7.5",
     "webpack": "^3.8.1"
   },
   "devDependencies": {},

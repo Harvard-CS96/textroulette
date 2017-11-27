@@ -16,7 +16,10 @@
 <body>
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
         <a class="navbar-brand" href="#">TextRoulette</a>
-        <input class="btn btn-outline-danger my-2 my-sm-0" type="button" id="logout" value="Logout" />
+        <div>
+          <input class="btn btn-outline-primary my-2 my-sm-0" type="button" id="stances" value="My Stances" />
+          <input class="btn btn-outline-danger my-2 my-sm-0" type="button" id="logout" value="Logout" />
+        </div>
     </nav>
     <div class="container mt-5">
         <div class="row text-center">
@@ -41,7 +44,6 @@
                         </div>
                     </div>
                 </form>
-                <a href="updatePreferences">Update Your Stances</a>
             </div>
         </div>
     </div>
@@ -75,6 +77,7 @@
                 var $identity = $("#identity");
                 var $endConversation = $("#end-conversation");
                 var $logout = $("#logout");
+                var $stances = $("#stances");
 
                 // when the submit button is clicked “e” is the event
                 $messageForm.submit(function (e) {
@@ -93,11 +96,17 @@
 
                 $endConversation.click(() => {
                     socket.emit("hangup");
+                    window.location.href='/feedback';
                 })
 
                 $logout.click(() => {
                     socket.emit("logout");
                     window.location.href = '/logout';
+                })
+
+                $stances.click(() => {
+                    socket.emit("stances");
+                    window.location.href = '/updateStance';
                 })
 
                 // when socket emit a message to each user
@@ -131,6 +140,8 @@
                     $newDiv.append($newEm)
                     $chat.text("");
                     $chat.append($newDiv)
+                    // go to feedback page
+                    window.location.href = '/feedback';
                 })
                 socket.emit("set user", {
                     username: user.facebook.name,

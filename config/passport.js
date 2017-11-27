@@ -49,6 +49,8 @@ module.exports = function(passport) {
                 // if the user is found, then log them in
                 if (user) {
                     console.log("FBAuth: User found")
+                    user.is_first_time = false;
+                    user.save();
                     return done(null, user); // user found, return that user
                 } 
                 else {

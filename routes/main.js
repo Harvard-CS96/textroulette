@@ -9,10 +9,12 @@ require(path.join(DIR.ROOT, '/config/passport'))(passport);
 
 var questions = require(path.join(DIR.ROOT, 'controllers/questions'));
 var users = require(path.join(DIR.ROOT, 'controllers/users'));
+var chats = require(path.join(DIR.ROOT, 'controllers/chats'));
+var reports = require(path.join(DIR.ROOT, 'controllers/reports'));
 
 const router = express.Router();
 
-router.get('/', isLoggedIn, (req, res) => {
+function getAuthInfo(req){
     const hbsData = req.isAuthenticated() === true ?
         {
             isAuthenticated: 'true',
@@ -22,7 +24,11 @@ router.get('/', isLoggedIn, (req, res) => {
             isAuthenticated: 'false',
             user: JSON.stringify({}),
         }
-    res.render("video", hbsData)
+    return hbsData;
+}
+
+router.get('/', isLoggedIn, (req, res) => {
+    res.render("video", getAuthInfo(req));
 })
 
 router.get('/text', isLoggedIn, (req, res) => {
@@ -38,29 +44,45 @@ router.get('/text', isLoggedIn, (req, res) => {
     res.render("text", hbsData)
 })
 
+// Get a user document from the db by uuid
+router.get('/profile', (req, res) => {
+    users.findById(req.body.uuid, (results) => {
+        res.send(results);
+    });
+});
+
 // Either find specific questions or all questions.
 router.get('/questions', (req, res) => {
-    questions.findActive((results) => {
+    questions.findActive((questions) => {
+        users.findById(req.user.uuid, (userData) => {
+            res.send({questions: questions, userData: userData});
+        });
+    });
+});
+
+// Either find specific questions or all questions.
+router.post('/chats', (req, res) => {
+    chats.logFeedback(req.body, (results) => {
         res.send(results);
     });
 });
 
 // Update survey responses of a particular user.
-router.post('/users/updatePreferences', (req, res) => {
-    users.updatePreferences(req.body.uuid, req.body.questions_answered);
+router.post('/updateStance', (req, res) => {
+    users.updateStance(req.body.uuid, req.body.questions_answered);
 });
 
-router.get('/updatePreferences', isLoggedIn, (req, res) => {
-    const hbsData = req.isAuthenticated() === true ?
-        {
-            isAuthenticated: 'true',
-            user: JSON.stringify(req.user)
-        } :
-        {
-            isAuthenticated: 'false',
-            user: JSON.stringify({})
-        }
-    res.render("updatePreferences", hbsData);
+router.get('/updateStance', isLoggedIn, (req, res) => {
+    res.render("updateStance", getAuthInfo(req));
+})
+
+router.get('/feedback', isLoggedIn, (req, res) => {
+    res.render("feedback", getAuthInfo(req));
+})
+
+// Save new report
+router.post('/feedback/report', isLoggedIn, (req, res) => {
+    reports.createReport(req.body.report);
 })
 
 router.get('/login', (req, res) => {
