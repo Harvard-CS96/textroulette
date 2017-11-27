@@ -178,6 +178,7 @@ module.exports = function(server, io, matcher, config) {
     }
 
     function clientsInRoom(name) {
+        console.log(io.sockets.sockets);
         return io.sockets.clients(name).length;
     }
 
