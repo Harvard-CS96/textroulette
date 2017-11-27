@@ -105,6 +105,7 @@ module.exports = function(server, io, matcher, config) {
             removeFeed();
             safeCb(cb)(null, describeRoom(name));
             client.join(name);
+            console.log("name: " + name);
             client.room = name;
         }
 
