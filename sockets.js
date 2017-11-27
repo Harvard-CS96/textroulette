@@ -178,7 +178,7 @@ module.exports = function(server, io, matcher, config) {
     }
 
     function clientsInRoom(name) {
-        console.log(io.nsps['/'].adapter.rooms[room]);
+        console.log(io.nsps['/'].adapter.rooms[name]);
         return io.sockets.clients(name).length;
     }
 
