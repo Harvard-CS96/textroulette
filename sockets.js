@@ -179,7 +179,7 @@ module.exports = function(server, io, matcher, config) {
 
     function clientsInRoom(name) {
         console.log("This:");
-        console.log(Object.keys(io.nsps['/'].adapter.rooms[name]))
+        console.log(io.nsps['/'].adapter.rooms[name])
         return Object.keys(io.nsps['/'].adapter.rooms[name]).length;
     }
 
