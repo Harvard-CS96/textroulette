@@ -140,8 +140,12 @@
 
               // returns list of the questions but includes the user response to those questions
               function getQuestionsWithUserAnswers(data){
+                // get questions and userAnswers from the data
                 var questions = data.questions;
-                var userAnswers = data.userData.questions_answered;
+                if ("questions_answered" in data.userData)
+                    var userAnswers = data.userData.questions_answered;
+                else
+                    var userAnswers = [];
 
                 // maps question ids to user answers
                 dictOfAnswers = {};
