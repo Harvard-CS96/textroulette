@@ -10,9 +10,26 @@
 
 
         <style>
-            video {
-                width: 49.5%;
+            video, canvas {
+              width: 320px;
+              height: 240px;
+              margin-top: 5px;
+              position: absolute;
             }
+
+            .remote_column video, .remote_column canvas {
+              margin-left: 330px;
+            }
+
+            .local_column video, .local_column canvas {
+              margin-left: 5px;
+            }
+
+            /*.local_column, .remote_column video {
+              width: 49.5%;
+              position: relative;
+            }*/
+
         </style>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
