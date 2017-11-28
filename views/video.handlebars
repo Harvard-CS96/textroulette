@@ -48,8 +48,13 @@
                     <!-- where the messages will apend in -->
                     <div id="notice"></div>
                     <div id="chat" class="border bg-light text-left p-3" style="min-height:20em;overflow:scroll;">
+                      <div class="local_column">
                         <video id="localVideo"></video>
-                        <span id="remoteVideos"></span>
+                      </div>
+                        <div class="remote_column">
+                          <span id="remoteVideos"></span>
+                          <canvas id="canvas" width="320" height="240"></canvas>
+                        </div>
                     </div>
 
                     <!-- form and input box to submit messages -->
