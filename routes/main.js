@@ -45,10 +45,17 @@ router.get('/text', isLoggedIn, (req, res) => {
 })
 
 // Get a user document from the db by uuid
-router.get('/profile', (req, res) => {
-    users.findById(req.body.uuid, (results) => {
+router.get('/profile', isLoggedIn, (req, res) => {
+    users.findById(req.user.uuid, (results) => {
         res.send(results);
     });
+});
+
+// Get a user's leaderboard
+router.get('/profile/leaderboard', isLoggedIn, (req, res) => {
+    users.getLeaderboard(req.user.uuid, (results) => {
+        res.send(results);
+    })
 });
 
 // Either find specific questions or all questions.
