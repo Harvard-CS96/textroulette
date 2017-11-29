@@ -1,0 +1,22 @@
+$white: #ffffff;
+$off-white: #eeeeee;
+$primary: #d6d6d6;
+$secondary: #509aee;
+$disabled: #727272;
+
+$font1: 'Helvetica', 
+    sans-serif;
+
+* {
+    box-sizing: border-box;
+    font-family: $font1;
+}
+
+body {
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+}
+

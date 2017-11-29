@@ -1,0 +1,55 @@
+{
+    "HelloWorld": {
+        "body": "Hello World!",
+        "link1": "About",
+        "link2": "Profile"
+    },
+    "About": {
+        "body": "This site is built with node.js, express, react, redux, react-router, SCSS, and webpack.",
+        "link": "Back to Home"
+    },
+    "LeaderboardButton": {
+        "disabled": "Show Leaderboard",
+        "link": "Hide Leaderboard"
+    },
+    "HideLeaders": {
+        "link": "Hide Leaderboard"
+    },
+    "ShowLeaders": {
+        "link": "Show Leaderboard"
+    },
+    "Login": {
+        "link": "Please log in."
+    },
+    "Logout": {
+        "link": "Logout!"
+    },
+    "Counter": {
+        "increment": "+",
+        "decrement": "-"
+    },
+    "Feedback": {
+        "body": "Rate your partner for this conversation.",
+        "link": "Feedback",
+        "badges": "What did your conversation partner do well?",
+        "criticisms": "What could they improve on?"
+    },
+    "Profile": {
+        "body": "Welcome to your profile!",
+        "link": "Back to Home"
+    },
+    "ReportAbuseButton": {
+        "link": "Report Abuse."
+    },
+    "StartConversationButton": {
+        "link": "Start Conversation"
+    },
+    "SubmitFeedbackButton": {
+        "link": "Submit Feedback",
+        "body": "How was your conversation?",
+        "disabled": "Please rate your conversation partner from one to five stars."
+    },
+    "SystemCheck": {
+        "link": "System Check"
+    }
+}

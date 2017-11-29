@@ -203,7 +203,7 @@
               function formSubmit(){
                 json = getAnswersJSON().filter(function(d){ return d.question_id != ''; });
                 console.log('about to ajax');
-                console.log(json);
+                console.log(JSON.stringify(json, null, 2));
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',

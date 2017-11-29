@@ -1,0 +1,166 @@
+@import './constants.scss';
+
+body {
+    background-color: $off-white;
+}
+
+#app-root {
+    div#App {
+        // padding: 100px;
+        background-color: $white;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        justify-content: center;    
+        text-align: center;        
+    }
+}
+
+div#LandingPage {
+    background-color: $off-white;
+    // ul.topnav {
+    //     list-style-type: none;
+    //     margin: 0;
+    //     padding: 0;
+    //     overflow: hidden;
+    //     background-color: #333;
+    // }
+    // ul.topnav li {float: left;}
+        
+    // ul.topnav li a {
+    //     display: block;
+    //     color: white;
+    //     text-align: center;
+    //      padding: 14px 16px;
+    //       text-decoration: none;
+    // }
+        
+    // ul.topnav li a:hover:not(.active) {background-color: #111;}
+        
+    // ul.topnav li.right {float: right;}
+
+    header.masthead {
+        position: relative;
+        background-color: #343a40;
+        background: url("../static/coloured-speech-bubbles.jpg") no-repeat center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        padding-top: 8rem;
+        padding-bottom: 8rem; }
+      
+      header.masthead .overlay {
+          position: absolute;
+          background-color: #212529;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 0;
+          opacity: 0.3; }
+      
+      header.masthead h1 {
+          font-size: 2rem; }
+      
+      @media (min-width: 768px) {
+          header.masthead {
+            padding-top: 12rem;
+            padding-bottom: 12rem; }
+            header.masthead h1 {
+              font-size: 3rem; } }
+      
+      .showcase .showcase-text {
+        padding: 3rem; }
+      
+      .showcase .showcase-img {
+        min-height: 30rem;
+        background: url("../static/handshake.jpg");
+        background-size: cover; }
+}
+
+
+#Logout #ReportAbuseButton {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#Counter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.button {
+    cursor: pointer;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    background-color: rgba($primary, 0.3);
+    border-radius: 0.25em;
+}
+
+.button.selected {
+    background-color: rgba($secondary, 0.3);
+}
+
+.button.disabled-link {
+    background-color: rgba($disabled, 0.3);
+    pointer-events: none;
+}
+
+.Badge.clickable {
+    cursor: pointer;
+}
+
+div#Feedback{
+    justify-content: center;
+    text-align: center;    
+}
+
+div#FeedbackBadgeSet{
+    display:flex; flex-direction:row; justify-content: space-between;            
+}
+
+div#BadgeSet{
+    display:flex; flex-direction:row;
+}
+
+.Badge{
+    display:flex; flex-direction:column; align-items: center;
+}
+
+div#HelloWorld, div#Profile, div#Feedback, div#ReportAbuse, div#SystemCheck, div#About, div#Conversation {
+    padding: 100px;
+}
+
+#VideoChat { 
+    border: 1px solid black;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .local-video-container,    
+    .remote-video-container {
+        position: relative;
+        width: 320px;
+        height: 240px;
+        > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 320px;
+            height: 240px;
+        }
+    }
+
+    .remote-video-container {
+        & > video { 
+            z-index: 0;
+        }
+        & > canvas {
+            z-index: 1;
+        }
+    }
+}

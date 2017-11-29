@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>My App</title>
+</head>
+<body>
+	<div id="app-root"></div>
+    <script type="text/javascript">
+        window.isAuthenticated = {{ isAuthenticated }}
+        window.user = {{{ user }}}
+    </script>
+    <script src="/static/js/simpleWebRTC.js"></script>
+    <script src="/static/js/tracking-min.js"></script>
+    <script src="/static/js/face-min.js"></script>
+	<script src="/bundle.js" type="text/javascript"></script>
+</body>
+</html>
