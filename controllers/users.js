@@ -30,14 +30,14 @@ function findAllInList(uuids, callback) {
 
 // Get a list of user profiles from a list of facebook ids
 function findByFBIdList(fbids, callback) {
-  User.find({ "facebook.id": { $in: fbids } }, (err, results) => {
+  const query = {"facebook.id": { $in: fbids }}
+  User.find(query, (err, results) => {
     if (err) {
       console.log(err)
     }
     if (results === undefined) {
       results = []
     }
-    console.log(results);
     callback(results);
   })
 }
@@ -52,7 +52,7 @@ function getLeaderboard(uuid, callback) {
       "me",
       { fields: "friends", access_token: profile.facebook.token },
       response => {
-        console.log(response.friends);
+
         var friend_ids = [];
         if (response.friends) {
           friend_ids = response.friends.data.map(friend => friend.id)
@@ -74,11 +74,13 @@ function getLeaderboard(uuid, callback) {
             return b.badge_total - a.badge_total;
           });
 
-          // Feed the leaderboard into the callback
-          console.log("LEADERBOARD: ");
-          console.log(public_friends);
-
-          callback(public_friends);
+          names_and_badges = public_friends.map(friend => {
+            return {
+              name: friend.facebook.name,
+              badges: friend.badges
+            }
+          })
+          callback(names_and_badges);
         });
       })
 
