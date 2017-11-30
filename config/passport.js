@@ -54,9 +54,10 @@ module.exports = function(passport) {
                 if (user) {
                     console.log("FBAuth: User found")
                     user.is_first_time = false;
+                    user.facebook.token = token;
                     user.save();
                     return done(null, user); // user found, return that user
-                } 
+                }
                 else {
                     console.log("FBAuth: User not found")
                     // if there is no user found with that facebook id, create them
