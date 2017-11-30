@@ -27,8 +27,12 @@ function getAuthInfo(req){
     return hbsData;
 }
 
-router.get('/', isLoggedIn, (req, res) => {
-    res.render("video", getAuthInfo(req));
+router.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("video", getAuthInfo(req));
+    } else {
+        res.render("landing");
+    }
 })
 
 router.get('/text', isLoggedIn, (req, res) => {
