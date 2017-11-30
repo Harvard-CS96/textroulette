@@ -40,71 +40,63 @@ label {
 }
 
 /* Put icons in circles */
-.glyphicon {
-    background-color: gray;
+#badge-area .glyphicon {
+    background-color: rgb(128, 128, 128);
     color: white;
+    font-size: 30px;
+    opacity: .5;
     padding: 30px;
-    font-size: 6em;
-    border-radius: 70px;
+    font-size: 30px;
+    border-radius: 50px;
 }
 
-.glyphicon:hover {
+#badge-area .glyphicon:hover {
     border: 6px dashed red;
     padding: 24px;
-    border-radius: 70px;
+    border-radius: 50px;
 }
 
-
-
-.rating {
-    float:left;
+#badge-area .glyphicon-selected {
+    border: 6px solid red;
+    padding: 24px;
+    border-radius: 50px;
+    opacity: 1;
 }
 
-.rating:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-    clip:rect(0,0,0,0);
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.rating:not(:checked) > label {
-    float:right;
-    width:1em;
-    padding:0 .1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:200%;
-    line-height:1.2;
-    color:#ddd;
-    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+#improvements-area table {
+    width: 400px;
 }
 
-.rating:not(:checked) > label:before {
-    content: '★ ';
+#badge-area tr {
+    margin-top: 10px;
+    height: 60px;
 }
 
-.rating > input:checked ~ label {
-    color: #f70;
-    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+#improvements-area tr {
+    margin-top: 10px;
+    height: 40px;
 }
 
-.rating:not(:checked) > label:hover,
-.rating:not(:checked) > label:hover ~ label {
-    color: gold;
-    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+#star-area .glyphicon {
+    color: gray;
+    opacity: .5;
+    font-size: 50px;
 }
 
-.rating > input:checked + label:hover,
-.rating > input:checked + label:hover ~ label,
-.rating > input:checked ~ label:hover,
-.rating > input:checked ~ label:hover ~ label,
-.rating > label:hover ~ input:checked ~ label {
-    color: #ea0;
-    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+.starred {
+    opacity: 1 !important;
+    color: rgb(255, 196, 0) !important;
 }
 
-.rating > label:active {
-    position:relative;
-    top:2px;
-    left:2px;
+.btn{
+    min-width: 110px;
+    border: solid rgb(108, 155, 209);
+    border-radius: 10px;
 }

@@ -18,38 +18,73 @@
 </head>
 
 <body>
+  <script type="text/javascript">
+    const user = {{{ user }}};
+  </script>>
+
+  </script>
 	 <div class="container mt-5">
       <div class="row text-center">
           <div class="col-md-12" style="height:100%;">
-            <h1>Textroulette Preferences</h1>
-            <p id="identity">Please Rate your Conversation</p>
-            {{!-- <fieldset class="rating">
-                <legend>Please rate:</legend>
-                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
-                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
-                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
-                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
-            </fieldset> --}}
-
-            <div id="badge-area">
-              <p>Hello people</p>
-              <input type="checkbox" class="glyphicon glyphicon-education"></input>
+            <h1>Feedback from your Conversation</h1>
+            <h4 id="identity">Please Rate your Conversation</h4>
+              <div class="container">
+                  <div onmouseout="paintStars(selectedStarCount)" id="star-area">
+                    <span id="star1" onmouseover="setHighlightStar(1)" onclick="setRatingStar(1)" class="glyphicon glyphicon-star"></span>
+                    <span id="star2" onmouseover="setHighlightStar(2)" onclick="setRatingStar(2)" class="glyphicon glyphicon-star"></span>
+                    <span id="star3" onmouseover="setHighlightStar(3)" onclick="setRatingStar(3)" class="glyphicon glyphicon-star"></span>
+                    <span id="star4" onmouseover="setHighlightStar(4)" onclick="setRatingStar(4)" class="glyphicon glyphicon-star"></span>
+                    <span id="star5" onmouseover="setHighlightStar(5)" onclick="setRatingStar(5)" class="glyphicon glyphicon-star"></span>
+                </div>
             </div>
 
-            <button id="submit" type="button" class="btn btn-outline-primary">
-              <a href='/'>Submit</a>
-            </button>
+            <div id="badge-area" style="align: center;">
+              <h4>Would you like to award any badges?</h4>
+  
+              <table>
+                <tr>
+                  <td>
+                    <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
+                  </td>
+                  <td>
+                    <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
+                  </td>
+                  <td>
+                    <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div id="improvements-area" style="align: center;">
+              <h4>Do you have any suggestions for improvement?</h4>
+              <table>
+                <tr>
+                  <td><input id='button-listening' onclick="changeButton('listening')" class="btn btn-outline-primary" type="button" value="Listening"></td>
+                  <td><input id='button-respect' onclick="changeButton('respect')" class="btn btn-outline-primary" type="button" value="Respect"></td>
+                  <td><input id='button-civility' onclick="changeButton('civility')" class="btn btn-outline-primary" type="button" value="Civility"></td>
+                </tr> 
+                <tr> 
+                  <td><input id='button-cooperation' onclick="changeButton('cooperation')" class="btn btn-outline-primary" type="button" value="Cooperation"></td>
+                  <td><input id='button-snowflake' onclick="changeButton('snowflake')" class="btn btn-outline-primary" type="button" value="Snowflake"></td>
+                  <td><input id='button-other' onclick="changeButton('other')" class="btn btn-outline-primary" type="button" value="Other"></td>
+                </tr>
+              </table>
+            </div>
+
+            <button id="submit" type="button" class="btn btn-outline-primary">Submit</button>
           </div>
       </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-      // load when jquery and page has be loaded
-    </script>
+    <script src="/static/js/feedback.js"></script>
 </body>
 
 </html>
