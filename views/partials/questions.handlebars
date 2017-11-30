@@ -30,6 +30,11 @@
       pointer-events: none;
       border-right: 1px solid #b6b6b6;
     }
+
+  }
+
+  .btn-group{
+    white-space: normal;
   }
 </style>
 
@@ -98,7 +103,7 @@
 
   function constructDiv(names, qID, userAnswer, idx) {
     var s = '';
-    var start = ('<div class="btn-group" id="question' + (idx + 1) + '" ' +
+    var start = ('<div class="btn-group" style="display: block" id="question' + (idx + 1) + '" ' +
       ' data-toggle="buttons"' +
       '>');
     var end = '</div>';
