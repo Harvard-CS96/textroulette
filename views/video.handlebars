@@ -1,242 +1,315 @@
-<!DOCTYPE html>
-<html lang="en">
 
-    <head>
-        <title>Textroulette</title>
+<style>
+    video,
+    canvas {
+        width: 320px;
+        height: 240px;
+        margin-top: 5px;
+        position: absolute;
+    }
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    .remote_column video,
+    .remote_column canvas {
+        margin-left: 330px;
+    }
 
-        <style>
-            video,
-            canvas {
-                width: 320px;
-                height: 240px;
-                margin-top: 5px;
-                position: absolute;
-            }
+    .local_column video,
+    .local_column canvas {
+        margin-left: 5px;
+    }
+</style>
 
-            .remote_column video,
-            .remote_column canvas {
-                margin-left: 330px;
-            }
-
-            .local_column video,
-            .local_column canvas {
-                margin-left: 5px;
-            }
-        </style>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    </head>
-
-    <body>
-        <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-            <a class="navbar-brand" href="#">Discourse</a>
-            <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Sign Out</a>
-        </nav>
-        <div class="container mt-5">
-            <div class="row text-center">
-                <div class="col-md-12" style="height:100%;">
-                    <h1>Discourse</h1>
-                    <p id="identity"></p>
-                    <!-- where the messages will apend in -->
-                    <div id="notice"></div>
-                    <div id="chat" class="border bg-light text-left p-3" style="min-height:20em;overflow:scroll;">
-                        <div class="local_column">
-                            <video id="localVideo"></video>
-                        </div>
-                        <div class="remote_column">
-                            <span id="remoteVideos"></span>
-                            <canvas id="canvas" width="320" height="240"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- form and input box to submit messages -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button id="end-conversation" class="btn btn-danger" style="width:100%;" disabled="true">End Conversation</button>
-                        </div>
-                    </div>
-
-                    <a href="/updateStance">Update Your Stances</a>
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <a class="navbar-brand" href="#">Discourse</a>
+    <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Sign Out</a>
+</nav>
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-12" style="height:100%;">
+            <h1>Discourse</h1>
+            <p id="identity"></p>
+            <!-- where the messages will apend in -->
+            <div id="notice"></div>
+            <div id="chat" class="border bg-light text-left p-3" style="min-height:20em;overflow:scroll;">
+                <div class="local_column">
+                    <video id="localVideo"></video>
+                </div>
+                <div class="remote_column">
+                    <span id="remoteVideos"></span>
+                    <canvas id="canvas" width="320" height="240"></canvas>
                 </div>
             </div>
+
+            <!-- form and input box to submit messages -->
+            <div class="row">
+                <div class="col-md-12">
+                    <button id="end-conversation" class="btn btn-danger" style="width:100%;" disabled="true">End Conversation</button>
+                </div>
+            </div>
+
+            <a href="/updateStance">Update Your Stances</a>
         </div>
+    </div>
+</div>
 
-        <script src="/static/js/simplewebrtc.js"></script>
-        <script src="/static/js/tracking-min.js"></script>
-        <script src="/static/js/face-min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="/static/js/simplewebrtc.js"></script>
+<script src="/static/js/tracking-min.js"></script>
+<script src="/static/js/face-min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-        <script>
-            // Store user identity info
-            const isAuthenticated = {{{isAuthenticated}}}
-            const user = {{{user}}}
-            
-            // Identify the hostname for the signaling server, taking care to
-            // include port number if necessary (for localhost debugging envs)
-            var host;
-            if (window.location.port) {
-                host = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
-            } else {
-                host = "/";
+<script>
+    // Store user identity info
+    const isAuthenticated = {{{isAuthenticated}}}
+    const user = {{{user}}}
+
+    // Identify the hostname for the signaling server, taking care to
+    // include port number if necessary (for localhost debugging envs)
+    var host;
+    if (window.location.port) {
+        host = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+    } else {
+        host = "/";
+    }
+    var webrtc = new SimpleWebRTC({
+        // the id/element dom element that will hold "our" video
+        localVideoEl: 'localVideo',
+        // the id/element dom element that will hold remote videos
+        remoteVideosEl: 'remoteVideos',
+        // immediately ask for camera access
+        autoRequestMedia: true,
+        // set signaling server
+        url: host,
+        debug: true
+    });
+
+    function matchPartner() {
+        // leave current room, if any
+        webrtc.leaveRoom();
+        // Disable End Conversation Button
+        $("#end-conversation").prop('disabled', 'true');
+        // tell the server to match user to new partner
+        webrtc.connection.emit("request match")
+    }
+    webrtc.connection.on("waiting", function() {
+        // Tell user matching is happening
+        $("#notice").text("Matching you to another user...");
+        // Disable End Conversation Button
+        $("#end-conversation").prop('disabled', 'true');
+    })
+    webrtc.connection.on("recall username", function(username) {
+        $("#identity").text("Hello, " + username);
+    });
+    webrtc.connection.on("pairing", function(partner, room) {
+        // leave current room, if any
+        webrtc.leaveRoom();
+        // join new room
+        webrtc.joinRoom(room);
+        // Update Notice Text
+        $("#notice").text("You are talking with " + partner);
+        // Enable the end conversation Button
+        $("#end-conversation").prop('disabled', null);
+    });
+    // When the webSocket connection is ready, identify the users
+    webrtc.on('connectionReady', function() {
+        // Identify user to matcher
+        webrtc.connection.emit("set user", {
+            username: user.facebook.name,
+            user_id: user.uuid
+        });
+    });
+    // Wait until video capabilities are ready to perform first match
+    webrtc.on('readyToCall', matchPartner);
+    // When user ends conversation, start a new match
+    $("#end-conversation").click(function() {
+        webrtc.connection.emit("hangup");
+        matchPartner();
+    });
+
+    // TRACKING.JS VERSION OF FACETRACKING
+
+    webrtc.on('videoAdded', function(video, peer) {
+        // console.log('video added', peer['id']);
+
+        // Grab the ID of the peer video tag
+        var video_id = '#' + peer['id'] + '_video_incoming'
+
+        // Grab the canvas ID and getContext
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        // Set the tracker up with default settings
+        var tracker = new tracking.ObjectTracker('face');
+        tracker.setInitialScale(4);
+        tracker.setStepSize(2);
+        tracker.setEdgesDensity(0.1);
+        // Had to set camera to false on the peer video
+        // so that it doesn't automatically try to play a foreign stream
+        tracking.track(video_id, tracker, {
+            camera: false,
+            fps: 10
+        });
+
+        // Variables to help with smoothing
+        // Smoothing only occurs with one face in the frame though
+        var frames_without_face = 0;
+        var frames_without_face_threshold = 5;
+        var prior_data = [];
+
+
+        function createBuffer(size) {
+            return {
+                "size": size,
+                "data": []
+            };
+        };
+
+        function printBuffer(buffer) {
+            buffer.data.forEach(function(rect) {
+                for (var key in rect) {
+                    console.log(key, rect[key]);
+                }
+            });
+        };
+
+        function updateBuffer(rect, buffer) {
+            console.log("the to be added rect is", rect);
+            printBuffer(buffer);
+            buffer.data.unshift(rect);
+            if (buffer.data.length > buffer.size) {
+                buffer.data.pop();
             }
-            var webrtc = new SimpleWebRTC({
-                // the id/element dom element that will hold "our" video
-                localVideoEl: 'localVideo',
-                // the id/element dom element that will hold remote videos
-                remoteVideosEl: 'remoteVideos',
-                // immediately ask for camera access
-                autoRequestMedia: true,
-                // set signaling server
-                url: host,
-                debug: true
-            });
+            return buffer;
+        };
 
-            function matchPartner() {
-                // leave current room, if any
-                webrtc.leaveRoom();
-                // Disable End Conversation Button
-                $("#end-conversation").prop('disabled', 'true');
-                // tell the server to match user to new partner
-                webrtc.connection.emit("request match")
+        function averageBuffer(buffer) {
+            var new_rect = {
+                "x": 0,
+                "y": 0,
+                "width": 0,
+                "height": 0,
+                "total": 0
             }
-            webrtc.connection.on("waiting", function() {
-                // Tell user matching is happening
-                $("#notice").text("Matching you to another user...");
-                // Disable End Conversation Button
-                $("#end-conversation").prop('disabled', 'true');
-            })
-            webrtc.connection.on("recall username", function(username) {
-                $("#identity").text("Hello, " + username);
+            buffer.data.forEach(function(r) {
+                new_rect.x += r.x;
+                new_rect.y += r.y;
+                new_rect.width += r.width;
+                new_rect.height += r.height;
+                new_rect.total += r.total;
             });
-            webrtc.connection.on("pairing", function(partner, room) {
-                // leave current room, if any
-                webrtc.leaveRoom();
-                // join new room
-                webrtc.joinRoom(room);
-                // Update Notice Text
-                $("#notice").text("You are talking with " + partner);
-                // Enable the end conversation Button
-                $("#end-conversation").prop('disabled', null);
-            });
-            // When the webSocket connection is ready, identify the users
-            webrtc.on('connectionReady', function() {
-                // Identify user to matcher
-                webrtc.connection.emit("set user", {
-                    username: user.facebook.name,
-                    user_id: user.uuid
-                });
-            });
-            // Wait until video capabilities are ready to perform first match
-            webrtc.on('readyToCall', matchPartner);
-            // When user ends conversation, start a new match
-            $("#end-conversation").click(function() {
-                webrtc.connection.emit("hangup");
-                matchPartner();
-            });
+            new_rect.x /= buffer.data.length;
+            new_rect.y /= buffer.data.length;
+            new_rect.width /= buffer.data.length;
+            new_rect.height /= buffer.data.length;
+            new_rect.total /= buffer.data.length;
 
-            // TRACKING.JS VERSION OF FACETRACKING
+            return new_rect;
+        };
 
-            webrtc.on('videoAdded', function(video, peer) {
-                // console.log('video added', peer['id']);
+        var buffer = createBuffer(5);
 
-                // Grab the ID of the peer video tag
-                var video_id = '#' + peer['id'] + '_video_incoming'
+        // On track event
+        tracker.on('track', function(event) {
+            var rectangles = event.data;
 
-                // Grab the canvas ID and getContext
-                var canvas = document.getElementById('canvas');
-                var context = canvas.getContext('2d');
+            // find biggest face
+            function largest_face(rectangles) {
+                if (rectangles.length == 0) {
 
-                // Set the tracker up with default settings
-                var tracker = new tracking.ObjectTracker('face');
-                tracker.setInitialScale(4);
-                tracker.setStepSize(2);
-                tracker.setEdgesDensity(0.1);
-                // Had to set camera to false on the peer video
-                // so that it doesn't automatically try to play a foreign stream
-                tracking.track(video_id, tracker, {
-                    camera: false
-                });
-
-                // Variables to help with smoothing
-                // Smoothing only occurs with one face in the frame though
-                var frames_without_face = 0;
-                var frames_without_face_threshold = 20;
-                var prior_data = [];
-
-                // On track event
-                tracker.on('track', function(event) {
-                    var rectangles = event.data;
-                    // If statements to check whether last few frames had a face
-                    if (rectangles.length == 0) {
-                        // then increment
-                        frames_without_face++;
-                        if (frames_without_face < frames_without_face_threshold) {
-                            // stores previous data as the current rectangle to use
-                            // if there is currently no face but not that many
-                            // frames have occurred since last face seen
-                            rectangles = prior_data;
-                        }
-                    } else {
-                        frames_without_face = 0;
-                        prior_data = rectangles;
+                }
+                var biggestArea = 0;
+                var biggestRect = null;
+                rectangles.forEach(function(rect) {
+                    var area = rect.width * rect.height;
+                    if (area > biggestArea) {
+                        biggestArea = area;
+                        biggestRect = rect;
                     }
+                })
+                return biggestRect;
+            }
 
-                    // clear the canvas in case there are previous drawings there
-                    // context.clearRect(0, 0, canvas.width, canvas.height);
+            var face = largest_face(rectangles);
 
-                    // make everything white before finding a face
-                    context.fillStyle = "#fff";
-                    context.fillRect(0, 0, canvas.width, canvas.height);
+            // If statements to check whether last few frames had a face
+            if (!face) {
+                // then increment
+                frames_without_face++;
+                if (frames_without_face < frames_without_face_threshold) {
+                    // stores previous data as the current rectangle to use
+                    // if there is currently no face but not that many
+                    // frames have occurred since last face seen
+                    if (buffer.data.length > 0) {
+                        buffer = updateBuffer(buffer.data[0], buffer);
+                    }
+                } else {
+                    // empty the buffer
+                    buffer = createBuffer(5);
+                }
+            } else {
+                // if there is a face
+                frames_without_face = 0;
+                buffer = updateBuffer(face, buffer);
+            }
 
-                    // Loop through the faces collected in rectangles variable
-                    rectangles.forEach(function(rect) {
-                        // console.log(rect.x, rect.y)
+            // clear the canvas in case there are previous drawings there
+            // context.clearRect(0, 0, canvas.width, canvas.height);
 
-                        // context.strokeStyle = '#a64ceb';
-                        var center = {
-                            "x": rect.x + (0.5 * rect.width),
-                            "y": rect.y + (0.5 * rect.height)
-                        }
+            // make everything white before finding a face
+            context.fillStyle = "#fff";
+            context.fillRect(0, 0, canvas.width, canvas.height);
 
-                        // Our oval-creating part
-                        context.globalCompositeOperation = 'destination-out';
-                        context.beginPath();
+            // Loop through the faces collected in rectangles variable
+            if (buffer.data.length > 0) {
+                rect = averageBuffer(buffer);
+                // console.log(rect.x, rect.y)
 
-                        var centerX = center.x;
-                        var centerY = center.y;
-                        // Add some wiggle room to the rect width and height
-                        var height = rect.height * 1.5;
-                        var width = rect.width * 1.5;
+                // context.strokeStyle = '#a64ceb';
+                var center = {
+                    "x": rect.x + (0.5 * rect.width),
+                    "y": rect.y + (0.5 * rect.height)
+                }
+                // console.log(center)
+                // Below line draws the rectangle for the face
+                // context.strokeRect(rect.x, rect.y, rect.width, rect.height);
 
-                        context.moveTo(centerX, centerY - height / 2); // A1
+                // These lines draw the dot for center of face and text for width and height
+                // context.fillStyle = "#000";
+                // context.fillRect(center.x - 1, center.y - 1, 2, 2);
+                // context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
+                // context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 
-                        context.bezierCurveTo(
-                            centerX + width / 2, centerY - height / 2, // C1
-                            centerX + width / 2, centerY + height / 2, // C2
-                            centerX, centerY + height / 2); // A2
+                // Our oval-creating part
+                context.globalCompositeOperation = 'destination-out';
+                context.filter = "blur(5px)";
+                context.beginPath();
 
-                        context.bezierCurveTo(
-                            centerX - width / 2, centerY + height / 2, // C3
-                            centerX - width / 2, centerY - height / 2, // C4
-                            centerX, centerY - height / 2); // A1
+                var centerX = center.x;
+                var centerY = center.y;
+                // Add some wiggle room to the rect width and height
+                var height = rect.height * 1.5;
+                var width = rect.width * 1.5;
 
-                        context.fill();
-                        context.closePath();
-                        context.globalCompositeOperation = 'source-over';
-                    });
-                });
+                context.moveTo(centerX, centerY - height / 2); // A1
 
-            });
-        </script>
+                context.bezierCurveTo(
+                    centerX + width / 2, centerY - height / 2, // C1
+                    centerX + width / 2, centerY + height / 2, // C2
+                    centerX, centerY + height / 2); // A2
 
-    </body>
+                context.bezierCurveTo(
+                    centerX - width / 2, centerY + height / 2, // C3
+                    centerX - width / 2, centerY - height / 2, // C4
+                    centerX, centerY - height / 2); // A1
 
-</html>
+                context.fill();
+                context.closePath();
+                context.globalCompositeOperation = 'source-over';
+            }
+        });
+
+    });
+</script>
