@@ -163,30 +163,97 @@
                 tracker.setEdgesDensity(0.1);
                 // Had to set camera to false on the peer video
                 // so that it doesn't automatically try to play a foreign stream
-                tracking.track(video_id, tracker, { camera: false });
+                tracking.track(video_id, tracker, { camera: false, fps:10 });
 
                 // Variables to help with smoothing
                 // Smoothing only occurs with one face in the frame though
                 var frames_without_face = 0;
-                var frames_without_face_threshold = 20;
+                var frames_without_face_threshold = 5;
                 var prior_data = [];
 
+                function createBuffer(size) {
+                  return {"size": size, "data":[]};
+                };
+
+                function printBuffer(buffer) {
+                  buffer.data.forEach(function(rect) {
+                    for(var key in rect) {
+                      console.log(key, rect[key]);
+                    }
+                  });
+                };
+
+                function updateBuffer(rect, buffer) {
+                  console.log("the to be added rect is", rect);
+                  printBuffer(buffer);
+                  buffer.data.unshift(rect);
+                  if (buffer.data.length > buffer.size) {
+                      buffer.data.pop();
+                  }
+                  return buffer;
+                };
+
+                function averageBuffer(buffer) {
+                  var new_rect = {"x": 0, "y": 0, "width": 0, "height": 0, "total":0}
+                  buffer.data.forEach(function(r) {
+                    new_rect.x += r.x;
+                    new_rect.y += r.y;
+                    new_rect.width += r.width;
+                    new_rect.height += r.height;
+                    new_rect.total += r.total;
+                  });
+                  new_rect.x /= buffer.data.length;
+                  new_rect.y /= buffer.data.length;
+                  new_rect.width /= buffer.data.length;
+                  new_rect.height /= buffer.data.length;
+                  new_rect.total /= buffer.data.length;
+
+                  return new_rect;
+                };
+
+                var buffer = createBuffer(5);
                 // On track event
                 tracker.on('track', function(event) {
                   var rectangles = event.data;
+
+                  // find biggest face
+                  function largest_face(rectangles) {
+                    if (rectangles.length == 0) {
+
+                    }
+                      var biggestArea = 0;
+                      var biggestRect = null;
+                      rectangles.forEach(function(rect) {
+                        var area = rect.width * rect.height;
+                        if(area > biggestArea) {
+                          biggestArea = area;
+                          biggestRect = rect;
+                        }
+                      })
+                      return biggestRect;
+                  }
+
+                  var face = largest_face(rectangles);
+
                   // If statements to check whether last few frames had a face
-                  if (rectangles.length == 0) {
+                  if (!face) {
                     // then increment
                     frames_without_face++;
                     if (frames_without_face < frames_without_face_threshold) {
                       // stores previous data as the current rectangle to use
                       // if there is currently no face but not that many
                       // frames have occurred since last face seen
-                      rectangles = prior_data;
+                      if (buffer.data.length > 0) {
+                          buffer = updateBuffer(buffer.data[0], buffer);
+                      }
+                    } else {
+                      // empty the buffer
+                      buffer = createBuffer(5);
                     }
                   } else {
+                    // if there is a face
                     frames_without_face = 0;
-                    prior_data = rectangles;
+                    buffer = updateBuffer(face, buffer);
                   }
 
                   // clear the canvas in case there are previous drawings there
@@ -197,7 +264,8 @@
                   context.fillRect(0,0,canvas.width,canvas.height);
 
                   // Loop through the faces collected in rectangles variable
-                  rectangles.forEach(function(rect) {
+                  if(buffer.data.length > 0) {
+                    rect = averageBuffer(buffer);
                     // console.log(rect.x, rect.y)
 
                     // context.strokeStyle = '#a64ceb';
@@ -214,6 +282,7 @@
 
                     // Our oval-creating part
                     context.globalCompositeOperation = 'destination-out';
+                    context.filter = "blur(5px)";
                     context.beginPath();
 
                     var centerX = center.x;
@@ -237,11 +306,11 @@
                     context.fill();
                     context.closePath();
                     context.globalCompositeOperation = 'source-over';
-                  });
+                  }
                 });
 
             });
-            
+
             // Logout upon clicking logout button
             $("#logout").click(function() {
                 window.location.href = '/logout';
