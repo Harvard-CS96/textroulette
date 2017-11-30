@@ -4,8 +4,8 @@
       {{> questions }}
     </div>
     <div class="col-md-6" >
-      <p id="user-hello"></p>
-      <p id="user-rating"></p>
+      <p id="user-hello"><strong></strong></p>
+      <p id="user-rating"><strong></strong></p>
       <ol id="leaderboard"></ol>
     </div>
   </div>
@@ -18,11 +18,7 @@
 
       $hello = $("#user-hello");
       $rating = $("#user-rating");
-
-      console.log("Hi, " + user.facebook.name + "!");
-      console.log("Your rating is " + user.rating.stars);
-      
-      console.log($hello);
+      $leaderboard = $("#leaderboard");
 
       $hello.text("Hi, " + user.facebook.name + "!");
 
@@ -44,7 +40,11 @@
         contentType: 'application/json; charset=utf-8',
         url: '/profile/leaderboard',
         success: res => {
-          console.log(res)
+          res.forEach(friend => {
+            $leaderboard.append(
+              "<li>" + friend.name + "  " + JSON.stringify(friend.badges) + "</li>"
+            )
+          })
         }
       })
 
