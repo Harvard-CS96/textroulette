@@ -3,9 +3,9 @@
     <div class="col-md-6">
       {{> questions }}
     </div>
-    <div class="col-md-6">
-      <div id="user-hello"></div>
-      <div id="user-rating"></div>
+    <div class="col-md-6" >
+      <p id="user-hello"></p>
+      <p id="user-rating"></p>
     </div>
   </div>
 </div>
@@ -20,9 +20,25 @@
 
       console.log("Hi, " + user.facebook.name + "!");
       console.log("Your rating is " + user.rating.stars);
+      
+      console.log($hello);
 
-      $hello.val("Hi, " + user.facebook.name + "!");
-      $rating.val("Your rating is " + user.rating.stars);
+      $hello.text("Hi, " + user.facebook.name + "!");
+
+      const rating = parseInt(user.rating.stars);
+      stars = "";
+      for (var i = 0; i < 5; i++) {
+        if (i < rating) {
+          stars += "★";
+        } 
+        else {
+          stars += "☆";
+        }
+      }
+      
+      $rating.text(stars);
+
+
     });
   });
 </script>
