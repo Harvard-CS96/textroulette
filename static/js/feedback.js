@@ -1,47 +1,52 @@
 buttonStuff = {
-'listening': false,
-'respect': false,
-'civility': false,
-'cooperation': false,
-'snowflake': false,
-'other': false
+    'listening': false,
+    'respect': false,
+    'civility': false,
+    'cooperation': false,
+    'snowflake': false,
+    'other': false
 }
 
 function findActiveButtons(){
-var lst = [];
-Object.keys(buttonStuff).forEach(function(d){
-    if(buttonStuff[d]){
-    lst.push(d);
-    }
-})
-return lst;
+    var lst = [];
+    Object.keys(buttonStuff).forEach(function(d){
+        if(buttonStuff[d]){
+        lst.push(d);
+        }
+    })
+    return lst;
+}
+
+function findActiveBadges(){
+    var lst = [];
+    Object.keys(badgesDict).forEach(function(d){
+        if(badgesDict[d]){
+        lst.push(d);
+        }
+    })
+    return lst;
 }
 
 function changeButton(name){
-$('#button-' + name).button('toggle');
-buttonStuff[name] = !buttonStuff[name];
+    $('#button-' + name).button('toggle');
+    buttonStuff[name] = !buttonStuff[name];
 }
 
 selectedStarCount = 0;
-selections = {
-'knowledgeable': false,
-'polite': false,
-'empathetic': false,
-'creative': false
+badgesDict = {
+    'knowledgeable': false,
+    'polite': false,
+    'empathetic': false,
+    'creative': false
 };
 function changeSelected(key){
-selections[key] = !selections[key];
-console.log(selections);
-console.log(key);
-if($('#' + key).hasClass('glyphicon-selected')){
-    console.log('truth');
-    $('#' + key).removeClass('glyphicon-selected')
-}
-else{
-    console.log('false')
-    console.log($('#' + key));
-    $('#' + key).addClass('glyphicon-selected')
-}
+    badgesDict[key] = !badgesDict[key];
+    if($('#' + key).hasClass('glyphicon-selected')){
+        $('#' + key).removeClass('glyphicon-selected')
+    }
+    else{
+        $('#' + key).addClass('glyphicon-selected')
+    }
 }
 
 // Paints stars up to nStars and removes paint from rest
@@ -49,13 +54,13 @@ function paintStars(nStars){
     for (i=1; i<= nStars; i++) {
         var elt = $('#star' + i.toString());
         if(!elt.hasClass('starred')){
-        elt.addClass('starred');
+            elt.addClass('starred');
         }
     };
     for (i=nStars + 1; i<=5; i++) {
         var elt = $('#star' + i.toString());
         if(elt.hasClass('starred')){
-        elt.removeClass('starred');
+            elt.removeClass('starred');
         }
     };
 }
@@ -68,16 +73,15 @@ function setRatingStar(nStars){
     selectedStarCount = nStars;
     paintStars(nStars);
 }
-console.log(user.uuid);
 
 function formSubmit(){
-    console.log('formsubmit called');
     console.log('about to ajax');
     if (selectedStarCount>0){
         var json = {
             from: user.uuid,
             stars: selectedStarCount,
-            badges: findActiveButtons()
+            badges: findActiveBadges(),
+            improvements: findActiveButtons()
         };
         console.log(json);
         $.ajax({
@@ -93,7 +97,7 @@ function formSubmit(){
             error();
             }
         });
-        // TODO: Test and redirect
+        // TODO: Redirect
     }
     else {
         alert('Please add star rating');
