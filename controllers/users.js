@@ -51,6 +51,7 @@ function getLeaderboard(uuid, callback) {
       "me",
       { fields: "friends", access_token: profile.facebook.token },
       response => {
+        console.log(response.friends);
         var friend_ids = [];
         if (response.friends) {
           friend_ids = response.friends.data.map(friend => friend.id)
