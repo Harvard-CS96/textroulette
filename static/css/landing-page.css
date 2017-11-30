@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5, h6 {
 header.masthead {
     position: relative;
     background-color: #343a40;
-    background: url("../img/bg-masthead.jpg") no-repeat center center;
+    background: url("/static/img/family.jpg") no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -102,7 +102,7 @@ header.masthead h1 {
 .call-to-action {
     position: relative;
     background-color: #343a40;
-    background: url("../img/bg-masthead.jpg") no-repeat center center;
+    background: url("/static/img/friends.jpg") no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
