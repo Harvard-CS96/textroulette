@@ -88,7 +88,7 @@ router.post('/chats', (req, res) => {
 
 // Update survey responses of a particular user.
 router.post('/updateStance', isLoggedIn, (req, res) => {
-    users.updateStance(req.user.uuid, req.user.questions_answered);
+    users.updateStance(req.body.uuid, req.body.questions_answered);
 });
 
 router.get('/updateStance', isLoggedIn, (req, res) => {
