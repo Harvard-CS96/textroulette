@@ -8,28 +8,24 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
         <style>
-            video, canvas {
-              width: 320px;
-              height: 240px;
-              margin-top: 5px;
-              position: absolute;
+            video,
+            canvas {
+                width: 320px;
+                height: 240px;
+                margin-top: 5px;
+                position: absolute;
             }
 
-            .remote_column video, .remote_column canvas {
-              margin-left: 330px;
+            .remote_column video,
+            .remote_column canvas {
+                margin-left: 330px;
             }
 
-            .local_column video, .local_column canvas {
-              margin-left: 5px;
+            .local_column video,
+            .local_column canvas {
+                margin-left: 5px;
             }
-
-            /*.local_column, .remote_column video {
-              width: 49.5%;
-              position: relative;
-            }*/
-
         </style>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -38,7 +34,7 @@
     <body>
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <a class="navbar-brand" href="#">Discourse</a>
-            <input class="btn btn-outline-danger my-2 my-sm-0" type="button" id="logout" value="Logout" />
+            <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Sign Out</a>
         </nav>
         <div class="container mt-5">
             <div class="row text-center">
@@ -48,12 +44,12 @@
                     <!-- where the messages will apend in -->
                     <div id="notice"></div>
                     <div id="chat" class="border bg-light text-left p-3" style="min-height:20em;overflow:scroll;">
-                      <div class="local_column">
-                        <video id="localVideo"></video>
-                      </div>
+                        <div class="local_column">
+                            <video id="localVideo"></video>
+                        </div>
                         <div class="remote_column">
-                          <span id="remoteVideos"></span>
-                          <canvas id="canvas" width="320" height="240"></canvas>
+                            <span id="remoteVideos"></span>
+                            <canvas id="canvas" width="320" height="240"></canvas>
                         </div>
                     </div>
 
@@ -80,8 +76,18 @@
 
         <script>
             // Store user identity info
-            const isAuthenticated = {{ isAuthenticated }}
-            const user = {{{ user }}}
+            const isAuthenticated = {
+                {
+                    isAuthenticated
+                }
+            }
+            const user = {
+                {
+                    {
+                        user
+                    }
+                }
+            }
             // Identify the hostname for the signaling server, taking care to
             // include port number if necessary (for localhost debugging envs)
             var host;
@@ -101,6 +107,7 @@
                 url: host,
                 debug: true
             });
+
             function matchPartner() {
                 // leave current room, if any
                 webrtc.leaveRoom();
@@ -146,7 +153,7 @@
 
             // TRACKING.JS VERSION OF FACETRACKING
 
-            webrtc.on('videoAdded', function (video, peer) {
+            webrtc.on('videoAdded', function(video, peer) {
                 // console.log('video added', peer['id']);
 
                 // Grab the ID of the peer video tag
@@ -163,7 +170,9 @@
                 tracker.setEdgesDensity(0.1);
                 // Had to set camera to false on the peer video
                 // so that it doesn't automatically try to play a foreign stream
-                tracking.track(video_id, tracker, { camera: false });
+                tracking.track(video_id, tracker, {
+                    camera: false
+                });
 
                 // Variables to help with smoothing
                 // Smoothing only occurs with one face in the frame though
@@ -173,84 +182,70 @@
 
                 // On track event
                 tracker.on('track', function(event) {
-                  var rectangles = event.data;
-                  // If statements to check whether last few frames had a face
-                  if (rectangles.length == 0) {
-                    // then increment
-                    frames_without_face++;
-                    if (frames_without_face < frames_without_face_threshold) {
-                      // stores previous data as the current rectangle to use
-                      // if there is currently no face but not that many
-                      // frames have occurred since last face seen
-                      rectangles = prior_data;
+                    var rectangles = event.data;
+                    // If statements to check whether last few frames had a face
+                    if (rectangles.length == 0) {
+                        // then increment
+                        frames_without_face++;
+                        if (frames_without_face < frames_without_face_threshold) {
+                            // stores previous data as the current rectangle to use
+                            // if there is currently no face but not that many
+                            // frames have occurred since last face seen
+                            rectangles = prior_data;
+                        }
+                    } else {
+                        frames_without_face = 0;
+                        prior_data = rectangles;
                     }
-                  } else {
-                    frames_without_face = 0;
-                    prior_data = rectangles;
-                  }
 
-                  // clear the canvas in case there are previous drawings there
-                  // context.clearRect(0, 0, canvas.width, canvas.height);
+                    // clear the canvas in case there are previous drawings there
+                    // context.clearRect(0, 0, canvas.width, canvas.height);
 
-                  // make everything white before finding a face
-                  context.fillStyle = "#fff";
-                  context.fillRect(0,0,canvas.width,canvas.height);
+                    // make everything white before finding a face
+                    context.fillStyle = "#fff";
+                    context.fillRect(0, 0, canvas.width, canvas.height);
 
-                  // Loop through the faces collected in rectangles variable
-                  rectangles.forEach(function(rect) {
-                    // console.log(rect.x, rect.y)
+                    // Loop through the faces collected in rectangles variable
+                    rectangles.forEach(function(rect) {
+                        // console.log(rect.x, rect.y)
 
-                    // context.strokeStyle = '#a64ceb';
-                    var center = {"x": rect.x + (0.5 * rect.width), "y": rect.y + (0.5 * rect.height)}
-                    // console.log(center)
-                    // Below line draws the rectangle for the face
-                    // context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+                        // context.strokeStyle = '#a64ceb';
+                        var center = {
+                            "x": rect.x + (0.5 * rect.width),
+                            "y": rect.y + (0.5 * rect.height)
+                        }
 
-                    // These lines draw the dot for center of face and text for width and height
-                    // context.fillStyle = "#000";
-                    // context.fillRect(center.x - 1, center.y - 1, 2, 2);
-                    // context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
-                    // context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+                        // Our oval-creating part
+                        context.globalCompositeOperation = 'destination-out';
+                        context.beginPath();
 
-                    // Our oval-creating part
-                    context.globalCompositeOperation = 'destination-out';
-                    context.beginPath();
+                        var centerX = center.x;
+                        var centerY = center.y;
+                        // Add some wiggle room to the rect width and height
+                        var height = rect.height * 1.5;
+                        var width = rect.width * 1.5;
 
-                    var centerX = center.x;
-                    var centerY = center.y;
-                    // Add some wiggle room to the rect width and height
-                    var height = rect.height * 1.5;
-                    var width = rect.width * 1.5;
+                        context.moveTo(centerX, centerY - height / 2); // A1
 
-                    context.moveTo(centerX, centerY - height/2); // A1
+                        context.bezierCurveTo(
+                            centerX + width / 2, centerY - height / 2, // C1
+                            centerX + width / 2, centerY + height / 2, // C2
+                            centerX, centerY + height / 2); // A2
 
-                    context.bezierCurveTo(
-                      centerX + width/2, centerY - height/2, // C1
-                      centerX + width/2, centerY + height/2, // C2
-                      centerX, centerY + height/2); // A2
+                        context.bezierCurveTo(
+                            centerX - width / 2, centerY + height / 2, // C3
+                            centerX - width / 2, centerY - height / 2, // C4
+                            centerX, centerY - height / 2); // A1
 
-                    context.bezierCurveTo(
-                      centerX - width/2, centerY + height/2, // C3
-                      centerX - width/2, centerY - height/2, // C4
-                      centerX, centerY - height/2); // A1
-
-                    context.fill();
-                    context.closePath();
-                    context.globalCompositeOperation = 'source-over';
-                  });
+                        context.fill();
+                        context.closePath();
+                        context.globalCompositeOperation = 'source-over';
+                    });
                 });
 
             });
-            
-            // Logout upon clicking logout button
-            $("#logout").click(function() {
-                window.location.href = '/logout';
-            });
-
         </script>
 
-
     </body>
-
 
 </html>
