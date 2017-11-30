@@ -37,6 +37,7 @@ function findByFBIdList(fbids, callback) {
     if (results === undefined) {
       results = []
     }
+    console.log(results);
     callback(results);
   })
 }
@@ -60,7 +61,7 @@ function getLeaderboard(uuid, callback) {
         // Find all friends in the database
         findByFBIdList(friend_ids, friends => {
           // Keep only friends willing to appear on leaderboards
-          public_friends = friends.filter(f => f.showLeaderboard)
+          public_friends = friends.filter(f => f.show_leaderboard)
 
           // Count up badge totals
           public_friends = public_friends.map(f => {
