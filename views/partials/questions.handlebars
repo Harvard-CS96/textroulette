@@ -135,7 +135,7 @@
       function getQuestionsWithUserAnswers(data) {
         // get questions and userAnswers from the data
         var questions = data.questions;
-        if ("questions_answered" in data.userData)
+        if (data.userData)
           var userAnswers = data.userData.questions_answered;
         else
           var userAnswers = [];
@@ -213,6 +213,7 @@
             error();
           }
         });
+        window.location.href = "/";
       }
       })
   })
