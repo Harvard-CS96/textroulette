@@ -4,10 +4,25 @@
       {{> questions }}
     </div>
     <div class="col-md-6">
-      Feedback and leaderboard go here.
+      <div id="user-hello"></div>
+      <div id="user-rating"></div>
     </div>
   </div>
 </div>
 <script type='text/javascript'>
-  var user = {{{ user }}}
+  $(document).ready(function () {
+    jQuery(function () {
+      var user = {{{ user }}};
+      console.log(user);
+
+      $hello = $("#user-hello");
+      $rating = $("#user-rating");
+
+      console.log("Hi, " + user.facebook.name + "!");
+      console.log("Your rating is " + user.rating.stars);
+
+      $hello.val("Hi, " + user.facebook.name + "!");
+      $rating.val("Your rating is " + user.rating.stars);
+    });
+  });
 </script>
