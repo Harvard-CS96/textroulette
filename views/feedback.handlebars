@@ -9,40 +9,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-  <style>
-        div#holder {
-        background: #fff;
-        width: 100%;
-        margin: auto;
-        padding: 30px;
-        min-width: 320px;
-        max-width: 640px;
-        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-        border-radius: 3px;
-        }
-
-        .inline-radio {
-          display: flex;
-          border-radius: 3px;
-          overflow: hidden;
-          border: 1px solid #b6b6b6;
-
-          label {
-            position: absolute;
-            top: 0; left: 0;
-            color: #b6b6b6;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            border-right: 1px solid #b6b6b6;
-          }
-        }
-      </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/static/css/main.css">
 
 </head>
 
@@ -50,14 +21,25 @@
 	 <div class="container mt-5">
       <div class="row text-center">
           <div class="col-md-12" style="height:100%;">
-              <h1>Textroulette Preferences</h1>
-              <p id="identity"></p>
-              <!-- where the questions will append in -->
+            <h1>Textroulette Preferences</h1>
+            <p id="identity">Please Rate your Conversation</p>
+            {{!-- <fieldset class="rating">
+                <legend>Please rate:</legend>
+                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+            </fieldset> --}}
 
-              <div id="answer-questions"></div>
-              <button id="submit" type="button" class="btn btn-outline-primary">
-                <a href='/'>Submit</a>
-              </button>
+            <div id="badge-area">
+              <p>Hello people</p>
+              <input type="checkbox" class="glyphicon glyphicon-education"></input>
+            </div>
+
+            <button id="submit" type="button" class="btn btn-outline-primary">
+              <a href='/'>Submit</a>
+            </button>
           </div>
       </div>
     </div>
@@ -67,141 +49,6 @@
 
     <script type="text/javascript">
       // load when jquery and page has be loaded
-      $(document).ready(function() {
-          jQuery(function() {
-              const user = {{{ user }}};
-
-              var feedback = [{
-                qid: 'stars',
-                text: 'How was your conversation?',
-                type: 'one',
-                options: [1, 2, 3, 4, 5]
-              },
-              {
-                qid: 'badges',
-                text: 'Award a badge?', 
-                type: 'multiple',
-                options: ['funny', 'creative', 'friendly']
-              },
-              {
-                qid: 'improvements',
-                text: 'Anything to improve?',
-                type: 'multiple',
-                options: ['Listening', 'Volume']
-              }];
-
-              // CONSTRUCTING HTML SECTION (TODO: REACT)
-              function constructLabel(name, qID, buttonType, idx){
-                if (buttonType == 'multiple'){
-                  var type = "checkbox";
-                }
-                else if(buttonType == 'one'){
-                  var type = "radio";
-                }
-                var start = ('<label class="btn btn-primary"' +
-                             '><input type="' + type + '" name="options"' +
-                             'qid= "' + qID + '" ' + 
-                             'response= "' + name + '" ' +
-                             'autocomplete="off">');
-                var end = '</label>'
-                return start + name + end;
-              }
-
-              function constructDiv(names, qID, buttonType, idx){
-                var s = '';
-                var start = ('<div class="btn-group" id="question' + (idx + 1) + '" ' +
-                             ' data-toggle="buttons"' + 
-                             '>');
-                var end = '</div>';
-                s += start;
-                names.forEach(function(name, qid, idx){
-                  s += constructLabel(name, qID, buttonType, idx);
-                })
-                return s + end;
-              }
-
-              function constructSet(questions){
-                var s = '';
-                var start = '<div id="holder">';
-                var end = '</div>';
-                s += start;
-                questions.forEach(function(question, idx){
-                  s += '<h3>' + question.text + '</h3>';
-                  s += constructDiv(question['options'], question['qid'], question['type'], idx);
-                })
-                return s + end;
-              }
-
-              function populateQuestions(questions){
-                document.getElementById('answer-questions').innerHTML = constructSet(questions);
-              }
-
-              // READING RESPONSES CODE BELOW
-              function calcQID(parent, attr){
-                return Array.prototype.slice.call(parent.childNodes).map(function(elt){ 
-                  return !!(elt.className.split(" ").indexOf("active") > -1) ? elt.firstChild.getAttribute(attr) : '';
-                }).filter(function(elt){ return elt!== ''; })[0];  // Returns a list of active things, stringified.
-              }
-
-              // READING RESPONSES CODE BELOW
-              function calcResponse(parent, attr){
-                return Array.prototype.slice.call(parent.childNodes).map(function(elt){ 
-                  return !!(elt.className.split(" ").indexOf("active") > -1) ? elt.firstChild.getAttribute(attr) : '';
-                }).filter(function(elt){ return elt!== ''; });  // Returns a list of active things, stringified.
-              }
-
-              function getAnswer(questionNumber){
-                console.log('getAnswer called' + questionNumber);
-                var parent = $('#question' + questionNumber)[0];
-                console.log(parent);
-                return {
-                  question_id: calcQID(parent, 'qid'),
-                  response: calcResponse(parent, 'response')
-                };
-              }
-
-              // Reads form to get answers.  Stores in custom JSON.  We don't need you form built-ins.  Go away.
-              function getAnswersJSON(){
-                var numQuestions = document.getElementsByTagName('h3').length;
-                console.log('getting answeres for ' + numQuestions + 'questions');
-                var answers = [];
-                for (var i = 1; i <= numQuestions; i++){
-                  answers.push(getAnswer(i));
-                }
-                return answers;
-              }
-
-              function formSubmit(){
-                console.log('formsubmit called');
-                var question_responses = getAnswersJSON().filter(function(d){ return d.question_id != ''; });
-                console.log('about to ajax');
-                json = {
-                    from: user.uuid,
-                    stars: question_responses.filter(function(d){ return d.question_id == 'stars'; })[0].response[0],
-                    badges: question_responses.filter(function(d){ return d.question_id == 'badges'; })[0].response,
-                };
-                console.log(json);
-                $.ajax({
-                    type: 'POST',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(json),
-                    url: '/chats/',
-                    success: function(data){
-                      // On success, update questions.
-                      console.log(data);
-                    },
-                    failure: function(result){
-                      console.log('failure');
-                      error();
-                    }
-                });
-              }
-
-              // Set up the page.
-              populateQuestions(feedback);
-              document.getElementById("submit").onclick = function (){ formSubmit() };
-          })
-      })
     </script>
 </body>
 

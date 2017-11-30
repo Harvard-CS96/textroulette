@@ -123,3 +123,5 @@ app.use('/', mainRoute);
 const createUtilRoute = require('./routes/util');
 const utilRoute = createUtilRoute(matcher)
 app.use('/util', utilRoute);
+
+app.use('/static', express.static('static'));
