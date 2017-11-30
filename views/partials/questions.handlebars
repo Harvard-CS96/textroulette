@@ -79,6 +79,14 @@
             var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
             populateQuestions(questionsWithUserAnswers);
             document.getElementById("submit").onclick = function () { formSubmit(); };
+            
+            $('.btn-group').on('click', 'label.btn', function(e) {
+              if ($(this).hasClass('active')) {
+                setTimeout(function() {
+                  $(this).removeClass('active').find('input').prop('checked', false);
+                }.bind(this), 10);
+              }
+            });
           },
           failure: function (result) {
             error();
@@ -177,9 +185,12 @@
 
         function getAnswer(questionNumber) {
           var parent = $('#question' + questionNumber)[0];
+          var response = calcAttribute(parent, 'response');
+          if (response == '')
+              response = null;
           return {
-            question_id: calcAttribute(parent, 'qid'),
-            response: calcAttribute(parent, 'response')
+            question_id: parent.firstChild.firstChild.getAttribute('qid'),
+            response: response
           };
         }
 
@@ -194,7 +205,7 @@
         }
 
         function formSubmit() {
-          json = getAnswersJSON().filter(function (d) { return d.question_id != ''; });
+          json = getAnswersJSON()
           console.log('about to ajax');
           console.log(json);
           $.ajax({
@@ -213,7 +224,7 @@
               error();
             }
           });
-          window.location.href = '/';
+          //window.location.href = '/';
         }
       })
   })
