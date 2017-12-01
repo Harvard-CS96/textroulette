@@ -1,44 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>Textroulette Preferences</title>
-
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-  <link rel="stylesheet" href="static/css/stances.css">
-      
-</head>
-
-<body>
-	 <div class="container mt-5">
-      <div class="row text-center">
-          <div class="col-md-12" style="height:100%;">
-              <h1>Textroulette Preferences</h1>
-              <p id="identity"></p>
-              <!-- where the questions will append in -->
-              <div id="answer-questions"></div>
-              <br>
-              <button id="submit" type="button" class="btn btn-outline-primary">
+<link rel="stylesheet" href="static/css/stances.css">
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-12" style="height:100%;">
+            <h1>Textroulette Preferences</h1>
+            <p id="identity"></p>
+            <!-- where the questions will append in -->
+            <div id="answer-questions"></div>
+            <br>
+            <button id="submit" type="button" class="btn btn-outline-primary">
                 <a href='/' class="btn">Submit</a>
               </button>
-          </div>
-      </div>
+        </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-      const user = {{{ user }}};
-    </script>
-    <script src="/static/js/stances.js"></script>
-</body>
-
-</html>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    const user = {{{ user }}};
+</script>
+<script src="/static/js/stances.js"></script>
