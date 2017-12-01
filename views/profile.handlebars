@@ -1,145 +1,135 @@
-<head>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/profile.css">
-</head>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="static/css/profile.css">
+<div id="profile-container">
+    <h1 id="user-hello"></h1>
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
-<div id="profile-container">  
-  <h1 id="user-hello"></h1>
-
-  <div class="row">
-    <div class="col-md-8">
-      {{> questions }}
+    <div class="row">
+        <div class="col-md-8">
+            {{> questions }}
+        </div>
+        <div class="col-md-4">
+            <div class="holder">
+                <h4>See Your Rating/Score</h4>
+                <hr>
+                <div id="star-area">
+                    Your star rating:
+                    <span id="star1">&#9733;</span></span>
+                    <span id="star2">&#9733;</span></span>
+                    <span id="star3">&#9733;</span></span>
+                    <span id="star4">&#9733;</span></span>
+                    <span id="star5">&#9733;</span></span>
+                </div>
+                <div>
+                    Your conversation count: <span id="convo-count"></span>
+                </div>
+                <div id="badge-area" style="align: center;">
+                    See your badges:
+                    <table>
+                        <tr>
+                            <td>
+                                <span id="creative" onclick="changeSelected('creative')" class="fa fa-wrench"></span>
+                                <p>Creative<span id="creative-count"></span></p>
+                            </td>
+                            <td>
+                                <span id="polite" onclick="changeSelected('polite')" class="fa fa-handshake-o"></span>
+                                <p>Polite<span id="polite-count"></span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="fa fa-book"></span>
+                                <p>Knowledgeable<span id="knowledgeable-count"></span></p>
+                            </td>
+                            <td>
+                                <span id="empathetic" onclick="changeSelected('empathetic')" class="fa fa-heart"></span>
+                                <p>Empathetic<span id="empathetic-count"></span></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <div>
+                    Click to view your friends leaderboards! (by clicking, you allow your friends to see your badges as well).
+                    <div id="leaderboard"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4" >
-      <div class="holder">
-      <h4>See Your Rating/Score</h4>
-      <hr>
-      <div id="star-area">
-        Your star rating: 
-        <span id="star1">&#9733;</span></span>
-        <span id="star2">&#9733;</span></span>
-        <span id="star3">&#9733;</span></span>
-        <span id="star4">&#9733;</span></span>
-        <span id="star5">&#9733;</span></span>
-      </div>
-      <div>
-        Your conversation count: <span id="convo-count"></span>
-      </div>
-      <div id="badge-area" style="align: center;">
-      See your badges:
-        <table>
-          <tr>
-            <td>
-              <span id="creative" onclick="changeSelected('creative')" class="fa fa-wrench"></span>
-              <p>Creative<span id="creative-count"></span></p>
-            </td>
-            <td>
-              <span id="polite" onclick="changeSelected('polite')" class="fa fa-handshake-o"></span>
-              <p>Polite<span id="polite-count"></span></p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="fa fa-book"></span>
-              <p>Knowledgeable<span id="knowledgeable-count"></span></p>
-            </td>
-            <td>
-              <span id="empathetic" onclick="changeSelected('empathetic')" class="fa fa-heart"></span>
-              <p>Empathetic<span id="empathetic-count"></span></p>
-            </td>
-          </tr>
-        </table>
-    </div>
-<br/>
-      <div>
-        Click to view your friends leaderboards! (by clicking, you allow your friends to see your badges as well).
-        <div id="leaderboard"></div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
 <script type='text/javascript'>
-  var user = {{{ user }}};
-  function paintStars(nStars){
-    console.log(nStars);
-    for (i=1; i<= nStars; i++) {
-        var elt = $('#star' + i.toString());
-        elt.html('&#9733;');
-    };
-    for (i=nStars + 1; i<=5; i++) {
-        var elt = $('#star' + i.toString());
-        elt.html('&#x2606');
-    };
-  }
+    var user = {{{ user }}};
 
-  function countBadges(badgeName, person){
-    console.log('badgename');
-    var count = 0;
-    person.badges.forEach(function(d){
-      if(d.badge == badgeName){
-        count = d.count;
-      }
-    })
-    return count;
-  }
+    function paintStars(nStars) {
+        console.log(nStars);
+        for (i = 1; i <= nStars; i++) {
+            var elt = $('#star' + i.toString());
+            elt.html('&#9733;');
+        };
+        for (i = nStars + 1; i <= 5; i++) {
+            var elt = $('#star' + i.toString());
+            elt.html('&#x2606');
+        };
+    }
 
-  function buildLeaderboard(leaders){
-    var start = '<table><tr><th>Friend</th><th>Empathetic</th><th>Polite</th><th>Knowledgeable</th><th>Creative</th><tr>';
-    var s = '';
-    leaders.forEach(friend => {
-      s += '<tr><td>' + friend.name + '</td><td>' + countBadges('empathetic', friend) + '</td><td>' +
-        countBadges('polite', friend) + '</td><td>' + countBadges('knowledgeable', friend) + '</td><td>' +
-          countBadges('creative', friend) + '</td><tr>'; 
+    function countBadges(badgeName, person) {
+        console.log('badgename');
+        var count = 0;
+        person.badges.forEach(function(d) {
+            if (d.badge == badgeName) {
+                count = d.count;
+            }
+        })
+        return count;
+    }
+
+    function buildLeaderboard(leaders) {
+        var start = '<table><tr><th>Friend</th><th>Empathetic</th><th>Polite</th><th>Knowledgeable</th><th>Creative</th><tr>';
+        var s = '';
+        leaders.forEach(friend => {
+            s += '<tr><td>' + friend.name + '</td><td>' + countBadges('empathetic', friend) + '</td><td>' +
+                countBadges('polite', friend) + '</td><td>' + countBadges('knowledgeable', friend) + '</td><td>' +
+                countBadges('creative', friend) + '</td><tr>';
+        });
+        var end = '</table>';
+        var final = start + s + end;
+        console.log(final);
+        return final;
+    }
+
+    function getLeaderboard() {
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            url: '/profile/leaderboard',
+            success: res => {
+                console.log(res);
+                $('#leaderboard')[0].innerHTML = buildLeaderboard(res);
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        jQuery(function() {
+            $("#user-hello").html("Welcome to your profile, " + user.facebook.name + "!");
+            paintStars(+user.rating.stars);
+            $('#convo-count').html(user.rating.count);
+            ['empathetic', 'knowledgeable', 'creative', 'polite'].forEach(function(d) {
+                $('#' + d + '-count').html(': ' + countBadges(d, user));
+            })
+
+            // show leaderboard right away if user has already selected to see their leaderboard
+            if (user.show_leaderboard) {
+                getLeaderboard();
+            } else {
+                // add button for showing leaderboard for the first time
+                $("#leaderboard").append(
+                    '<button class="btn btn-outline-primary" id="show-leaderboard">Authorize Facebook Friends to See Leaderboard</button>'
+                )
+                $("#show-leaderboard").on("click", e => {
+                    getLeaderboard()
+                    $("#show-leaderboard").remove()
+                })
+            }
+        });
     });
-    var end = '</table>';
-    var final = start + s + end;
-    console.log(final);
-    return final;
-  }
-
-  function getLeaderboard() {
-    $.ajax({
-      type: 'GET',
-      contentType: 'application/json; charset=utf-8',
-      url: '/profile/leaderboard',
-      success: res => {
-        console.log(res);
-        $('#leaderboard')[0].innerHTML = buildLeaderboard(res);
-      }
-    })
-  }
-
-  $(document).ready(function () {
-   jQuery(function () {
-     $("#user-hello").html("Welcome to your profile, " + user.facebook.name + "!");  
-     paintStars(+user.rating.stars);
-     $('#convo-count').html(user.rating.count);
-     ['empathetic', 'knowledgeable', 'creative', 'polite'].forEach(function(d){
-       $('#' + d + '-count').html(': ' + countBadges(d, user));
-     })
-
-     // show leaderboard right away if user has already selected to see their leaderboard
-     if (user.show_leaderboard) {
-       getLeaderboard();
-     }
-     else {
-       // add button for showing leaderboard for the first time
-       $("#leaderboard").append(
-         '<button class="btn btn-outline-primary" id="show-leaderboard">Authorize Facebook Friends to See Leaderboard</button>'
-       )
-       $("#show-leaderboard").on("click", e => {
-         getLeaderboard()
-         $("#show-leaderboard").remove()
-       })
-     }
-   });
- });
-
-
 </script>
