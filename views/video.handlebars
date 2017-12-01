@@ -21,6 +21,7 @@
     <body>
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <a class="navbar-brand" href="#">Discourse</a>
+            <input class="btn btn-outline-primary my-2 my-sm-0" type="button" id="profile" value="Profile" />
             <input class="btn btn-outline-danger my-2 my-sm-0" type="button" id="logout" value="Logout" />
         </nav>
         <div class="container mt-5">
@@ -125,6 +126,10 @@
             $("#logout").click(function() {
                 window.location.href = '/logout';
             });
+            // Got to profile page on clicking profile button
+            $("#profile").click(function() {
+                window.location.href = '/profile';
+            })
 
         </script>
 
