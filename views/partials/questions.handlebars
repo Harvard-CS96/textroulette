@@ -21,7 +21,7 @@
             console.log('pulled questions and userdata');
             var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
             populateQuestions(questionsWithUserAnswers);
-            document.getElementById("submit").onclick = function () { formSubmit(); };
+            document.getElementById("submit").onclick = function () { formSubmit(); alert("Thanks for updating!");};
             document.getElementById("call").onclick = function () { 
               // if form submit returned true, redirect to home
               if (!formSubmit()){
@@ -190,7 +190,6 @@
                 }
               });
           }
-
           return true;
         }
 
