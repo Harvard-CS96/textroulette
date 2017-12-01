@@ -6,7 +6,9 @@
     <div class="col-md-6" >
       <p id="user-hello"><strong></strong></p>
       <p id="user-rating"><strong></strong></p>
-      <ol id="leaderboard"></ol>
+      <ol id="leaderboard">
+        <button class="btn btn-outline-primary" id="show-leaderboard">View Leaderboard</button>
+      </ol>
     </div>
   </div>
 </div>
@@ -19,6 +21,7 @@
       $hello = $("#user-hello");
       $rating = $("#user-rating");
       $leaderboard = $("#leaderboard");
+      $ldbd_button = $("#show-leaderboard");
 
       $hello.text("Hi, " + user.facebook.name + "!");
 
@@ -35,18 +38,31 @@
       }
       $rating.text(stars);
 
-      $.ajax({
-        type: 'GET',
-        contentType: 'application/json; charset=utf-8',
-        url: '/profile/leaderboard',
-        success: res => {
-          res.forEach(friend => {
-            $leaderboard.append(
-              "<li>" + friend.name + "  " + JSON.stringify(friend.badges) + "</li>"
-            )
-          })
-        }
+      // show leaderboard right away if user has already selected to see their leaderboard
+      if (user.show_leaderboard) {
+        get_leaderboard()
+      }
+
+      // show leaderboard for the first time on button click
+      $ldbd_button.on("click", e => {
+        get_leaderboard()
+        $ldbd_button.remove()
       })
+
+      function get_leaderboard() {
+        $.ajax({
+          type: 'GET',
+          contentType: 'application/json; charset=utf-8',
+          url: '/profile/leaderboard',
+          success: res => {
+            res.forEach(friend => {
+              $leaderboard.append(
+                "<li>" + friend.name + "  " + JSON.stringify(friend.badges) + "</li>"
+              )
+            })
+          }
+        })
+      }
 
     });
   });
