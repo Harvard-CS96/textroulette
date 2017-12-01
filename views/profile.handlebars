@@ -1,72 +1,141 @@
-<div id="profile-container">
+<head>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/profile.css">
+</head>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+<div id="profile-container">  
+  <h1 id="user-hello"></h1>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
       {{> questions }}
     </div>
-    <div class="col-md-6" >
-      <p id="user-hello"><strong></strong></p>
-      <p id="user-rating"><strong></strong></p>
-      <ol id="leaderboard">
-      </ol>
+    <div class="col-md-4" >
+      <div class="holder">
+      <h4>See Your Rating/Score</h4>
+      <hr>
+      <div id="star-area">
+        Your star rating: 
+        <span id="star1">&#9733;</span></span>
+        <span id="star2">&#9733;</span></span>
+        <span id="star3">&#9733;</span></span>
+        <span id="star4">&#9733;</span></span>
+        <span id="star5">&#9733;</span></span>
+      </div>
+      <div>
+        Your conversation count: <span id="convo-count"></span>
+      </div>
+      <div id="badge-area" style="align: center;">
+      See your badges:
+        <table>
+          <tr>
+            <td>
+              <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
+              <p>Creative<span id="creative-count"></span></p>
+            </td>
+            <td>
+              <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
+              <p>Polite<span id="polite-count"></span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
+              <p>Knowledgeable<span id="knowledgeable-count"></span></p>
+            </td>
+            <td>
+              <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
+              <p>Empathetic<span id="empathetic-count"></span></p>
+            </td>
+          </tr>
+        </table>
+    </div>
+<br/>
+      <div>
+        See a leaderboard of your friends.
+        <div id="leaderboard"></div>
+      </div>
     </div>
   </div>
 </div>
+</div>
 <script type='text/javascript'>
+  var user = {{{ user }}};
+  function paintStars(nStars){
+    console.log(nStars);
+    for (i=1; i<= nStars; i++) {
+        var elt = $('#star' + i.toString());
+        elt.html('&#9733;');
+    };
+    for (i=nStars + 1; i<=5; i++) {
+        var elt = $('#star' + i.toString());
+        elt.html('&#x2606');
+    };
+  }
+
+  function countBadges(badgeName, person){
+    console.log('badgename');
+    var count = 0;
+    person.badges.forEach(function(d){
+      if(d.badge == badgeName){
+        count = d.count;
+      }
+    })
+    return count;
+  }
+
+  function buildLeaderboard(leaders){
+    var start = '<table><tr><th>Friend</th><th>Empathetic</th><th>Polite</th><th>Knowledgeable</th><th>Creative</th><tr>';
+    var s = '';
+    leaders.forEach(friend => {
+      s += '<tr><td>' + friend.name + '</td><td>' + countBadges('empathetic', friend) + '</td><td>' +
+        countBadges('polite', friend) + '</td><td>' + countBadges('knowledgeable', friend) + '</td><td>' +
+          countBadges('creative', friend) + '</td><tr>'; 
+    });
+    var end = '</table>';
+    var final = start + s + end;
+    console.log(final);
+    return final;
+  }
+
+  function getLeaderboard() {
+    $.ajax({
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      url: '/profile/leaderboard',
+      success: res => {
+        console.log(res);
+        $('#leaderboard')[0].innerHTML = buildLeaderboard(res);
+      }
+    })
+  }
+
   $(document).ready(function () {
     jQuery(function () {
-      var user = {{{ user }}};
-      console.log(user);
-
-      $hello = $("#user-hello");
-      $rating = $("#user-rating");
-      $leaderboard = $("#leaderboard");
-
-      $hello.text("Hi, " + user.facebook.name + "!");
-
-      // populate stars
-      const rating = parseInt(user.rating.stars);
-      stars = "";
-      for (var i = 0; i < 5; i++) {
-        if (i < rating) {
-          stars += "★";
-        } 
-        else {
-          stars += "☆";
-        }
-      }
-      $rating.text(stars);
+      $("#user-hello").html("Welcome to your profile, " + user.facebook.name + "!");   
+      paintStars(+user.rating.stars);
+      $('#convo-count').html(user.rating.count);
+      ['empathetic', 'knowledgeable', 'creative', 'polite'].forEach(function(d){
+        $('#' + d + '-count').html(': ' + countBadges(d, user));
+      })
 
       // show leaderboard right away if user has already selected to see their leaderboard
-      if (user.show_leaderboard) {
-        $ldbd_button.remove()
-        get_leaderboard()
+      if (user.showLeaderboard) {
+        getLeaderboard();
       }
       else {
         // add button for showing leaderboard for the first time
-        $leaderboard.append(
-          '<button class="btn btn-outline-primary" id="show-leaderboard">View Leaderboard</button>'
+        $("#leaderboard").append(
+          '<button class="btn btn-outline-primary" id="show-leaderboard">Authorize Facebook Friends to See Leaderboard</button>'
         )
         $("#show-leaderboard").on("click", e => {
-          get_leaderboard()
+          getLeaderboard()
           $("#show-leaderboard").remove()
         })
       }
-
-      function get_leaderboard() {
-        $.ajax({
-          type: 'GET',
-          contentType: 'application/json; charset=utf-8',
-          url: '/profile/leaderboard',
-          success: res => {
-            res.forEach(friend => {
-              $leaderboard.append(
-                "<li>" + friend.name + "  " + JSON.stringify(friend.badges) + "</li>"
-              )
-            })
-          }
-        })
-      }
-
     });
   });
 </script>
