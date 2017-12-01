@@ -57,7 +57,7 @@
     </div>
 <br/>
       <div>
-        See a leaderboard of your friends.
+        Click to view your friends leaderboards! (by clicking, you allow your friends to see your badges as well).
         <div id="leaderboard"></div>
       </div>
     </div>
@@ -131,7 +131,7 @@
       else {
         // add button for showing leaderboard for the first time
         $("#leaderboard").append(
-          '<button class="btn btn-outline-primary" id="show-leaderboard">Authorize Facebook Friends to See Leaderboard</button>'
+          '<button class="btn btn-outline-primary" id="show-leaderboard">Show Leaderboard</button>'
         )
         $("#show-leaderboard").on("click", e => {
           getLeaderboard()

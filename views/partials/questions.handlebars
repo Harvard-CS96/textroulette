@@ -23,11 +23,8 @@
             populateQuestions(questionsWithUserAnswers);
             document.getElementById("submit").onclick = function () { formSubmit(); };
             document.getElementById("call").onclick = function () { 
-              var isEmpty = true;
-              getAnswersJSON().forEach(function(d){
-                isEmpty = isEmpty & !d.response;
-              })
-              if(isEmpty){
+              // if form submit returned true, redirect to home
+              if (!formSubmit()){
                 alert('Please fill out at least one question');
               }
               else {
@@ -166,25 +163,37 @@
 
         function formSubmit() {
           json = getAnswersJSON()
-          console.log('about to ajax');
-          console.log(json);
-          $.ajax({
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({
-              uuid: user.uuid,
-              questions_answered: json
-            }),
-            url: '/updateStance',
-            success: function (data) {
-              // We get no notification of success right now
-            },
-            failure: function (result) {
-              console.log('failure');
-              error();
-            }
-          });
+          var isEmpty = true;
+          json.forEach(function(d){
+            isEmpty = isEmpty & !d.response;
+          })
+          if(isEmpty){
+            alert('Please fill out at least one question');
+            return false;
+          } else{
+              console.log('about to ajax');
+              console.log(json);
+              $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                  uuid: user.uuid,
+                  questions_answered: json
+                }),
+                url: '/updateStance',
+                success: function (data) {
+                  // We get no notification of success right now
+                },
+                failure: function (result) {
+                  console.log('failure');
+                  error();
+                }
+              });
+          }
+
+          return true;
         }
+
       })
   })
 </script>
