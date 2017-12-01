@@ -134,9 +134,18 @@
           '<button class="btn btn-outline-primary" id="show-leaderboard">Show Leaderboard</button>'
         )
         $("#show-leaderboard").on("click", e => {
+        if (user.show_leaderboard) {
           getLeaderboard()
-          $("#show-leaderboard").remove()
-        })
+        }
+        else {
+           $("#leaderboard").append(
+            '<button class="btn btn-outline-primary" id="show-leaderboard">Authorize Facebook Friends to See Leaderboard</button>'
+          )
+          $("#show-leaderboard").on("click", e => {
+            getLeaderboard()
+            $("#show-leaderboard").remove()
+          })
+        }
       }
     });
   });
