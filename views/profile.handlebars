@@ -7,7 +7,6 @@
       <p id="user-hello"><strong></strong></p>
       <p id="user-rating"><strong></strong></p>
       <ol id="leaderboard">
-        <button class="btn btn-outline-primary" id="show-leaderboard">View Leaderboard</button>
       </ol>
     </div>
   </div>
@@ -21,7 +20,6 @@
       $hello = $("#user-hello");
       $rating = $("#user-rating");
       $leaderboard = $("#leaderboard");
-      $ldbd_button = $("#show-leaderboard");
 
       $hello.text("Hi, " + user.facebook.name + "!");
 
@@ -43,12 +41,16 @@
         $ldbd_button.remove()
         get_leaderboard()
       }
-
-      // show leaderboard for the first time on button click
-      $ldbd_button.on("click", e => {
-        get_leaderboard()
-        $ldbd_button.remove()
-      })
+      else {
+        // add button for showing leaderboard for the first time
+        $leaderboard.append(
+          '<button class="btn btn-outline-primary" id="show-leaderboard">View Leaderboard</button>'
+        )
+        $("#show-leaderboard").on("click", e => {
+          get_leaderboard()
+          $("#show-leaderboard").remove()
+        })
+      }
 
       function get_leaderboard() {
         $.ajax({

@@ -85,8 +85,8 @@ function getLeaderboard(uuid, callback) {
       })
 
     // Update user to show up on other's leaderboards
-    if (!profile.showLeaderboard) {
-      profile.showLeaderboard = true;
+    if (!profile.show_leaderboard) {
+      profile.show_leaderboard = true;
       profile.save();
     }
   });
