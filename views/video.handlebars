@@ -13,6 +13,10 @@
             video {
                 width: 49.5%;
             }
+
+            .btn {
+                margin-right: 10px;
+            }
         </style>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -21,8 +25,10 @@
     <body>
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <a class="navbar-brand" href="#">Discourse</a>
-            <input class="btn btn-outline-primary my-2 my-sm-0" type="button" id="profile" value="Profile" />
-            <input class="btn btn-outline-danger my-2 my-sm-0" type="button" id="logout" value="Logout" />
+            <div class="row">
+                <input class="btn btn-outline-primary pull-right" type="button" id="profile" value="Profile" />
+                <input class="btn btn-outline-danger pull-right" type="button" id="logout" value="Logout" />
+            </div>
         </nav>
         <div class="container mt-5">
             <div class="row text-center">
