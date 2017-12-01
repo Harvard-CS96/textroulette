@@ -65,25 +65,25 @@ module.exports = function(passport) {
                     newUser.uuid = uuid();
 
                     // set all of the facebook information in our user model
-                    newUser.facebook.id    = profile.id; // set the users facebook id                   
+                    newUser.facebook.id    = profile.id; // set the users facebook id
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user
-                    
+
                     // promise to get user's first name from facebook, then save user to database
                     fb.api('me', {fields: 'first_name', access_token: token})
-                      .then( 
+                      .then(
                         (res) => {
-                            newUser.facebook.name  = res.first_name; 
+                            newUser.facebook.name  = res.first_name;
 
                             // save our user to the database
                             newUser.save(function(err) {
                                 if (err)
                                     throw err;
-        
+
                                 // if successful, return the new user
                                 return done(null, newUser);
                             });
                     });
-    
+
                 }
 
             });
