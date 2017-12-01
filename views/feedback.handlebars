@@ -1,35 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<script type="text/javascript">
+    const user = {{{user}}};
+</script>
 
-<head>
-  <title>Textroulette Feedback</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+<link rel="stylesheet" href="/static/css/feedback.css">
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="/static/css/feedback.css">
-
-</head>
-
-<body>
-  <script type="text/javascript">
-    const user = {{{ user }}};
-  </script>
-
-  </script>
-	 <div class="container mt-5">
-      <div class="row text-center">
-          <div class="col-md-12" style="height:100%;">
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-12" style="height:100%;">
             <h1>Feedback from your Conversation</h1>
             <h4 id="identity">Please Rate your Conversation</h4>
-              <div class="container">
-                  <div onmouseout="paintStars(selectedStarCount)" id="star-area">
+            <div class="container">
+                <div onmouseout="paintStars(selectedStarCount)" id="star-area">
                     <span id="star1" onmouseover="setHighlightStar(1)" onclick="setRatingStar(1)" class="glyphicon glyphicon-star"></span>
                     <span id="star2" onmouseover="setHighlightStar(2)" onclick="setRatingStar(2)" class="glyphicon glyphicon-star"></span>
                     <span id="star3" onmouseover="setHighlightStar(3)" onclick="setRatingStar(3)" class="glyphicon glyphicon-star"></span>
@@ -39,56 +21,51 @@
             </div>
 
             <div id="badge-area" style="align: center;">
-              <h4>Would you like to award any badges?</h4>
-  
-              <table>
-                <tr>
-                  <td>
-                    <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
-                    <p>Creative</p>
-                  </td>
-                  <td>
-                    <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
-                    <p>Polite</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
-                    <p>Knowledgeable</p>
-                  </td>
-                  <td>
-                    <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
-                    <p>Empathetic</p>
-                  </td>
-                </tr>
-              </table>
+                <h4>Would you like to award any badges?</h4>
+
+                <table>
+                    <tr>
+                        <td>
+                            <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
+                            <p>Creative</p>
+                        </td>
+                        <td>
+                            <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
+                            <p>Polite</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
+                            <p>Knowledgeable</p>
+                        </td>
+                        <td>
+                            <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
+                            <p>Empathetic</p>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <div id="improvements-area" style="align: center;">
-              <h4>Do you have any suggestions for improvement?</h4>
-              <table>
-                <tr>
-                  <td><input id='button-listening' onclick="changeButton('listening')" class="btn btn-outline-primary" type="button" value="Listening"></td>
-                  <td><input id='button-respect' onclick="changeButton('respect')" class="btn btn-outline-primary" type="button" value="Respect"></td>
-                  <td><input id='button-civility' onclick="changeButton('civility')" class="btn btn-outline-primary" type="button" value="Civility"></td>
-                </tr> 
-                <tr> 
-                  <td><input id='button-cooperation' onclick="changeButton('cooperation')" class="btn btn-outline-primary" type="button" value="Cooperation"></td>
-                  <td><input id='button-snowflake' onclick="changeButton('snowflake')" class="btn btn-outline-primary" type="button" value="Snowflake"></td>
-                  <td><input id='button-other' onclick="changeButton('other')" class="btn btn-outline-primary" type="button" value="Other"></td>
-                </tr>
-              </table>
+                <h4>Do you have any suggestions for improvement?</h4>
+                <table>
+                    <tr>
+                        <td><input id='button-listening' onclick="changeButton('listening')" class="btn btn-outline-primary" type="button" value="Listening"></td>
+                        <td><input id='button-respect' onclick="changeButton('respect')" class="btn btn-outline-primary" type="button" value="Respect"></td>
+                        <td><input id='button-civility' onclick="changeButton('civility')" class="btn btn-outline-primary" type="button" value="Civility"></td>
+                    </tr>
+                    <tr>
+                        <td><input id='button-cooperation' onclick="changeButton('cooperation')" class="btn btn-outline-primary" type="button" value="Cooperation"></td>
+                        <td><input id='button-snowflake' onclick="changeButton('snowflake')" class="btn btn-outline-primary" type="button" value="Snowflake"></td>
+                        <td><input id='button-other' onclick="changeButton('other')" class="btn btn-outline-primary" type="button" value="Other"></td>
+                    </tr>
+                </table>
             </div>
 
             <button id="submit" type="button" class="btn btn-outline-primary">Submit</button>
-          </div>
-      </div>
+        </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src="/static/js/feedback.js"></script>
-</body>
-
-</html>
+<script src="/static/js/feedback.js"></script>
