@@ -40,6 +40,7 @@
 
       // show leaderboard right away if user has already selected to see their leaderboard
       if (user.show_leaderboard) {
+        $ldbd_button.remove()
         get_leaderboard()
       }
 
