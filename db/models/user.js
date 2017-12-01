@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
     needs_to_rate: { type: Boolean, default: false },
     date_registered: { type: Date, default: Date.now },
     questions_answered: { type: [VectorSchema], default: [] },
-    show_leaderboard: { type: Boolean, default: true },
+    show_leaderboard: { type: Boolean, default: false },
     badges: { type: [BadgeCountSchema], default: [] },
 }, { collection: 'users' }) 
 
