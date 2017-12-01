@@ -19,7 +19,7 @@ const ChatSchema = new mongoose.Schema({
     connected: {
         time: {type: Date, default: Date.now}
     },
-    disconnected: { 
+    disconnected: {
         is_disconnected: {type: Boolean, default: false},
         time: Date,
         reason: {type: String, enum: ['hangup', 'disconnect']},

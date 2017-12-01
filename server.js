@@ -83,7 +83,7 @@ io.use(sharedsession(session, {
 server.listen(process.env.PORT || 3000)
 
 const Matcher = require('./matcher');
-let matcher = new Matcher((id, status, partner = null) => {
+let matcher = new Matcher((id, status, partner = null, room = null) => {
   switch (status) {
     case WAITING:
       {
@@ -94,7 +94,7 @@ let matcher = new Matcher((id, status, partner = null) => {
     case PAIRING:
       {
         // io.sockets.emit("meta", `${id} is pairing to ${partner}`)
-        io.to(id).emit("pairing", matcher.getUsername(partner));
+        io.to(id).emit("pairing", matcher.getUsername(partner), room);
         break;
       }
     case DISCONNECTED:
@@ -124,4 +124,5 @@ const createUtilRoute = require('./routes/util');
 const utilRoute = createUtilRoute(matcher)
 app.use('/util', utilRoute);
 
-app.use('/static', express.static('static'));
+// Serve static resources
+app.use('/static', express.static('static'))

@@ -122,9 +122,9 @@
                     $messageBox.addClass('disabled');
                     $sendMessageButton.addClass('disabled');
                 })
-                socket.on("pairing", function (data) {
+                socket.on("pairing", function (username, room) {
                     var $newEm = $("<em />");
-                    $newEm.text("You are now talking to " + data);
+                    $newEm.text("You are now talking to " + username);
                     var $newDiv = $("<div />");
                     $newDiv.append($newEm)
                     $chat.text("");
@@ -147,6 +147,7 @@
                     username: user.facebook.name,
                     user_id: user.uuid
                 })
+                socket.emit("request match");
                 socket.on("recall username", username => {
                     $identity.text("Hello, " + username);
                 })

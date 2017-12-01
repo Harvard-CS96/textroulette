@@ -6,6 +6,7 @@ const { CONN_STATUS } = require('./constants')
 const { WAITING, PAIRING, DISCONNECTED } = CONN_STATUS;
 const path = require('path');
 const DIR = require('./constants.js').DIR
+const uuid = require('uuid');
 
 const users = require(path.join(DIR.ROOT, 'controllers/users'));
 const questions = require(path.join(DIR.ROOT, 'controllers/questions'));
@@ -96,7 +97,7 @@ class Matcher {
         }
 
         this._setStatus(id, DISCONNECTED, partner);
-        
+
     }
 
     // Remove an id from the connection pool
@@ -122,7 +123,7 @@ class Matcher {
         this.connections[id].blacklist.push(blacklisted)
         this.connections[id].blacklist = this.connections[id].blacklist.slice(-1 * this._maxBlacklist);
     }
-    
+
 
     // Attempt to find new single match for given id
     checkForMatches(id) {
@@ -147,23 +148,23 @@ class Matcher {
         console.log(`Matcher: Checking for matches for ${id}...`)
 
         const userIds = Object.keys(this.connections).map((k) => { return this.connections[k].user_id });
-        users.findAllInList(userIds, function(userData){ 
-            questions.findActive(function(questionData){ 
-                referenceToThis.findMatch(userData, questionData, id); 
+        users.findAllInList(userIds, function(userData){
+            questions.findActive(function(questionData){
+                referenceToThis.findMatch(userData, questionData, id);
             });
         });
     }
 
 
     findMatch(userData, questionData, id){
-        
+
         // this is hacky - we encounter this case when submitting feedback but haven't figured out why :(
         if (!this.connections[id]) {
             console.log("Missing connection for id: " + id)
             return;
         }
 
-        // get user data from id 
+        // get user data from id
         var user1ID = this.connections[id].user_id;
         var userData1 = getUserDataOfID(userData, user1ID);
         var Questions1 = getAvailableUserQuestions(userData1, questionData);
@@ -210,7 +211,7 @@ class Matcher {
             }
         }
     }
-        
+
 
     // Set two ids to be each others' partners
     setPartner(id1, id2, question) {
@@ -222,19 +223,24 @@ class Matcher {
             // TODO: handle if you can't pair
             return;
         }
-        console.log(`Matcher: Pairing ${id1} and ${id2}`)
 
         // Set each id's partner to the other
         this.connections[id1].partner = id2;
         this.connections[id2].partner = id1;
-        
+
         console.log("Users will discuss the question: " + question.text);
 
-        this._setStatus(id1, PAIRING, id2);
-        this._setStatus(id2, PAIRING, id1);
+        // Create a new room name for this Conversation
+        var room = uuid();
+
+        console.log(`Matcher: Pairing ${id1} and ${id2} in room ${room}`);
+
+        this._setStatus(id1, PAIRING, id2, room);
+        this._setStatus(id2, PAIRING, id1, room);
         this.fireCallbacks(PAIRING, {
-            uid1: this.connections[id1].user_id, 
-            uid2: this.connections[id2].user_id
+            uid1: this.connections[id1].user_id,
+            uid2: this.connections[id2].user_id,
+            room: room
         });
     }
 
