@@ -90,21 +90,22 @@ function formSubmit(){
             data: JSON.stringify(json),
             url: '/chats/',
             success: function(data){
-                console.log(data);  
+                console.log(data);
             },
             failure: function(result){
                 console.log('failure');
             error();
             }
         });
-        // TODO: Redirect
+        // redirect to profile
+        window.location.href = '/profile';
     }
     else {
         alert('Please add star rating');
     }
 }
 $(document).ready(function(){
-    document.getElementById("submit").onclick = function (){ 
-        formSubmit() 
+    document.getElementById("submit").onclick = function (){
+        formSubmit()
     };
 })
