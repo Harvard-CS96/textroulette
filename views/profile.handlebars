@@ -1,5 +1,6 @@
 <head>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="static/css/profile.css">
 </head>
 
@@ -9,6 +10,7 @@
 
 <div id="profile-container">  
   <h1 id="user-hello"></h1>
+
   <div class="row">
     <div class="col-md-8">
       {{> questions }}
@@ -33,21 +35,21 @@
         <table>
           <tr>
             <td>
-              <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
+              <span id="creative" onclick="changeSelected('creative')" class="fa fa-wrench"></span>
               <p>Creative<span id="creative-count"></span></p>
             </td>
             <td>
-              <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
+              <span id="polite" onclick="changeSelected('polite')" class="fa fa-handshake-o"></span>
               <p>Polite<span id="polite-count"></span></p>
             </td>
           </tr>
           <tr>
             <td>
-              <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
+              <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="fa fa-book"></span>
               <p>Knowledgeable<span id="knowledgeable-count"></span></p>
             </td>
             <td>
-              <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
+              <span id="empathetic" onclick="changeSelected('empathetic')" class="fa fa-heart"></span>
               <p>Empathetic<span id="empathetic-count"></span></p>
             </td>
           </tr>
@@ -115,7 +117,7 @@
 
   $(document).ready(function () {
     jQuery(function () {
-      $("#user-hello").html("Welcome to your profile, " + user.facebook.name + "!");   
+      $("#user-hello").html("Welcome, " + user.facebook.name + "!");   
       paintStars(+user.rating.stars);
       $('#convo-count').html(user.rating.count);
       ['empathetic', 'knowledgeable', 'creative', 'polite'].forEach(function(d){
