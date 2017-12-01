@@ -4,14 +4,12 @@ const uuid = require('uuid');
 require('mongoose-uuid2')(mongoose);
 var UUID = mongoose.Types.UUID;
 
-const BadgeSchema = require('./badge');
-
 // collect feedback on a conversation
 const FeedbackSchema = new mongoose.Schema({
     from: UUID,
     chat: mongoose.Schema.Types.ObjectId,
     stars: {type: Number, min: 1, max: 5},
-    badges: {type: [BadgeSchema], default: []},
+    badges: {type: [String], default: []},
     text: String
 }, { noId: true });
 
