@@ -3,59 +3,71 @@
 <div id="profile-container">
     <h1 id="user-hello"></h1>
 
-    <div class="row">
-        <div class="col-md-8">
-            {{> questions }}
+    <div class="tab">
+        <button class="tablinks col-md-4 bottombar" onclick="openCity(event, 'My Questions')" id="defaultOpen">My Questions</button>
+        <button class="tablinks col-md-4 bottombar" onclick="openCity(event, 'My Stats')">My Stats</button>
+        <button class="tablinks col-md-4 bottombar" onclick="openCity(event, 'My History')">My History</button>
+    </div>
+
+    <div id="My Questions" class="tabcontent">
+        {{> questions }}
+    </div>
+
+    <div id="My Stats" class="tabcontent">
+    <div class="holder">
+        <hr>
+        <div id="star-area">
+            Average star rating:
+            <span id="star1">&#9733;</span></span>
+            <span id="star2">&#9733;</span></span>
+            <span id="star3">&#9733;</span></span>
+            <span id="star4">&#9733;</span></span>
+            <span id="star5">&#9733;</span></span>
         </div>
-        <div class="col-md-4">
-            <div class="holder">
-                <h4>See Your Rating/Score</h4>
-                <hr>
-                <div id="star-area">
-                    Your star rating:
-                    <span id="star1">&#9733;</span></span>
-                    <span id="star2">&#9733;</span></span>
-                    <span id="star3">&#9733;</span></span>
-                    <span id="star4">&#9733;</span></span>
-                    <span id="star5">&#9733;</span></span>
-                </div>
-                <div>
-                    Your conversation count: <span id="convo-count"></span>
-                </div>
-                <div id="badge-area" style="align: center;">
-                    See your badges:
-                    <table>
-                        <tr>
-                            <td>
-                                <span id="creative" onclick="changeSelected('creative')" class="fa fa-wrench"></span>
-                                <p>Creative<span id="creative-count"></span></p>
-                            </td>
-                            <td>
-                                <span id="polite" onclick="changeSelected('polite')" class="fa fa-handshake-o"></span>
-                                <p>Polite<span id="polite-count"></span></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="fa fa-book"></span>
-                                <p>Knowledgeable<span id="knowledgeable-count"></span></p>
-                            </td>
-                            <td>
-                                <span id="empathetic" onclick="changeSelected('empathetic')" class="fa fa-heart"></span>
-                                <p>Empathetic<span id="empathetic-count"></span></p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <br/>
-                <div>
-                    Click to view your friends leaderboards! (by clicking, you allow your friends to see your badges as well).
-                    <div id="leaderboard"></div>
-                </div>
-            </div>
+        <div>
+            Your conversation count: <span id="convo-count"></span>
+        </div>
+        <div id="badge-area" style="align: center;">
+            See your badges:
+            <table>
+                <tr>
+                    <td>
+                        <span id="creative" onclick="changeSelected('creative')" class="fa fa-wrench"></span>
+                        <p>Creative<span id="creative-count"></span></p>
+                    </td>
+                    <td>
+                        <span id="polite" onclick="changeSelected('polite')" class="fa fa-handshake-o"></span>
+                        <p>Polite<span id="polite-count"></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="fa fa-book"></span>
+                        <p>Knowledgeable<span id="knowledgeable-count"></span></p>
+                    </td>
+                    <td>
+                        <span id="empathetic" onclick="changeSelected('empathetic')" class="fa fa-heart"></span>
+                        <p>Empathetic<span id="empathetic-count"></span></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br/>
+        <div>
+            Click to view your friends leaderboards! (by clicking, you allow your friends to see your badges as well).
+            <div id="leaderboard"></div>
         </div>
     </div>
+
+    <div id="My History" class="tabcontent">
+    <h3>My History</h3>
+    <p>Tokyo is the capital of Japan.</p>
+    </div>
+
+    
+
 </div>
+
 <script type='text/javascript'>
     var user = {{{ user }}};
 
@@ -132,4 +144,28 @@
             }
         });
     });
+
+    function openCity(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
 </script>
