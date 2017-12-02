@@ -1,47 +1,15 @@
 
-body {
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-/* Put icons in circles */
-#badge-area .glyphicon {
-    background-color: rgb(128, 128, 128);
-    color: white;
-    font-size: 30px;
-    opacity: .5;
-    padding: 30px;
-    font-size: 30px;
-    border-radius: 50px;
-}
-
-#badge-area .glyphicon:hover {
-    border: 6px dashed red;
-    padding: 24px;
-    border-radius: 50px;
-}
-
-#badge-area .glyphicon-selected {
-    border: 6px solid red;
-    padding: 24px;
-    border-radius: 50px;
-    opacity: 1;
-}
-
-table {
-    margin-left: auto;
-    margin-right: auto;
+table p {
     margin-top: 30px;
-    margin-bottom: 30px;
 }
 
 #improvements-area table {
     width: 400px;
 }
 
-#badge-area tr {
-    margin-top: 10px;
-    height: 60px;
+.error-warn {
+    color: red;
+    font-weight: bold;
 }
 
 #improvements-area tr {
@@ -49,7 +17,7 @@ table {
     height: 40px;
 }
 
-#star-area .glyphicon {
+#star-area .fa {
     color: gray;
     opacity: .5;
     font-size: 50px;
@@ -61,7 +29,36 @@ table {
 }
 
 .btn{
-    min-width: 110px;
+    min-width: 130px;
     border: solid rgb(108, 155, 209);
     border-radius: 10px;
+}
+
+.badge-area .fa {
+    background-color: rgb(128, 128, 128);
+    color: white;
+    font-size: 30px;
+    opacity: .5;
+    padding: 30px;
+    border-radius: 50px;
+}
+
+.badge-area .fa:hover {
+    border: 6px dashed red;
+    padding: 24px;
+}
+
+.badge-area .fa-selected {
+    border: 6px solid red;
+    padding: 24px;
+    opacity: 1;
+}
+
+.badge-area tr {
+    margin-top: 10px;
+    height: 120px;
+}
+
+.badge-area {
+    align: center;
 }

@@ -12,58 +12,67 @@
             <h4 id="identity">Please Rate your Conversation</h4>
             <div class="container">
                 <div onmouseout="paintStars(selectedStarCount)" id="star-area">
-                    <span id="star1" onmouseover="setHighlightStar(1)" onclick="setRatingStar(1)" class="glyphicon glyphicon-star"></span>
-                    <span id="star2" onmouseover="setHighlightStar(2)" onclick="setRatingStar(2)" class="glyphicon glyphicon-star"></span>
-                    <span id="star3" onmouseover="setHighlightStar(3)" onclick="setRatingStar(3)" class="glyphicon glyphicon-star"></span>
-                    <span id="star4" onmouseover="setHighlightStar(4)" onclick="setRatingStar(4)" class="glyphicon glyphicon-star"></span>
-                    <span id="star5" onmouseover="setHighlightStar(5)" onclick="setRatingStar(5)" class="glyphicon glyphicon-star"></span>
+                    <span id="star1" onmouseover="setHighlightStar(1)" onclick="setRatingStar(1)" class="fa icon-star"></span>
+                    <span id="star2" onmouseover="setHighlightStar(2)" onclick="setRatingStar(2)" class="fa icon-star"></span>
+                    <span id="star3" onmouseover="setHighlightStar(3)" onclick="setRatingStar(3)" class="fa icon-star"></span>
+                    <span id="star4" onmouseover="setHighlightStar(4)" onclick="setRatingStar(4)" class="fa icon-star"></span>
+                    <span id="star5" onmouseover="setHighlightStar(5)" onclick="setRatingStar(5)" class="fa icon-star"></span>
                 </div>
             </div>
 
-            <div id="badge-area" style="align: center;">
+            <div class="badge-area" style="align: center;">
                 <h4>Would you like to award any badges?</h4>
 
-                <table>
-                    <tr>
-                        <td>
-                            <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
-                            <p>Creative</p>
-                        </td>
-                        <td>
-                            <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
-                            <p>Polite</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
-                            <p>Knowledgeable</p>
-                        </td>
-                        <td>
-                            <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
-                            <p>Empathetic</p>
-                        </td>
-                    </tr>
-                </table>
+                <div class="row" style="margin:2em;">
+                    <div class="col-md-6">
+                        <span id="creative" style="display:block;" onclick="changeSelected('creative')" class="fa icon-wrench"></span>
+                        <p>Creative</p>
+                    </div>
+                    <div class="col-md-6">
+                        <span id="polite" style="display:block;" onclick="changeSelected('polite')" class="fa icon-heart"></span>
+                        <p>Polite</p>
+                    </div>
+                </div>
+                <div class="row" style="margin:2em;">
+                    <div class="col-md-6">
+                        <span id="knowledgeable" style="display:block;" onclick="changeSelected('knowledgeable')" class="fa icon-book"></span>
+                        <p>Knowledgeable</p>
+                    </div>
+                    <div class="col-md-6">
+                        <span id="empathetic" style="display:block;" onclick="changeSelected('empathetic')" class="fa icon-heart"></span>
+                        <p>Empathetic</p>
+                    </div>
+                </div>
             </div>
 
             <div id="improvements-area" style="align: center;">
                 <h4>Do you have any suggestions for improvement?</h4>
-                <table>
-                    <tr>
-                        <td><input id='button-listening' onclick="changeButton('listening')" class="btn btn-outline-primary" type="button" value="Listening"></td>
-                        <td><input id='button-respect' onclick="changeButton('respect')" class="btn btn-outline-primary" type="button" value="Respect"></td>
-                        <td><input id='button-civility' onclick="changeButton('civility')" class="btn btn-outline-primary" type="button" value="Civility"></td>
-                    </tr>
-                    <tr>
-                        <td><input id='button-cooperation' onclick="changeButton('cooperation')" class="btn btn-outline-primary" type="button" value="Cooperation"></td>
-                        <td><input id='button-snowflake' onclick="changeButton('snowflake')" class="btn btn-outline-primary" type="button" value="Snowflake"></td>
-                        <td><input id='button-other' onclick="changeButton('other')" class="btn btn-outline-primary" type="button" value="Other"></td>
-                    </tr>
-                </table>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input id='button-listening' onclick="changeButton('listening')" class="btn btn-outline-primary" type="button" value="Listening">
+                    </div>
+                    <div class="col-md-4">
+                        <input id='button-respect' onclick="changeButton('respect')" class="btn btn-outline-primary" type="button" value="Respect">
+                    </div>
+                    <div class="col-md-4">
+                        <input id='button-civility' onclick="changeButton('civility')" class="btn btn-outline-primary" type="button" value="Civility">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input id='button-cooperation' onclick="changeButton('cooperation')" class="btn btn-outline-primary" type="button" value="Cooperation">
+                    </div>
+                    <div class="col-md-4">
+                        <input id='button-snowflake' onclick="changeButton('snowflake')" class="btn btn-outline-primary" type="button" value="Snowflake">
+                    </div>
+                    <div class="col-md-4">
+                        <input id='button-other' onclick="changeButton('other')" class="btn btn-outline-primary" type="button" value="Other">
+                    </div>
+                </div>
             </div>
 
-            <button id="submit" type="button" class="btn btn-outline-primary">Submit</button>
+            <button id="submit" type="button" class="btn btn-primary">Submit</button>
+            <p class="error-warn"></p>
         </div>
     </div>
 </div>
