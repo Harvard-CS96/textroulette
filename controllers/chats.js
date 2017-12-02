@@ -24,6 +24,10 @@ const Chat = db.models.Chat;
 function logFeedback(feedback) {
 
     getMostRecent(feedback.from, (chat) => {
+        if (!chat){
+            console.log('did not find last conversation of ' + feedback.from);
+            return;
+        }
         if (chat.feedback.length >= 2) {
             return;
         }

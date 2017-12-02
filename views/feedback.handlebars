@@ -12,35 +12,34 @@
             <h4 id="identity">Please Rate your Conversation</h4>
             <div class="container">
                 <div onmouseout="paintStars(selectedStarCount)" id="star-area">
-                    <span id="star1" onmouseover="setHighlightStar(1)" onclick="setRatingStar(1)" class="glyphicon glyphicon-star"></span>
-                    <span id="star2" onmouseover="setHighlightStar(2)" onclick="setRatingStar(2)" class="glyphicon glyphicon-star"></span>
-                    <span id="star3" onmouseover="setHighlightStar(3)" onclick="setRatingStar(3)" class="glyphicon glyphicon-star"></span>
-                    <span id="star4" onmouseover="setHighlightStar(4)" onclick="setRatingStar(4)" class="glyphicon glyphicon-star"></span>
-                    <span id="star5" onmouseover="setHighlightStar(5)" onclick="setRatingStar(5)" class="glyphicon glyphicon-star"></span>
+                    <span id="star1" onmouseover="setHighlightStar(1)" onclick="setRatingStar(1)" class="fa icon-star"></span>
+                    <span id="star2" onmouseover="setHighlightStar(2)" onclick="setRatingStar(2)" class="fa icon-star"></span>
+                    <span id="star3" onmouseover="setHighlightStar(3)" onclick="setRatingStar(3)" class="fa icon-star"></span>
+                    <span id="star4" onmouseover="setHighlightStar(4)" onclick="setRatingStar(4)" class="fa icon-star"></span>
+                    <span id="star5" onmouseover="setHighlightStar(5)" onclick="setRatingStar(5)" class="fa icon-star"></span>
                 </div>
             </div>
 
-            <div id="badge-area" style="align: center;">
+            <div class="badge-area">
                 <h4>Would you like to award any badges?</h4>
-
                 <table>
                     <tr>
                         <td>
-                            <span id="creative" onclick="changeSelected('creative')" class="glyphicon glyphicon-wrench"></span>
+                            <span id="creative" onclick="changeSelected('creative')" class="fa icon-wrench"></span>
                             <p>Creative</p>
                         </td>
                         <td>
-                            <span id="polite" onclick="changeSelected('polite')" class="glyphicon glyphicon-sunglasses"></span>
+                            <span id="polite" onclick="changeSelected('polite')" class="fa icon-heart"></span>
                             <p>Polite</p>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="glyphicon glyphicon-book"></span>
+                            <span id="knowledgeable" onclick="changeSelected('knowledgeable')" class="fa icon-book"></span>
                             <p>Knowledgeable</p>
                         </td>
                         <td>
-                            <span id="empathetic" onclick="changeSelected('empathetic')" class="glyphicon glyphicon-heart"></span>
+                            <span id="empathetic" onclick="changeSelected('empathetic')" class="fa icon-heart"></span>
                             <p>Empathetic</p>
                         </td>
                     </tr>
@@ -64,6 +63,7 @@
             </div>
 
             <button id="submit" type="button" class="btn btn-outline-primary">Submit</button>
+            <p class="error-warn"></p>
         </div>
     </div>
 </div>

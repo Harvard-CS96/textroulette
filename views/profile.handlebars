@@ -1,13 +1,13 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="static/css/profile.css">
+<link rel="stylesheet" href="/static/css/profile.css">
 <div id="profile-container">
     <h1 id="user-hello"></h1>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             {{> questions }}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="holder">
                 <h4>See Your Rating/Score</h4>
                 <hr>
@@ -22,7 +22,7 @@
                 <div>
                     Your conversation count: <span id="convo-count"></span>
                 </div>
-                <div id="badge-area" style="align: center;">
+                <div class="badge-area">
                     See your badges:
                     <table>
                         <tr>
@@ -88,11 +88,10 @@
         leaders.forEach(friend => {
             s += '<tr><td>' + friend.name + '</td><td>' + countBadges('empathetic', friend) + '</td><td>' +
                 countBadges('polite', friend) + '</td><td>' + countBadges('knowledgeable', friend) + '</td><td>' +
-                countBadges('creative', friend) + '</td><tr>';
+                countBadges('creative', friend) + '</td></tr>';
         });
         var end = '</table>';
         var final = start + s + end;
-        console.log(final);
         return final;
     }
 
