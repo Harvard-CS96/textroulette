@@ -41,11 +41,11 @@ badgesDict = {
 };
 function changeSelected(key){
     badgesDict[key] = !badgesDict[key];
-    if($('#' + key).hasClass('glyphicon-selected')){
-        $('#' + key).removeClass('glyphicon-selected')
+    if($('#' + key).hasClass('fa-selected')){
+        $('#' + key).removeClass('fa-selected')
     }
     else{
-        $('#' + key).addClass('glyphicon-selected')
+        $('#' + key).addClass('fa-selected')
     }
 }
 
@@ -101,7 +101,8 @@ function formSubmit(){
         window.location.href = '/profile';
     }
     else {
-        alert('Please add star rating');
+        // TODO: Say with whom the conversation was.
+        $('.error-warn').html('Please submit at least a star rating for your conversation.')
     }
 }
 $(document).ready(function(){

@@ -1,5 +1,5 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="static/css/profile.css">
+<link rel="stylesheet" href="/static/css/profile.css">
 <div id="profile-container">
     <h1 id="user-hello"></h1>
 
@@ -88,7 +88,7 @@
         leaders.forEach(friend => {
             s += '<tr><td>' + friend.name + '</td><td>' + countBadges('empathetic', friend) + '</td><td>' +
                 countBadges('polite', friend) + '</td><td>' + countBadges('knowledgeable', friend) + '</td><td>' +
-                countBadges('creative', friend) + '</td><tr>';
+                countBadges('creative', friend) + '</td></tr>';
         });
         var end = '</table>';
         var final = start + s + end;
