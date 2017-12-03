@@ -103,7 +103,7 @@ let matcher = new Matcher((id, status, partner = null, room = null) => {
       }
     case DISCONNECTED:
       {
-        io.to(id).emit("disconnected", matcher.getUsername(partner))
+        io.to(id).emit("disconnected")
       }
     default:
       {

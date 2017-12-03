@@ -3,20 +3,14 @@
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-landing-page/blob/master/LICENSE)
  */
- @import 'https://fonts.googleapis.com/css?family=Fjalla+One|Raleway';
 
 body {
-    font-family: 'Raleway', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    text-transform: uppercase;
-    font-family: 'Open Sans', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 700;
-    font-size: 1.2rem;
-	font-family: "Open Sans", sans-serif;
-	color: #444;
-	text-align: center;
 }
 
 header.masthead {

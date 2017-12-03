@@ -6,12 +6,15 @@ var UUID = mongoose.Types.UUID;
 
 // collect feedback on a conversation
 const FeedbackSchema = new mongoose.Schema({
-    from: UUID,
+    from: {type: UUID, ref: "User"},
     chat: mongoose.Schema.Types.ObjectId,
     stars: {type: Number, min: 1, max: 5},
     badges: {type: [String], default: []},
     text: String
 }, { noId: true });
+
+FeedbackSchema.set('toObject', {getters: true});
+FeedbackSchema.set('toJSON', {getters: true});
 
 const ChatSchema = new mongoose.Schema({
     user1: UUID,

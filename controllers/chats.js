@@ -24,6 +24,7 @@ const Chat = db.models.Chat;
 function logFeedback(feedback) {
 
     getMostRecent(feedback.from, (chat) => {
+
         if (!chat){
             console.log('did not find last conversation of ' + feedback.from);
             return;
@@ -41,17 +42,14 @@ function logFeedback(feedback) {
             }
         });
     
-        if (feedback.from === chat.user1){
-            var otherID = chat.user2;
-        }
-        else if (feedback.from === chat.user2){
-            var otherID = chat.user1;
-        }
+
+        var otherID = feedback.from === chat.user1 ? chat.user2 : chat.user1;
 
         console.log("Chat: adding feedback from " + feedback.from + " to " + otherID);
 
         users.applyFeedback(otherID, feedback);
     })
+
 }
 
 function getMostRecent(uuid, callback) {
@@ -72,6 +70,37 @@ function getMostRecent(uuid, callback) {
             if (result) {
                 callback(result[0]) // A list was returned, must get element.
             }
+        })
+}
+
+function getChatsForUUID(uuid, callback) {
+    // Get all chats involving a user
+    var query = {
+        $or: [
+            { user1: uuid },
+            { user2: uuid }
+        ],
+        "disconnected.is_disconnected": true,
+    }
+
+    Chat.find(query)
+        .exec((err, chats) => {
+            if (err) {
+                console.log(err);
+            }
+            
+            var promises = chats.map(chat => {
+                var partner_id = uuid === chat.user1 ? chat.user2 : chat.user1;
+
+                return users.findById(partner_id, res => {});
+            })
+
+            Promise.all(promises).then((partners) => {
+                var chats_w_name = chats.map((chat, i) => {
+                    return [chat, partners[i].facebook.name]
+                })
+                callback(chats_w_name);
+            })
         })
 }
 
@@ -128,9 +157,10 @@ function logDisconnection(payload) {
     Chat.findOneAndUpdate(query, update).exec();
 }
 
-
 module.exports = {
     logConnection,
     logDisconnection,
-    logFeedback
+    logFeedback,
+    getMostRecent,
+    getChatsForUUID
 }

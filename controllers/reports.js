@@ -6,18 +6,23 @@
 var mongoose = require('mongoose'),
 Report = mongoose.model('Report');
 
-function createReport(report) {
-  const report_doc = new Report({
-    from: report.from,
-    to: report.to,
-    kind: report.kind
-  });
+const chats = require('./chats');
 
-  report_doc.save((err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
+function createReport(report) {
+  chats.getMostRecent(report.from, res => {
+    const report_to = res.user1 === report.from ? res.user2 : res.user1;
+    const report_doc = new Report({
+      from: report.from,
+      to: report_to,
+      kind: report.kind
+    });
+
+    report_doc.save((err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  })
 }
 
 module.exports = {

@@ -7,6 +7,18 @@ buttonStuff = {
     'other': false
 }
 
+abuseComment = "";
+function logAbuseComment(comment){
+    abuseComment = comment;
+    return abuseComment;
+}
+
+abuseType = "";
+function logAbuseType(type){
+    abuseType = type;
+    return abuseType;
+}
+
 function findActiveButtons(){
     var lst = [];
     Object.keys(buttonStuff).forEach(function(d){
@@ -25,6 +37,13 @@ function findActiveBadges(){
         }
     })
     return lst;
+}
+
+message = "";
+function setText(text){
+    message = text;
+    console.log(message)
+    return message;
 }
 
 function changeButton(name){
@@ -74,6 +93,36 @@ function setRatingStar(nStars){
     paintStars(nStars);
 }
 
+function abuseFormSubmit(){
+    if (abuseType!==""){
+        var json = {
+            from: user.uuid,
+            kind: abuseType,
+            comment: abuseComment,
+        };
+        console.log('reporting abuse');
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(json),
+            url: '/feedback/report/',
+            success: function(data){
+                console.log(data);
+                console.log('success');
+            },
+            failure: function(result){
+                console.log('failure');
+            error();
+            }
+        });
+        $('#reportModal').modal('toggle');
+    }
+    else {
+        // TODO: Warn that an abuse type was not selected
+        $('.report-error-warn').html('Please select an abuse type.')                
+    }
+}
+
 function formSubmit(){
     console.log('about to ajax');
     if (selectedStarCount>0){
@@ -81,14 +130,15 @@ function formSubmit(){
             from: user.uuid,
             stars: selectedStarCount,
             badges: findActiveBadges(),
-            improvements: findActiveButtons()
+            improvements: findActiveButtons(),
+            text: message,
         };
-        console.log(json);
+
         $.ajax({
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(json),
-            url: '/chats/',
+            url: '/feedback',
             success: function(data){
                 console.log(data);
             },
@@ -102,11 +152,17 @@ function formSubmit(){
     }
     else {
         // TODO: Say with whom the conversation was.
-        $('.error-warn').html('Please rate your conversation partner from one to five stars.')
+        $('.error-warn').html('Please submit at least a star rating for your conversation.')
     }
 }
 $(document).ready(function(){
     document.getElementById("submit").onclick = function (){
         formSubmit()
+    };
+})
+
+$(document).ready(function(){
+    document.getElementById("submitAbuse").onclick = function (){
+        abuseFormSubmit()
     };
 })

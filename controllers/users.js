@@ -10,12 +10,15 @@ User = mongoose.model('User');
 const fb = require('fb');
 
 function findById(uuid, callback) {
-  User.findOne({"uuid": uuid}, (err, results) => {
+  var promise = 
+    User.findOne({"uuid": uuid}, (err, results) => {
       if (err) {
         console.log(err)
       }
       callback(results);
     })
+  
+  return promise;
 }
 
 function findAllInList(uuids, callback) {

@@ -84,7 +84,6 @@ class Matcher {
             console.log(`Matcher: ${id} partner ${partner} is now single`)
 
             this._setStatus(partner, DISCONNECTED, id)
-            this._setStatus(partner, WAITING)
 
             this.fireCallbacks(DISCONNECTED, {
                 who: this.connections[id].user_id,
@@ -92,8 +91,6 @@ class Matcher {
                 reason: reason
             })
 
-            // Check for a partner for the newly single ex-partner
-            this.checkForMatches(partner);
         }
 
         this._setStatus(id, DISCONNECTED, partner);
@@ -114,9 +111,9 @@ class Matcher {
     hangup(id) {
         this.unpair(id, 'hangup')
         this.addBlacklist(id, this.connections[id].partner)
+        this._setStatus(id, DISCONNECTED);
+        this._setStatus(this.connections[id].partner, DISCONNECTED);
         this.connections[id].partner = null;
-        this._setStatus(id, WAITING);
-        this.checkForMatches(id);
     }
 
     addBlacklist(id, blacklisted) {

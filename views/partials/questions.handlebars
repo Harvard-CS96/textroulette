@@ -6,6 +6,7 @@
 
 <script type="text/javascript">
   // load when jqery and page has be loaded
+  var numQ = 0;
   $(document).ready(function () {
     jQuery(function () {
       const user = {{{ user }}};
@@ -22,7 +23,7 @@
             var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
             populateQuestions(questionsWithUserAnswers);
             document.getElementById("submit").onclick = function () { formSubmit(); alert("Thanks for updating!");};
-            document.getElementById("call").onclick = function () { 
+            document.getElementById("call").onclick = function () {
               // if form submit returned true, redirect to home
               if (!formSubmit()){
                 alert('Please fill out at least one question');
@@ -31,7 +32,7 @@
                 window.location.href = '/'
               }
             };
-            
+
             $('.btn-group').on('click', 'label.btn', function(e) {
               if ($(this).hasClass('active')) {
                 setTimeout(function() {
@@ -62,7 +63,7 @@
 
         function constructDiv(names, qID, userAnswer, idx) {
           var s = '';
-          var start = ('<div class="btn-group" style="display: block" id="question' + 
+          var start = ('<div class="btn-group" style="display: block" id="question' +
             (idx + 1).toString() + '" ' +
             ' data-toggle="buttons">');
           var end = '</div>';
@@ -82,6 +83,7 @@
           var start = '<div id="holder">';
           var end = '</div>';
           s += start;
+          numQ = questions.length;
           questions.forEach(function (question, idx) {
             s += '<h3>' + question.text + '</h3>';
             s += constructDiv(question['answer_options'], question['_id'], question['userAnswer'], idx);
@@ -108,7 +110,7 @@
           // maps question ids to user answers
           dictOfAnswers = {};
 
-          // populate dictOfAnswers with ids of user answers and 
+          // populate dictOfAnswers with ids of user answers and
           for (var i = 0; i < userAnswers.length; i++) {
             var userAnswer = userAnswers[i];
             if (userAnswer.response_data.length > 0) {
@@ -142,6 +144,8 @@
 
         function getAnswer(questionNumber) {
           var parent = $('#question' + questionNumber)[0];
+          console.log('#question' + questionNumber);
+          console.log(parent);
           var response = calcAttribute(parent, 'response');
           if (response == '')
               response = null;
@@ -153,9 +157,8 @@
 
         // Reads form to get answers.  Stores in custom JSON.  We don't need you form built-ins.  Go away.
         function getAnswersJSON() {
-          var numQuestions = document.getElementsByTagName('h3').length;
           var answers = [];
-          for (var i = 1; i <= numQuestions; i++) {
+          for (var i = 1; i <= numQ; i++) {
             answers.push(getAnswer(i));
           }
           return answers;

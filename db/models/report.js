@@ -6,6 +6,7 @@ const ReportSchema = new mongoose.Schema({
   from: UUID,
   to: UUID,
   kind: String,
+  comment: String,
   date: {type: Date, default: Date.now()}
 });
 
