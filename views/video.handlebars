@@ -158,8 +158,9 @@
         num_avg_frames = 10;
         // console.log('video added', peer['id']);
         // Grab the ID of the peer video tag
-        var video_id = '#' + peer['id'] + '_video_incoming';
-        $(video_id).css({
+        //var video_id = '#' + peer['id'] + '_video_incoming';
+        var $vid = $("#removeVideos > video").first();
+        $($vid).css({
                   "width": "450px",
                   "height": "450px",
                   "border-radius": "50%",
@@ -178,7 +179,7 @@
         tracker.setEdgesDensity(0.1);
         // Had to set camera to false on the peer video
         // so that it doesn't automatically try to play a foreign stream
-        tracking.track(video_id, tracker, {
+        tracking.track($vid[0], tracker, {
             camera: false,
             fps: num_FPS
         });
