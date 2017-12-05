@@ -5,6 +5,15 @@
  */
  @import 'https://fonts.googleapis.com/css?family=Fjalla+One|Raleway';
 
+ :root {
+     --main: #C06014;
+     --secondary: #eddbcd;
+     --main_r: 192;
+     --main_g: 96;
+     --main_b: 20;
+     --text-color: #fff;
+ }
+
 body {
     font-family: 'Raleway', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -154,21 +163,20 @@ header.masthead h1 {
 
 .btn-primary {
     margin-right: 20px;
-    color: #C0B283;
+    color: var(--main) !important;
     background: white;
-    border: 1px solid #C0B283;
+    border: 1px solid var(--main);
     -webkit-transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
     transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .btn-primary:hover {
     -webkit-transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
     transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    background: #C0B283 !important;
-    border-color: #dcd0c0 !important;
+    background: var(--main) !important;
+    border-color: var(--secondary) !important;
   }
 .btn-primary:hover {
-    color: white;
-    color: #fff;
+    color: var(--text-color) !important;
 }
 
 footer.footer {
@@ -181,7 +189,7 @@ footer.footer {
     outline: none !important;
       position: relative;
       display: inline-block;
-      color: #C0B283;
+      color: var(--main) !important;
       margin-top: 2rem;
       font-weight: bold;
       font-size: 2rem;
@@ -235,18 +243,18 @@ footer.footer {
       display: inline-block;
       padding: 1em 1em;
       border-radius: 0;
-      color: #C0B283;
+      color: var(--main) !important;
       margin-top: 2rem;
       font-weight: bold;
       font-size: 0.678rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       text-decoration: none;
-      background: -webkit-linear-gradient(left, rgba(192,178,131, 0) 25%, rgba(192,178,131, 0.8) 75%);
-      background: linear-gradient(to right, rgba(192,178,131, 0) 25%, rgba(192,178,131, 0.8) 75%);
+      background: -webkit-linear-gradient(left, rgba(var(--main_r),var(--main_g),var(--main_b), 0) 25%, rgba(var(--main_r),var(--main_g),var(--main_b), 0.95) 75%);
+      background: linear-gradient(to right, rgba(var(--main_r),var(--main_g),var(--main_b), 0) 25%, rgba(var(--main_r),var(--main_g),var(--main_b), 0.95) 75%);
       background-position: 1% 50%;
       background-size: 400% 300%;
-      border: 1px solid #C0B283;
+      border: 1px solid var(--main);
       -webkit-transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
       transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
@@ -256,20 +264,16 @@ footer.footer {
       transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
     .gradient-btn:hover {
-      color: white;
-      color: #fff;
+      color: var(--text-color) !important;
       background-position: 99% 50%;
     }
     .active {
-        color: #fff;
+        color: var(--text-color) !important;
         text-decoration: none;
-        background: #C0B283 !important;
-        border-color: #dcd0c0 !important;
+        background: var(--main) !important;
+        border-color: var(--secondary) !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
         box-shadow: none !important;
     }
 
-    .features-icons i, a {
-        color:#C0B283 !important;
-    }
