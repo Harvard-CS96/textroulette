@@ -20,7 +20,9 @@
         <button class="tablinks col-md-4 bottombar" onclick="openCity(event, 'My History')">My History</button>
     </div>
 
-    <div id="My Questions" class="tabcontent"> {{> questions }} </div>
+    <div id="My Questions" class="tabcontent">
+     {{> questions }}
+    </div>
 
     <div id="My Stats" class="tabcontent">
         <div class="holder">
@@ -192,8 +194,6 @@
             else
                 info.feedbackReceived = chat.feedback[i];
         }
-
-        console.log("CHAT INFO: ", info)
         return info;
 
     }
@@ -319,9 +319,15 @@
             }
 
             $("#convo-button").on("click", (e) => {
-                window.location.href= '/chat';
-                window.location.href = '/chat';
-            })
+                if (!formSubmit()){
+                    console.log('not');
+                    alert('Please fill out at least one question before starting conversation.');
+                }
+                else {
+                    console.log('yes');
+                    window.location.href = '/chat';
+                }
+            });
 
             getHistory();
 

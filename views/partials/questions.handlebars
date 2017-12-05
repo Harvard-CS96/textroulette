@@ -23,13 +23,13 @@
             var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
             populateQuestions(questionsWithUserAnswers);
             document.getElementById("submit").onclick = function () { formSubmit(); alert("Thanks for updating!");};
-            document.getElementById("call").onclick = function () {
+            document.getElementById("convo-button").onclick = function () {
               // if form submit returned true, redirect to home
               if (!formSubmit()){
-                alert('Please fill out at least one question');
+                $('#alert').html('Please fill out at least one question.');
               }
               else {
-                window.location.href = '/'
+                window.location.href = '/chat'
               }
             };
 
@@ -171,7 +171,6 @@
             isEmpty = isEmpty & !d.response;
           })
           if(isEmpty){
-            alert('Please fill out at least one question');
             return false;
           } else{
               console.log('about to ajax');
