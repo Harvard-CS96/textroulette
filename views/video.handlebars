@@ -156,7 +156,9 @@
     webrtc.on('videoAdded', function(video, peer) {
         num_FPS = 10;
         num_avg_frames = 10;
+        // console.log('video added', peer['id']);
         // Grab the ID of the peer video tag
+        //var video_id = '#' + peer['id'] + '_video_incoming';
         var $vid = $("#remoteVideos > video").first();
         $($vid).css({
                   "width": "450px",
@@ -201,6 +203,8 @@
             });
         };
         function updateBuffer(rect, buffer) {
+            console.log("the to be added rect is", rect);
+            printBuffer(buffer);
             buffer.data.unshift(rect);
             if (buffer.data.length > buffer.size) {
                 buffer.data.pop();
@@ -282,11 +286,13 @@
             // Loop through the faces collected in rectangles variable
             if (buffer.data.length > 0) {
                 rect = averageBuffer(buffer);
+                // console.log(rect.x, rect.y)
                 // context.strokeStyle = '#a64ceb';
                 var center = {
                     "x": rect.x + (0.5 * rect.width),
                     "y": rect.y + (0.5 * rect.height)
                 }
+                // console.log(center)
                 // Below line draws the rectangle for the face
                 // context.strokeRect(rect.x, rect.y, rect.width, rect.height);
                 // These lines draw the dot for center of face and text for width and height

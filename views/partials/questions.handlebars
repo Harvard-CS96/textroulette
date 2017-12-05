@@ -11,6 +11,7 @@
     jQuery(function () {
       const user = {{{ user }}};
         // get data from database through AJAX request
+        console.log('about to ask for questions');
         $.ajax({
           type: 'GET',
           contentType: 'application/json; charset=utf-8',
@@ -18,6 +19,7 @@
           dataType: 'json',
           success: function (data) {
             // On success, update questions.
+            console.log('pulled questions and userdata');
             var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
             populateQuestions(questionsWithUserAnswers);
             document.getElementById("submit").onclick = function () { formSubmit(); alert("Thanks for updating!");};
@@ -71,6 +73,8 @@
             s += constructLabel(name, qID, userAnswer, idx);
           })
           {{!-- s += '</tr></table>'; --}}
+          //console.log(s + end);
+          console.log(s + end);
           return s + end;
         }
 
