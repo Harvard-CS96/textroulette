@@ -269,3 +269,7 @@ footer.footer {
         -moz-box-shadow: none !important;
         box-shadow: none !important;
     }
+
+    .features-icons i, a {
+        color:#C0B283 !important;
+    }
