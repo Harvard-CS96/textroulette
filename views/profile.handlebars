@@ -183,7 +183,12 @@
     function makePrettyDate(seconds) {
         const minutes = Math.floor((seconds) / 60);
         const extraSeconds = Math.floor(seconds - minutes * 60) % 60;
-        return minutes + ':' + extraSeconds;
+        if (minutes == 0)
+            return extraSeconds + ' seconds';
+        else if (extraSeconds == 0)
+            return minutes + ' minutes';
+        else
+            return minutes + ' minutes, ' + extraSeconds + ' seconds';
     }
 
     function extraInfoFromChat(row) {
