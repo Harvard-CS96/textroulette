@@ -95,6 +95,7 @@ header.masthead h1 {
 
 .features-icons .features-icons-item .features-icons-icon i {
     font-size: 4.5rem;
+    color: #932b76 !important;
 }
 
 .features-icons .features-icons-item:hover .features-icons-icon i {
