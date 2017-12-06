@@ -11,7 +11,6 @@
     jQuery(function () {
       const user = {{{ user }}};
         // get data from database through AJAX request
-        console.log('about to ask for questions');
         $.ajax({
           type: 'GET',
           contentType: 'application/json; charset=utf-8',
@@ -19,17 +18,22 @@
           dataType: 'json',
           success: function (data) {
             // On success, update questions.
-            console.log('pulled questions and userdata');
             var questionsWithUserAnswers = getQuestionsWithUserAnswers(data);
             populateQuestions(questionsWithUserAnswers);
-            document.getElementById("submit").onclick = function () { formSubmit(); alert("Thanks for updating!");};
-            document.getElementById("convo-button").onclick = function () {
+            document.getElementById("submit").onclick = function(){ 
+              if(!formSubmit()){
+                alert('Please click on some answers to be match eligible');
+              } 
+              else{
+                alert("Thanks for updating!");};
+              }
+            document.getElementById("call").onclick = function () {
               // if form submit returned true, redirect to home
               if (!formSubmit()){
-                $('#alert').html('Please fill out at least one question.');
+                alert('Please fill out at least one question.');
               }
               else {
-                window.location.href = '/chat'
+                window.location.href = '/chat';
               }
             };
 
@@ -73,8 +77,6 @@
             s += constructLabel(name, qID, userAnswer, idx);
           })
           {{!-- s += '</tr></table>'; --}}
-          //console.log(s + end);
-          console.log(s + end);
           return s + end;
         }
 
@@ -144,8 +146,6 @@
 
         function getAnswer(questionNumber) {
           var parent = $('#question' + questionNumber)[0];
-          console.log('#question' + questionNumber);
-          console.log(parent);
           var response = calcAttribute(parent, 'response');
           if (response == '')
               response = null;
@@ -173,8 +173,6 @@
           if(isEmpty){
             return false;
           } else{
-              console.log('about to ajax');
-              console.log(json);
               $.ajax({
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
@@ -187,7 +185,6 @@
                   // We get no notification of success right now
                 },
                 failure: function (result) {
-                  console.log('failure');
                   error();
                 }
               });

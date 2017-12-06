@@ -319,14 +319,9 @@
             }
 
             $("#convo-button").on("click", (e) => {
-                if (!formSubmit()){
-                    console.log('not');
-                    alert('Please fill out at least one question before starting conversation.');
-                }
-                else {
-                    console.log('yes');
-                    window.location.href = '/chat';
-                }
+                // This is a hack, see questions code for this onclick function.
+                // Needed to do this so we could use function internal to questions.handlebars' script.
+                $('#call')[0].onclick(); 
             });
 
             getHistory();
