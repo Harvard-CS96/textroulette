@@ -39,12 +39,8 @@ router.get('/chat', isLoggedIn, (req, res) => {
     res.render('video', getAuthInfo(req));
 })
 
-router.get('/about', isLoggedIn, (req, res) => {
+router.get('/about', (req, res) => {
     res.render('about');
-})
-
-router.get('/terms', isLoggedIn, (req, res) => {
-    res.render('termsOfUse');
 })
 
 router.get('/text', isLoggedIn, (req, res) => {
