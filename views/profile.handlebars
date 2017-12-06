@@ -146,21 +146,21 @@
 
     function buildLeaderboard(leaders) {
         var start = '<div id="leaderboard-table">'
-        var tHead = '<div class="row header-row">' + 
-                        '<div class="col-md-3">Friend</div>'    + 
-                        '<div class="col-md-2">Empathetic</div>'       + 
-                        '<div class="col-md-2">Polite</div>'    + 
-                        '<div class="col-md-3">Knowledgeable</div>'      + 
-                        '<div class="col-md-2">Creative</div>'  + 
+        var tHead = '<div class="row header-row">' +
+                        '<div class="col-md-3">Friend</div>'    +
+                        '<div class="col-md-2">Empathetic</div>'       +
+                        '<div class="col-md-2">Polite</div>'    +
+                        '<div class="col-md-3">Knowledgeable</div>'      +
+                        '<div class="col-md-2">Creative</div>'  +
                     '</div>';
         var cols = '';
         leaders.forEach(friend => {
             var friendStats = ('<div class="row data-row">' +
-                                   '<div class="col-md-3">' + friend.name                           + '</div>' +  
-                                   '<div class="col-md-2">' + countBadges('empathetic'   , friend)  + '</div>' + 
+                                   '<div class="col-md-3">' + friend.name                           + '</div>' +
+                                   '<div class="col-md-2">' + countBadges('empathetic'   , friend)  + '</div>' +
                                    '<div class="col-md-2">' + countBadges('polite'       , friend)  + '</div>' +
-                                   '<div class="col-md-3">' + countBadges('knowledgeable', friend)  + '</div>' + 
-                                   '<div class="col-md-2">' + countBadges('creative'     , friend)  + '</div>' + 
+                                   '<div class="col-md-3">' + countBadges('knowledgeable', friend)  + '</div>' +
+                                   '<div class="col-md-2">' + countBadges('creative'     , friend)  + '</div>' +
                                '</div>');
             cols += friendStats;
         });
@@ -225,6 +225,19 @@
                 if (res.length > $("#convo-count").text) {
                     $("#convo-count").text(res.length);
                 }
+
+                // Sort the results by recency
+                res.sort((a, b) => {
+                    a_info = extraInfoFromChat(a);
+                    b_info = extraInfoFromChat(b);
+
+                    if (a_info === undefined || b_info === undefined
+                        || a_info === null || b_info === null) {
+                        return 0
+                    }
+
+                    return a_info.connectedDate - b_info.connectedDate;
+                }).reverse()
 
                 // Populate history form
 
@@ -335,7 +348,7 @@
             $("#convo-button").on("click", (e) => {
                 // This is a hack, see questions code for this onclick function.
                 // Needed to do this so we could use function internal to questions.handlebars' script.
-                $('#call')[0].onclick(); 
+                $('#call')[0].onclick();
             });
 
             getHistory();
