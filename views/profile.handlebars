@@ -219,7 +219,8 @@
             contentType: 'application/json; charset=utf-8',
             url: '/profile/chats',
             success: res => {
-                console.log(res)
+                // put array in correct order with most recent at index 0
+                res.reverse();
 
                 // Double-check conversation count
                 if (res.length > $("#convo-count").text) {
